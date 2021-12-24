@@ -1,0 +1,16 @@
+@charset "ISO-8859-1";
+
+@font-face {
+	font-family: Quicksand;
+	src: url("/assets/fonts/Quicksand.ttf");
+}
+
+body {
+	word-break: break-all;
+	background-color: #f0edf5;
+	
+}
+
+.content {
+	margin-top: 200px;
+}

@@ -1,0 +1,12 @@
+$(function() {
+	$(".header").load("/header.html");
+})
+
+window.onscroll = function() {
+
+	if (document.documentElement.scrollTop > 80 || document.body.scrollTop > 80) {
+		document.getElementsByClassName("navbar")[0].style.padding = "8px 10px";
+	} else {
+		document.getElementsByClassName("navbar")[0].style.padding = "20px 10px";
+	}
+};
