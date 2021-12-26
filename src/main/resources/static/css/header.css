@@ -18,20 +18,17 @@ body {
 }
 
 #logo {
-	height: 100px;
+	height: 78px;
 	display: inline-block;
 	position: fixed;
 	margin: 40px 100px;
 	z-index: 100;
+	transition: all .2s linear;
 }
 
 #logo img {
 	max-height: 100%;
 	background-color: white;
-	border-radius: 1em;
-	border-style: solid; 
-	border-color: white;
-	border-width: thin; 
 }
 
 .header {
@@ -45,7 +42,6 @@ body {
 	border-bottom-style: solid;
 	border-bottom-color: rgba(0, 0, 0, 0.1);
 	border-bottom-width: thin;
-	
 }
 
 .header-top {
