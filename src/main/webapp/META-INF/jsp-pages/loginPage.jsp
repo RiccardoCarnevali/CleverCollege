@@ -13,7 +13,30 @@
 <body>
 <div class="header"></div>
 <div class="container">
-    Arrivato qui
+    <form method="post" action="doLogin">
+        <div id="first-column">
+
+        </div>
+        <div>
+            <div id="second-column">
+                <div class="mb-3 mt-3">
+                    <label for="fiscalCode" class="form-label">Codice fiscale:</label>
+                    <input type="text" class="form-control" id="fiscalCode" placeholder="Inserisci il tuo codice fiscale..." name="cf">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" class="form-control" id="password" placeholder="Inserisci la tua password..." name="password">
+                </div>
+                <div class="form-check mb-3">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" name="rememberMe"> Ricorda le mie credenziali
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-outline-primary">Login</button>
+            </div>
+            <div id="third-column"></div>
+        </div>
+    </form>
 </div>
 <footer class="container-fluid">
     Lorem ipsum dolor sit amet, consectetur

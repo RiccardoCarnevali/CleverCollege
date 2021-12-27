@@ -10,10 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class LoginController {
 
-    @GetMapping("/tmpPage")
-    public String tmp() {
-        return "tmpPage";
-    }
 
     @GetMapping("/loginPage")
     public String login() {
@@ -24,6 +20,6 @@ public class LoginController {
     public String login(HttpServletResponse response, HttpServletRequest request, String cf, String password) {
         //if user is inside db do something
         //if user isn't inside db do something else
-        return "tmpPage";
+        return null;
     }
 }

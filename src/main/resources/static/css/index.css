@@ -52,6 +52,7 @@ footer {
 #first-column {
 	width: 25%;
 	float: left;
+	min-height: 1px
 }
 
 #second-column {
