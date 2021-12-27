@@ -5,15 +5,21 @@
 	src: url("/assets/fonts/Raleway.ttf");
 }
 
+@media screen and (max-width:500px) {
+	.navbar {
+		margin-left: 75vw !important;
+	}
+}
+
 body {
 	font-family: 'Raleway', Helvetica, Arial, Lucida, sans-serif;
 }
 
 .navbar {
-	margin-left: 450px;
+	margin-left: 40vw;
 	text-transform: uppercase;
 	padding: 20px 10px;
-	transition: all .2s linear;
+	transition: padding .2s linear;
 	z-index: 100;
 }
 
@@ -21,7 +27,7 @@ body {
 	height: 78px;
 	display: inline-block;
 	position: fixed;
-	margin: 40px 100px;
+	margin: 40px 60px;
 	z-index: 100;
 	transition: all .2s linear;
 }
