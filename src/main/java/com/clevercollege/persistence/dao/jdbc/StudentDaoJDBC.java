@@ -26,7 +26,7 @@ public class StudentDaoJDBC implements StudentDao {
 
 		List<Student> students = new ArrayList<>();
 		
-		String query = "select * from students";
+		String query = "select * from students order by cf";
 		
 		Statement st = conn.createStatement();
 		
@@ -97,7 +97,7 @@ public class StudentDaoJDBC implements StudentDao {
 		DatabaseManager.getInstance().getUserDao().saveOrUpdate(student);
 		
 		if(rs.next()) {	
-			query = "update students set"
+			query = "update students set "
 					+ "student_number = ?"
 					+ "where cf = ?";
 				
@@ -168,4 +168,29 @@ public class StudentDaoJDBC implements StudentDao {
 		return students;
 	}
 
+	@Override
+	public void bookActivityForStudent(long activityId, String studentCf) throws SQLException {
+		
+		String query = "insert into books values(?,?)";
+		
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setString(1, studentCf);
+		st.setLong(2, activityId);
+		
+		st.executeUpdate();
+	}
+
+	@Override
+	public void unbookActivityForStudent(long activityId, String studentCf) throws SQLException {
+		
+		String query = "delete from books where student = ? and activity = ?";
+		
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setString(1, studentCf);
+		st.setLong(2, activityId);
+		
+		st.executeUpdate();
+	}
 }

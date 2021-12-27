@@ -28,7 +28,7 @@ public class LessonDaoJDBC implements LessonDao {
 
 		List<Lesson> lessons = new ArrayList<>();
 		
-		String query = "select * from lessons";
+		String query = "select * from lessons order by id";
 		
 		Statement st = conn.createStatement();
 		
@@ -116,7 +116,7 @@ public class LessonDaoJDBC implements LessonDao {
 		
 		if(rs.next()) {
 			
-			query = "update lessons set"
+			query = "update lessons set "
 					+ "course = ?"
 					+ "where id = ?";
 			

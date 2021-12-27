@@ -22,6 +22,8 @@ public class IdBrokerJDBC implements IdBroker {
 		
 		ResultSet rs = st.executeQuery(query);
 		
+		rs.next();
+		
 		return rs.getLong("id");
 	}
 
@@ -33,6 +35,8 @@ public class IdBrokerJDBC implements IdBroker {
 		Statement st = conn.createStatement();
 		
 		ResultSet rs = st.executeQuery(query);
+		
+		rs.next();
 		
 		return rs.getLong("id");
 	}
@@ -46,6 +50,8 @@ public class IdBrokerJDBC implements IdBroker {
 		
 		ResultSet rs = st.executeQuery(query);
 		
+		rs.next();
+		
 		return rs.getLong("id");
 	}
 
@@ -57,6 +63,8 @@ public class IdBrokerJDBC implements IdBroker {
 		Statement st = conn.createStatement();
 		
 		ResultSet rs = st.executeQuery(query);
+		
+		rs.next();
 		
 		return rs.getLong("id");
 	}

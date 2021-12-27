@@ -25,7 +25,7 @@ public class CheckInCheckOutDaoJDBC implements CheckInCheckOutDao {
 
 		List<CheckInCheckOut> checkInCheckOuts = new ArrayList<>();
 		
-		String query = "select * from check_in_check_out";
+		String query = "select * from check_in_check_out order by id";
 		
 		Statement st = conn.createStatement();
 		
@@ -87,7 +87,7 @@ public class CheckInCheckOutDaoJDBC implements CheckInCheckOutDao {
 		
 		if(rs.next()) {
 			
-			query = "update check_in_check_out set"
+			query = "update check_in_check_out set "
 					+ "in_time = ?,"
 					+ "out_time = ?,"
 					+ "c_user = ?,"
@@ -102,7 +102,7 @@ public class CheckInCheckOutDaoJDBC implements CheckInCheckOutDao {
 			updateSt.setLong(4, checkInCheckOut.getLocation().getId());
 			updateSt.setLong(5, checkInCheckOut.getId());
 			
-			updateSt.executeQuery();
+			updateSt.executeUpdate();
 			
 		}
 		else {

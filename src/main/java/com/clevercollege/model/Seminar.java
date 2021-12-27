@@ -1,6 +1,8 @@
 package com.clevercollege.model;
 
 import java.sql.Date;
+import java.sql.Time;
+import java.util.List;
 
 public class Seminar extends Activity {
 
@@ -10,6 +12,12 @@ public class Seminar extends Activity {
 		super();
 	}
 
+	public Seminar(long id, Time time, int length, String description, User manager, List<Student> bookers,
+			Location classroom, Date date) {
+		super(id, time, length, description, manager, bookers, classroom);
+		this.date = date;
+	}
+
 	public Date getDate() {
 		return date;
 	}
@@ -17,5 +25,4 @@ public class Seminar extends Activity {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-
 }

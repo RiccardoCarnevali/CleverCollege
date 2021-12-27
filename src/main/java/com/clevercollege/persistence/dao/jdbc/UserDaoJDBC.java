@@ -23,7 +23,7 @@ public class UserDaoJDBC implements UserDao {
 	public List<User> findAll() throws SQLException {
 		List<User> users = new ArrayList<>();
 
-		String query = "select * from users";
+		String query = "select * from users order by cf";
 
 		Statement st = conn.createStatement();
 
@@ -86,7 +86,7 @@ public class UserDaoJDBC implements UserDao {
 		ResultSet rs = st.executeQuery();
 		
 		if(rs.next()) {
-			query = "update users set"
+			query = "update users set "
 					+ "first_name = ?,"
 					+ "last_name = ?,"
 					+ "e_mail = ?,"

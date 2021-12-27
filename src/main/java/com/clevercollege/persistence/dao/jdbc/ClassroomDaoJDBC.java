@@ -24,7 +24,7 @@ public class ClassroomDaoJDBC implements ClassroomDao {
 	public List<Location> findAll() throws SQLException {
 		List<Location> classrooms = new ArrayList<>();
 
-		String query = "select * from classrooms";
+		String query = "select * from classrooms order by id";
 
 		Statement st = conn.createStatement();
 

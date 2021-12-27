@@ -16,4 +16,8 @@ public interface StudentDao {
 	public void delete(String cf) throws SQLException;
 	
 	public List<Student> findBookersForActivity(long activityId) throws SQLException;
+	
+	public void bookActivityForStudent(long activityId, String studentCf) throws SQLException;
+	
+	public void unbookActivityForStudent(long activityId, String studentCf) throws SQLException;
 }

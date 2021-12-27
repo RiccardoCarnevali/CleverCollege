@@ -8,6 +8,12 @@ public class Student extends User {
 		super();
 	}
 
+	public Student(String cf, String firstName, String lastName, String email, String password, String description,
+			String profilePicture, String studentNumber) {
+		super(cf, firstName, lastName, email, password, description, profilePicture);
+		this.studentNumber = studentNumber;
+	}
+
 	public String getStudentNumber() {
 		return studentNumber;
 	}
@@ -15,5 +21,4 @@ public class Student extends User {
 	public void setStudentNumber(String studentNumber) {
 		this.studentNumber = studentNumber;
 	}
-
 }

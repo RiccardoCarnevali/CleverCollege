@@ -25,7 +25,7 @@ public class ActivityDaoJDBC implements ActivityDao {
 	public List<Activity> findAll(boolean lazy) throws SQLException {
 		List<Activity> activities = new ArrayList<>();
 
-		String query = "select * from activities";
+		String query = "select * from activities order by id";
 
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery(query);
@@ -105,7 +105,7 @@ public class ActivityDaoJDBC implements ActivityDao {
 		ResultSet rs = st.executeQuery();
 		
 		if(rs.next()) {
-			query = "update activities set"
+			query = "update activities set "
 					+ "activity_time = ?,"
 					+ "activity_length = ?,"
 					+ "description = ?,"

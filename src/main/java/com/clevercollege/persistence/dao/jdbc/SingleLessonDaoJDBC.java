@@ -27,7 +27,7 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 
 		List<SingleLesson> singleLessons = new ArrayList<>();
 		
-		String query = "select * from single_lessons";
+		String query = "select * from single_lessons order by id";
 		
 		Statement st = conn.createStatement();
 		
@@ -53,7 +53,7 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 			singleLesson.setDescription(lesson.getDescription());
 			singleLesson.setManager(lesson.getManager());
 			singleLesson.setClassroom(lesson.getClassroom());
-			singleLesson.setCourse(DatabaseManager.getInstance().getCourseDao().findByPrimaryKey(rs.getLong("course")));
+			singleLesson.setCourse(lesson.getCourse());
 			singleLesson.setDate(rs.getDate("lesson_date"));
 			
 			singleLessons.add(singleLesson);
@@ -93,7 +93,7 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 			singleLesson.setDescription(lesson.getDescription());
 			singleLesson.setManager(lesson.getManager());
 			singleLesson.setClassroom(lesson.getClassroom());
-			singleLesson.setCourse(DatabaseManager.getInstance().getCourseDao().findByPrimaryKey(rs.getLong("course")));
+			singleLesson.setCourse(lesson.getCourse());
 			singleLesson.setDate(rs.getDate("lesson_date"));
 		}
 		
@@ -115,7 +115,7 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 		
 		if(rs.next()) {
 			
-			query = "update single_lessons set"
+			query = "update single_lessons set "
 					+ "lesson_date = ?"
 					+ "where id = ?";
 			

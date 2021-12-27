@@ -27,7 +27,7 @@ public class SeminarDaoJDBC implements SeminarDao {
 		
 		List<Seminar> seminars = new ArrayList<>();
 		
-		String query = "select * from seminars";
+		String query = "select * from seminars order by id";
 		
 		Statement st = conn.createStatement();
 		
@@ -113,7 +113,7 @@ public class SeminarDaoJDBC implements SeminarDao {
 		
 		if(rs.next()) {
 			
-			query = "update seminars set"
+			query = "update seminars set "
 					+ "seminar_date = ?"
 					+ "where id = ?";
 			

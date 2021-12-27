@@ -24,7 +24,7 @@ public class ProfessorDaoJDBC implements ProfessorDao {
 	public List<User> findAll() throws SQLException {
 		List<User> professors = new ArrayList<>();
 		
-		String query = "select * from professors";
+		String query = "select * from professors order by cf";
 		
 		Statement st = conn.createStatement();
 		

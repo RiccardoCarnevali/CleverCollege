@@ -1,5 +1,7 @@
 package com.clevercollege.model;
 
+import java.util.Objects;
+
 public class User {
 
 	private String cf;
@@ -12,6 +14,18 @@ public class User {
 
 	public User() {
 
+	}
+
+	public User(String cf, String firstName, String lastName, String email, String password, String description,
+			String profilePicture) {
+		super();
+		this.cf = cf;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.description = description;
+		this.profilePicture = profilePicture;
 	}
 
 	public String getCf() {
@@ -70,4 +84,20 @@ public class User {
 		this.profilePicture = profilePicture;
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(cf);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return Objects.equals(cf, other.cf);
+	}
 }

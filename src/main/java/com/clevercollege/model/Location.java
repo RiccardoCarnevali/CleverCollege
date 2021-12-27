@@ -1,5 +1,7 @@
 package com.clevercollege.model;
 
+import java.util.Objects;
+
 public class Location {
 
 	private long id;
@@ -8,6 +10,13 @@ public class Location {
 
 	public Location() {
 
+	}
+
+	public Location(long id, String name, int capacity) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.capacity = capacity;
 	}
 
 	public long getId() {
@@ -34,4 +43,21 @@ public class Location {
 		this.capacity = capacity;
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Location other = (Location) obj;
+		return id == other.id;
+	}
+	
 }

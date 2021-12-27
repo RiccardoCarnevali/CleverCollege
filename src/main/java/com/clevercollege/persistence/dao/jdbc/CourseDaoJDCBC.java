@@ -25,7 +25,7 @@ public class CourseDaoJDCBC implements CourseDao {
 
 		List<Course> courses = new ArrayList<>();
 
-		String query = "select * from courses";
+		String query = "select * from courses order by id";
 
 		Statement st = conn.createStatement();
 
@@ -85,7 +85,7 @@ public class CourseDaoJDCBC implements CourseDao {
 
 		if(rs.next()) {
 			
-			query = "update courses set"
+			query = "update courses set "
 					+ "course_name = ?,"
 					+ "professor = ?"
 					+ "where id = ?";

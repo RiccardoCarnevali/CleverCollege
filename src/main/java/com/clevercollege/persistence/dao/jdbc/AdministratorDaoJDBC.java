@@ -24,7 +24,7 @@ public class AdministratorDaoJDBC implements AdministratorDao {
 	public List<User> findAll() throws SQLException {
 		List<User> administrators = new ArrayList<>();
 
-		String query = "select * from administrators";
+		String query = "select * from administrators order by cf";
 
 		Statement st = conn.createStatement();
 

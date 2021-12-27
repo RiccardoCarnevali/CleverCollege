@@ -24,7 +24,7 @@ public class LocationDaoJDBC implements LocationDao {
 
 		List<Location> locations = new ArrayList<>();
 
-		String query = "select * from locations";
+		String query = "select * from locations order by id";
 
 		Statement st = conn.createStatement();
 
@@ -83,7 +83,7 @@ public class LocationDaoJDBC implements LocationDao {
 		
 		if(rs.next()) {
 			
-			query = "update locations set"
+			query = "update locations set "
 					+ "location_name = ?,"
 					+ "capacity = ?"
 					+ "where id = ?";

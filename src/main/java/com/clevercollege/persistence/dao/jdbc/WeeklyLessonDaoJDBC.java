@@ -26,7 +26,7 @@ public class WeeklyLessonDaoJDBC implements WeeklyLessonDao {
 
 		List<WeeklyLesson> weeklyLessons = new ArrayList<>();
 		
-		String query = "select * from weekly_lessons";
+		String query = "select * from weekly_lessons order by id";
 		
 		Statement st = conn.createStatement();
 		
@@ -44,7 +44,7 @@ public class WeeklyLessonDaoJDBC implements WeeklyLessonDao {
 			weeklyLesson.setDescription(lesson.getDescription());
 			weeklyLesson.setManager(lesson.getManager());
 			weeklyLesson.setClassroom(lesson.getClassroom());
-			weeklyLesson.setCourse(DatabaseManager.getInstance().getCourseDao().findByPrimaryKey(rs.getLong("course")));
+			weeklyLesson.setCourse(lesson.getCourse());
 			weeklyLesson.setWeekDay(rs.getInt("week_day"));
 			weeklyLesson.setDisabled(rs.getBoolean("is_disabled"));
 			weeklyLesson.setDisabledIndefinitely(rs.getBoolean("disabled_indefinitely"));
@@ -80,7 +80,7 @@ public class WeeklyLessonDaoJDBC implements WeeklyLessonDao {
 			weeklyLesson.setDescription(lesson.getDescription());
 			weeklyLesson.setManager(lesson.getManager());
 			weeklyLesson.setClassroom(lesson.getClassroom());
-			weeklyLesson.setCourse(DatabaseManager.getInstance().getCourseDao().findByPrimaryKey(rs.getLong("course")));
+			weeklyLesson.setCourse(lesson.getCourse());
 			weeklyLesson.setWeekDay(rs.getInt("week_day"));
 			weeklyLesson.setDisabled(rs.getBoolean("is_disabled"));
 			weeklyLesson.setDisabledIndefinitely(rs.getBoolean("disabled_indefinitely"));
@@ -104,7 +104,7 @@ public class WeeklyLessonDaoJDBC implements WeeklyLessonDao {
 		
 		if(rs.next()) {
 			
-			query = "update weekly_lessons set"
+			query = "update weekly_lessons set "
 					+ "week_day = ?,"
 					+ "is_disabled = ?,"
 					+ "disabled_indefinitely = ?"
@@ -144,6 +144,8 @@ public class WeeklyLessonDaoJDBC implements WeeklyLessonDao {
 		st.setLong(1, id);
 		
 		st.executeUpdate();
+		
+		DatabaseManager.getInstance().getLessonDao().delete(id);
 	}
 
 }
