@@ -1,5 +1,7 @@
 package com.clevercollege.model;
 
+import java.util.List;
+
 public class WeeklyLesson extends Lesson {
 
 	private int weekDay;
@@ -34,4 +36,8 @@ public class WeeklyLesson extends Lesson {
 		this.disabledIndefinitely = disabledIndefinitely;
 	}
 
+	@Override
+	public List<Student> getBookers() {
+		return null;
+	}
 }
