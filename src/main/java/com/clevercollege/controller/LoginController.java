@@ -31,6 +31,7 @@ public class LoginController {
     public String login(Model model,HttpServletRequest request, String cf, String password) {
         try {
             User u = DatabaseManager.getInstance().getUserDao().findByPrimaryKey(cf);
+            
             if((u != null) && (BCrypt.checkpw(password, u.getPassword()))) {
                 request.getSession().setAttribute("cf", cf);
                 return "redirect:/";

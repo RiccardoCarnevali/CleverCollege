@@ -5,41 +5,36 @@
     <title>Login</title>
     <meta charset="UTF-8">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/index.css">
+	<link rel="stylesheet" href="/css/loginPage.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="/js/header.js"></script>
+    <script src="/js/loginPage.js"></script>
 </head>
 <body>
 <div class="header"></div>
-<div id="three-column-dv" class="container">
+<div class="container">
     <form method="post" action="doLogin">
-        <div id="first-column">
-
-        </div>
-        <div>
-            <div id="second-column">
-                <div class="mb-3 mt-3">
-                    <label for="fiscalCode" class="form-label">Codice fiscale:</label>
-                    <input type="text" class="form-control <c:if test="${no_existing_user_error != null && no_existing_user_error == true}">error-color</c:if>" id="fiscalCode" placeholder="Inserisci il tuo codice fiscale..." name="cf">
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password:</label>
-                    <input type="password" class="form-control <c:if test="${password_error != null && password_error == true}">error-color</c:if>" id="password" placeholder="Inserisci la tua password..." name="password">
-                </div>
-                <div class="mb-3">
-                    <a href="#">Non riesci ad accedere? Clicca qui.</a>
-                </div>
-                <button type="submit" class="btn btn-outline-primary">
-                    <c:if test="${cf != null}">Logout</c:if>
-                    <c:if test="${cf == null}">Login</c:if>
-                </button>
+        <div id="second-column">
+            <div class="mb-3 mt-3" id="fiscalCode">
+                <label for="fiscalCode" class="form-label">Codice fiscale:</label>
+                <input type="text" class="form-control <c:if test="${no_existing_user_error != null && no_existing_user_error == true}">error-color</c:if>" id="fiscalCodeInput" placeholder="Inserisci il tuo codice fiscale..." name="cf">
             </div>
-            <div id="third-column"></div>
-        </div>
+            <div class="mb-3" id="password">
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" class="form-control" id="passwordInput" placeholder="Inserisci la tua password..." name="password">
+            </div>
+            <div class="mb-3">
+                <a href="#">Non riesci ad accedere? Clicca qui.</a>
+            </div>
+            <button type="submit" class="btn btn-outline-primary" id="login">
+                Login
+            </button>
+         </div>
     </form>
 </div>
 <div class="container-fluid">

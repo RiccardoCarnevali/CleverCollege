@@ -5,16 +5,30 @@
 	src: url("/assets/fonts/Raleway.ttf");
 }
 
+@media screen and (max-width: 980px) {
+	.navbar {
+		margin-left: 75vw !important;
+	}
+	
+	#loginButton {
+		margin-left: 0px !important;
+	}
+}
+
 body {
 	font-family: 'Raleway', Helvetica, Arial, Lucida, sans-serif;
 }
 
 .navbar {
-	margin-left: 450px;
+	margin-left: 30vw;
 	text-transform: uppercase;
 	padding: 20px 10px;
-	transition: all .2s linear;
+	transition: padding .2s linear;
 	z-index: 100;
+}
+
+#loginButton {
+	margin-left: 25vw;
 }
 
 #logo {
