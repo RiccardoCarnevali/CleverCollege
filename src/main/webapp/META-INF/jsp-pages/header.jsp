@@ -1,6 +1,9 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 
 <a id="logo" href="/"> <img alt="Clever College"
-	src="/assets/images/cc-logo.png">
+							src="/assets/images/cc-logo.png">
 </a>
 
 <div class="header-top"></div>
@@ -23,7 +26,12 @@
 						class="dropdown-item" href="#">Action 2</a>
 				</div>
 			</li>
-			<li class="nav-item"> <a href="loginPage" class="btn btn-outline-primary"> Login </a>
+			<li class="nav-item">
+				<a <c:if test="${cf != null}">href="doLogout"</c:if> <c:if test="${cf == null}">href="loginPage"</c:if>
+					 class="btn btn-outline-primary">
+				<c:if test="${cf != null}">Logout</c:if>
+				<c:if test="${cf == null}">Login</c:if>
+			</a>
 			</li>
 		</ul>
 	</div>
