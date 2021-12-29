@@ -1,0 +1,50 @@
+@charset "ISO-8859-1";
+
+@font-face {
+    font-family: Quicksand;
+    src: url("/assets/fonts/Quicksand.ttf");
+}
+
+body {
+    word-break: break-word;
+    background-color: #f0edf5;
+
+}
+
+.container {
+    margin-top: 200px;
+}
+
+.btn-outline-primary {
+    color: #7e57c2;
+    border-color: #7e57c2;
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:active {
+    color: #fff;
+    background-color: #7e57c2;
+    border-color: #7e57c2;
+    font-weight: bold;
+}
+
+.btn-outline-primary:active:focus, .btn-outline-primary:focus {
+    box-shadow: none;
+}
+
+a, h3 {
+    color : #7e57c2;
+}
+
+a:hover {
+    font-weight: bold;
+    color : #7e57c2;
+}
+
+footer {
+    position: fixed;
+    background-color: #7e57c2;
+    color: #fff;
+    margin-top: 30px;
+    bottom:0;
+    height: 100px;
+}
