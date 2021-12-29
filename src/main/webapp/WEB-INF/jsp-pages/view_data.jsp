@@ -28,19 +28,19 @@
 			<input class="col-lg-4 col-md-6 col-sm-12" type="search" id="searchBar" placeholder="Cerca">
 			<div class="form-check form-check-inline">
 				<div class="checkbox">
-					<input class="form-check-input" type="checkbox" id="allCheckbox">
+					<input class="form-check-input" type="checkbox" id="allCheckbox" checked>
 					<label class="form-check-label" for="allCheckbox">Tutti</label>
 				</div>
 				<div class="checkbox">
-					<input class="form-check-input" type="checkbox" id="studentsCheckbox">
+					<input class="form-check-input not-all" type="checkbox" id="studentsCheckbox" checked>
 					<label class="form-check-label" for="studentsCheckbox">Studenti</label>
 				</div>
 				<div class="checkbox">
-					<input class="form-check-input" type="checkbox" id="professorsCheckbox">
+					<input class="form-check-input not-all" type="checkbox" id="professorsCheckbox" checked>
 					<label class="form-check-label" for="professorsCheckbox">Professori</label>
 				</div>
 				<div class="checkbox">
-					<input class="form-check-input" type="checkbox" id="administratorsCheckbox">
+					<input class="form-check-input not-all" type="checkbox" id="administratorsCheckbox" checked>
 					<label class="form-check-label" for="administratorsCheckbox">Amministratori</label>
 				</div>
 			</div>

@@ -1,30 +1,55 @@
-$(function(){
+var students, professors, administrators;
+
+$(function(){	
+	$.ajax({
+		type: "GET",
+		url: "loadStudents",
+		success: function(data) {
+			students = data;
+			changeCurrentUsers();
+		}
+	})
+		
+	$.ajax({
+		type: "GET",
+		url: "loadProfessors",
+		success: function(data) {
+			professors = data;
+			changeCurrentUsers();
+		}
+	})
 	
 	$.ajax({
 		type: "GET",
-		url: "loadUsers",
-		success: function(data){
-			allUsers = data;
-			
-			loadUsers(allUsers);
-			
-			var names = new Array();
-			
-			for(let j = 0; j < allUsers.length; j++) {
-				names[j] = allUsers[j].firstName + " " + allUsers[j].lastName;
-			}
-			
-			setupAutocomplete(names);
+		url: "loadAdmins",
+		success: function(data) {
+			administrators = data;
+			changeCurrentUsers();
 		}
-	});
+	})
+	
+	setupAutocomplete();
 	
 	$(window).on("resize", function(){
 		let classOnOff = window.matchMedia('(min-width: 450px)').matches;
 		$(".form-check").toggleClass("form-check-inline", classOnOff);
 	});
+	
+	$(".not-all").on("change", function(){
+		if($(".not-all:checked").length == $(".not-all").length)
+			$("#allCheckbox").prop("checked", true);
+		else
+			$("#allCheckbox").prop("checked", false);
+		changeCurrentUsers();
+	})
+	
+	$("#allCheckbox").on("change", function(){
+		$(".not-all").prop("checked", this.checked);
+		changeCurrentUsers();
+	})
 })
 
-function loadMoreUsers() {
+function loadMoreUsers(usersToDisplay) {
 	
 	shown += 6;
 
@@ -53,31 +78,57 @@ function loadMoreUsers() {
 }
 
 function loadUsers(users) {
-	
-	usersToDisplay = users;
-	
 	index = 0;
 	shown = 0;
 	
 	$("#userRow").empty();
 	
-	loadMoreUsers();
+	loadMoreUsers(users);
 }
 
-function setupAutocomplete(list) {
+function setupAutocomplete() {
 	var searchBar = $("#searchBar");
-	
+
 	searchBar.on("input", function(){
 		
 		var val = this.value;
 		var matchingUsers = new Array();
 					
-		for(let i = 0; i < list.length; i++) {
-			if(list[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-				matchingUsers.push(allUsers[i]);
+		for(let i = 0; i < currentUsers.length; i++) {
+			let name = currentUsers[i].firstName + " " + currentUsers[i].lastName;
+			if(name.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+				matchingUsers.push(currentUsers[i]);
 			}
 		}
-		
-		loadUsers(matchingUsers);
+		if(typeof(this.previousMatchingUsers) == "undefined" || this.previousMatchingUsers.length != matchingUsers.length )
+			loadUsers(matchingUsers);
+		this.previousMatchingUsers = matchingUsers;
 	});
+}
+
+function changeCurrentUsers() {
+	if(students == null || professors == null || administrators == null)
+		return;
+		
+	if($("#allCheckbox").is(":checked")) {
+		currentUsers = students.concat(professors).concat(administrators);
+	}
+	else {
+		let combinedUsers = new Array();
+		
+		if($("#studentsCheckbox").is(":checked")) {
+			combinedUsers = combinedUsers.concat(students);
+		}
+		
+		if($("#professorsCheckbox").is(":checked")) {
+			combinedUsers = combinedUsers.concat(professors);
+		}
+		
+		if($("#administratorsCheckbox").is(":checked")) {
+			combinedUsers = combinedUsers.concat(administrators);
+		}
+		
+		currentUsers = combinedUsers;
+	}
+	loadUsers(currentUsers);
 }
