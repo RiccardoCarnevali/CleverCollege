@@ -1,5 +1,6 @@
 @charset "ISO-8859-1";
 
+
 h1 {
 	color: #b71c1c;
 }
@@ -47,5 +48,47 @@ footer {
 #login, #recoverAccountButton, #changePasswordButton {
 	margin: 0 auto;
 	display: block;
+}
+
+h2 {
+	color: #b71c1c;
+}
+
+.empty-field-error, .login-error {
+	font-size: 0.8em;
+	color: red;
+}
+
+.container {
+	display: flex;
+	width: 30%;
+	margin-bottom: 100px;
+	padding: 20px;
+	background-color: rgba(255,255,255,0.6);
+	border-radius: 1em;
+	box-shadow: 0 10px 25px rgb(0 0 0 / 5%), 0 20px 48px rgb(0 0 0 / 5%), 0 1px 4px rgb(0 0 0 / 10%);
+}
+
+.form-control {
+	border-radius: 1em;
+}
+
+.form-control:hover, .form-control:focus {
+	box-shadow: none;
+	border-color: #7e57c2;
+}
+
+.error-color, .error-color:hover, .error-color:focus {
+	box-shadow: none;
+	border-color: #b71c1c;
+}
+
+#login {
+	margin: 0 auto;
+	display: block;
+}
+
+form {
+	width: 100%;
 }
 

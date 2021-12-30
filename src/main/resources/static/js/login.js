@@ -1,6 +1,7 @@
 
 $(function() {
-	$(".empty-field-error").remove();
+	var error = false;
+
 	if($("#fiscalCodeInput").hasClass('error-color')) {
 		error = true;
 		$("#fiscalCode").append('<div class="login-error">Codice fiscale o password errati.</div>')
