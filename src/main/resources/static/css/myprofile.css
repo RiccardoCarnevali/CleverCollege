@@ -1,0 +1,36 @@
+h1 {
+	font-size:1.6em;
+}
+
+h2 {
+	font-size:1.2em;
+}
+
+#profile-data-group {
+	line-height:0.5;	
+}
+
+#profile-picture {
+	width:75px;
+}
+
+#mainTable {
+	width:65%;
+	margin-right: 30px;
+}
+
+.card {
+	width:35%;
+}
+
+.content {
+	display: flex;
+}
+
+.card-text {
+	font-weight: bold;
+}
+
+span {
+	font-weight: normal;
+}
