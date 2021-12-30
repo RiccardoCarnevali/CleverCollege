@@ -34,3 +34,7 @@ h2 {
 span {
 	font-weight: normal;
 }
+
+#changePassword {
+	float: right;
+}
