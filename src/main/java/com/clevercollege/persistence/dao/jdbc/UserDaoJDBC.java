@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.clevercollege.model.RecoveryToken;
 import com.clevercollege.model.User;
 import com.clevercollege.persistence.dao.UserDao;
 
@@ -135,4 +136,30 @@ public class UserDaoJDBC implements UserDao {
 		st.executeUpdate();
 	}
 
+	@Override
+	public User findByEmail(String email) throws SQLException {
+		User user = null;
+
+		String query = "select * from users where e_mail = ?";
+		
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setString(1, email);
+		
+		ResultSet rs = st.executeQuery();
+		
+		if (rs.next()) {
+			user = new User();
+
+			user.setCf(rs.getString("cf"));
+			user.setFirstName(rs.getString("first_name"));
+			user.setLastName(rs.getString("last_name"));
+			user.setEmail(rs.getString("e_mail"));
+			user.setPassword(rs.getString("hashed_password"));
+			user.setDescription(rs.getString("description"));
+			user.setProfilePicture(rs.getString("profile_picture"));
+		}
+
+		return user;
+	}
 }

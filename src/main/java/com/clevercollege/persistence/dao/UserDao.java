@@ -11,6 +11,8 @@ public interface UserDao {
 	
 	public User findByPrimaryKey(String cf) throws SQLException;
 	
+	public User findByEmail(String email) throws SQLException;
+	
 	public void saveOrUpdate(User user) throws SQLException;
 	
 	public void delete(String cf) throws SQLException;

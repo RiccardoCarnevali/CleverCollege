@@ -68,5 +68,18 @@ public class IdBrokerJDBC implements IdBroker {
 		
 		return rs.getLong("id");
 	}
+	
+	@Override
+	public long getNextPasswordTokenId() throws SQLException {
+		String query = "select nextval('recovery_token_ids_sequence') as id";
+		
+		Statement st = conn.createStatement();
+		
+		ResultSet rs = st.executeQuery(query);
+		
+		rs.next();
+		
+		return rs.getLong("id");
+	}
 
 }

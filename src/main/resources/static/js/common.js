@@ -1,5 +1,5 @@
 $(function() {
-	$(".header").load("/header.html");
+	$(".header").load("header");
 })
 
 window.onscroll = function() {
