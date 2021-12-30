@@ -27,10 +27,10 @@
 				</div>
 			</li>
 			<li class="nav-item">
-				<a <c:if test="${cf != null}">href="doLogout"</c:if> <c:if test="${cf == null}">href="login"</c:if>
+				<a <c:if test="${user != null}">href="doLogout"</c:if> <c:if test="${user == null}">href="login"</c:if>
 					 class="btn btn-outline-primary" id="loginButton">
-				<c:if test="${cf != null}">Logout</c:if>
-				<c:if test="${cf == null}">Login</c:if>
+				<c:if test="${user != null}">Logout</c:if>
+				<c:if test="${user == null}">Login</c:if>
 			</a>
 			</li>
 		</ul>

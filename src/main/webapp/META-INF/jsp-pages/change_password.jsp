@@ -20,7 +20,8 @@
 <script src="/js/common.js"></script>
 </head>
 <body>
-<div class="container">
+<div class="header"></div>
+<div class="container" id="changePasswordContainer">
 		<h5>
 			Email di recupero inviata a
 			<c:out value="${recovery_email}" />
