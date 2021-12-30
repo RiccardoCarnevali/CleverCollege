@@ -44,7 +44,7 @@ footer {
 	border-color: #b71c1c;
 }
 
-#login {
+#login, #recoverAccountButton, #changePasswordButton {
 	margin: 0 auto;
 	display: block;
 }

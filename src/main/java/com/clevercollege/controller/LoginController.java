@@ -22,9 +22,9 @@ public class LoginController {
         return "redirect:/";
     }
 
-    @GetMapping("/loginPage")
+    @GetMapping("/login")
     public String login() {
-        return "loginPage";
+        return "login";
     }
 
     @PostMapping("/doLogin")
@@ -33,20 +33,20 @@ public class LoginController {
             User u = DatabaseManager.getInstance().getUserDao().findByPrimaryKey(cf);
             
             if((u != null) && (BCrypt.checkpw(password, u.getPassword()))) {
-                request.getSession().setAttribute("cf", cf);
+                request.getSession().setAttribute("user", u);
                 return "redirect:/";
             }
             else if(u != null) {
                 model.addAttribute("password_error", true);
-                return "loginPage";
+                return "login";
             }
             else {
                 model.addAttribute("no_existing_user_error", true);
-                return "loginPage";
+                return "login";
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return "loginPage";
+        return "login";
     }
 }

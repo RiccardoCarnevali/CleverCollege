@@ -1,6 +1,11 @@
 @charset "ISO-8859-1";
 
 @font-face {
+	font-family: Quicksand;
+	src: url("/assets/fonts/Quicksand.ttf");
+}
+
+@font-face {
 	font-family: Raleway;
 	src: url("/assets/fonts/Raleway.ttf");
 }
@@ -9,7 +14,6 @@
 	.navbar {
 		margin-left: 75vw !important;
 	}
-	
 	#loginButton {
 		margin-left: 0px !important;
 	}
@@ -17,6 +21,8 @@
 
 body {
 	font-family: 'Raleway', Helvetica, Arial, Lucida, sans-serif;
+	word-break: break-word;
+	background-color: #f0edf5;
 }
 
 .navbar {
@@ -69,10 +75,6 @@ body {
 	text-transform: none;
 }
 
-a:hover {
-	text-decoration: none;
-}
-
 .nav-link {
 	margin: 0px 10px;
 	color: #696969;
@@ -80,4 +82,42 @@ a:hover {
 
 .nav-link:hover {
 	color: #333333;
+}
+
+.container {
+	margin-top: 200px;
+}
+
+.btn-outline-primary {
+	color: #7e57c2;
+	border-color: #7e57c2;
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:active {
+	color: #fff;
+	background-color: #7e57c2;
+	border-color: #7e57c2;
+	font-weight: bold;
+}
+
+.btn-outline-primary:active:focus, .btn-outline-primary:focus {
+	box-shadow: none;
+}
+
+.hide {
+	display: none;
+}
+
+a, h2 {
+	color: #7e57c2;
+}
+
+h4,h5 {
+	text-align: center;
+}
+
+a:hover {
+	font-weight: bold;
+	text-decoration: none;
+	color: #7e57c2;
 }

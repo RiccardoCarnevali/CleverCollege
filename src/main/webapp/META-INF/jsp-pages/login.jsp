@@ -5,15 +5,14 @@
     <title>Login</title>
     <meta charset="UTF-8">
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/header.css">
-    <link rel="stylesheet" href="/css/index.css">
-	<link rel="stylesheet" href="/css/loginPage.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/common.css">
+	<link rel="stylesheet" href="/css/login.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="/js/header.js"></script>
-    <script src="/js/loginPage.js"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/login.js"></script>
 </head>
 <body>
 <div class="header"></div>
@@ -21,15 +20,15 @@
     <form method="post" action="doLogin">
         <div id="second-column">
             <div class="mb-3 mt-3" id="fiscalCode">
-                <label for="fiscalCode" class="form-label">Codice fiscale:</label>
+                <label for="fiscalCodeInput" class="form-label"><strong>Codice fiscale:</strong></label>
                 <input type="text" class="form-control <c:if test="${no_existing_user_error != null && no_existing_user_error == true}">error-color</c:if>" id="fiscalCodeInput" placeholder="Inserisci il tuo codice fiscale..." name="cf">
             </div>
             <div class="mb-3" id="password">
-                <label for="password" class="form-label">Password:</label>
+                <label for="passwordInput" class="form-label"><strong>Password:</strong></label>
                 <input type="password" class="form-control" id="passwordInput" placeholder="Inserisci la tua password..." name="password">
             </div>
             <div class="mb-3">
-                <a href="#">Non riesci ad accedere? Clicca qui.</a>
+                <a href="account-recovery">Non riesci ad accedere? Clicca qui.</a>
             </div>
             <button type="submit" class="btn btn-outline-primary" id="login">
                 Login
