@@ -1,0 +1,128 @@
+body {
+    word-break: break-word;
+}
+
+.first-column {
+    width: 33%;
+    float: left;
+    margin-top: 10vh;
+    margin-right: 15px;
+    margin-left: 20px;
+}
+
+.second-column {
+    width: 66%;
+    float: right;
+    margin-left: 15px;
+    margin-right: 20px;
+}
+
+.container {
+    display: flex;
+    margin-top: 200px;
+    margin-bottom: 130px;
+    padding: 20px;
+    background-color: rgba(255,255,255,0.6);
+    border-radius: 1em;
+    box-shadow: 0 10px 25px rgb(0 0 0 / 5%), 0 20px 48px rgb(0 0 0 / 5%), 0 1px 4px rgb(0 0 0 / 10%);
+}
+.radio-item {
+    display: block;
+    position: relative;
+    padding: 1px 6px;
+}
+
+.radio-item input[type='radio'] {
+    display: none;
+}
+
+.radio-item label {
+    color: #212529;
+    font-weight: normal;
+}
+
+.radio-item label:before {
+    content: " ";
+    display: inline-block;
+    position: relative;
+    top: 5px;
+    margin: 0px 6px 3px 0px;
+    width: 16px;
+    height: 16px;
+    border-radius: 10px;
+    border: 1px solid #7e57c2;
+    background-color: transparent;
+}
+
+.radio-item input[type=radio]:checked + label:after {
+    border-radius: 5px;
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    content: " ";
+    display: block;
+    background: #7e57c2;
+}
+
+.danger-button {
+    float: right;
+}
+
+input[type="number"] {
+    border: 1px solid #ced4da;
+    outline: none;
+    border-radius: 1em;
+    padding: .375rem .75rem;
+
+}
+
+input[type="number"]:focus, input[type="number"]:active, input[type="number"]:focus-visible{
+    border: 1px solid #7e57c2;
+    border-radius: 1em;
+}
+
+select {
+    border: 1px solid #ced4da;
+    border-radius: 1em;
+    padding: .375rem .75rem;
+    outline: none;
+    background: #fff;
+}
+
+select:hover {
+    border: 1px solid #7e57c2;
+    border-radius: 1em;
+}
+
+.button-container {
+    margin-top: 20px;
+}
+
+@media only screen and (max-width: 780px) {
+    .danger-button {
+        float: inherit;
+        margin: 10px 0px 10px;
+    }
+}
+
+#insert-other-data-button, #insert-user-button {
+    margin-right: 10px;
+}
+
+.form-control {
+    border-radius: 1em;
+}
+
+.form-control:hover, .form-control:focus {
+    box-shadow: none;
+    border-color: #7e57c2;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+}

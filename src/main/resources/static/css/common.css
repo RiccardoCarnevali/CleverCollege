@@ -88,16 +88,15 @@ body {
 	margin-top: 200px;
 }
 
-.btn-outline-primary {
+.btn-outline-primary, .btn-outline-primary:disabled {
 	color: #7e57c2;
 	border-color: #7e57c2;
 }
 
-.btn-outline-primary:hover, .btn-outline-primary:active {
+.btn-outline-primary:hover:not([disabled]), .btn-outline-primary:active {
 	color: #fff;
 	background-color: #7e57c2;
 	border-color: #7e57c2;
-	font-weight: bold;
 }
 
 .btn-outline-primary:active:focus, .btn-outline-primary:focus {
