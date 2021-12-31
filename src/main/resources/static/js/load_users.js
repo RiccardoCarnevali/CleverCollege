@@ -1,134 +1,140 @@
-var students, professors, administrators;
+var users = new Array();
+var type = "users";
+var sortBy = "cf";
+var like = "";
 
-$(function(){	
-	$.ajax({
-		type: "GET",
-		url: "loadStudents",
-		success: function(data) {
-			students = data;
-			changeCurrentUsers();
-		}
-	})
-		
-	$.ajax({
-		type: "GET",
-		url: "loadProfessors",
-		success: function(data) {
-			professors = data;
-			changeCurrentUsers();
-		}
+$(function() {
+	
+	$("#searchBar").on("input", function() {
+		like = $(this).val();
 	})
 	
-	$.ajax({
-		type: "GET",
-		url: "loadAdmins",
-		success: function(data) {
-			administrators = data;
-			changeCurrentUsers();
-		}
+	$("#searchButton").on("click", function() {
+		users = new Array();
+		$("#userRow").empty();
+		loadMore();
 	})
 	
-	setupAutocomplete();
+	$(document).keypress(function(e){
+	    if (e.which == 13){
+	        users = new Array();
+			$("#userRow").empty();
+			loadMore();
+	    }
+	});
+	
+	$("#typeInput").on("change", function() {
+		type = $(this).val();
+		users = new Array();
+		$("#userRow").empty();
+		loadMore();
+	})
+	
+	$("#sortInput").on("change", function() {
+		sortBy=$(this).val();
+		users = new Array();
+		$("#userRow").empty();
+		loadMore();
+	})
 	
 	$(window).on("resize", function(){
 		let classOnOff = window.matchMedia('(min-width: 450px)').matches;
 		$(".form-check").toggleClass("form-check-inline", classOnOff);
 	});
 	
-	$(".not-all").on("change", function(){
-		if($(".not-all:checked").length == $(".not-all").length)
-			$("#allCheckbox").prop("checked", true);
-		else
-			$("#allCheckbox").prop("checked", false);
-		changeCurrentUsers();
-	})
-	
-	$("#allCheckbox").on("change", function(){
-		$(".not-all").prop("checked", this.checked);
-		changeCurrentUsers();
-	})
+	loadMore();
 })
 
-function loadMoreUsers(usersToDisplay) {
+function loadMore() {
 	
-	shown += 6;
-
-	for(; index < shown && index < usersToDisplay.length; index++) {
-		$("#userRow").append("<div class=\"col-lg-2 col-md-4 col-sm-12 d-flex align-items-stretch\">" +
-										"<div class=\"card\">" +
-											//"<img class=\"card-img-top\" src=\"" + usersToDisplay[index].profilePicture + "\" alt=\"Card image\">" +
-											"<img class=\"card-img-top\" src=\"assets/images/img_avatar1.png\" alt=\"Card image\">" +
-												"<div class=\"card-body d-flex flex-column\">" +
-													"<h4 class=\"card-title\">" + usersToDisplay[index].firstName + " " + usersToDisplay[index].lastName + "</h4>" +
-										    		"<p class=\"card-text\">" + usersToDisplay[index].cf + "</p>" +
-										    		"<a href=\"#\" class=\"btn btn-primary mt-auto align-self-start\">See Profile</a>" +
-										 		"</div>" +
-										"</div>" +
-									"</div>");
-	}
-	
-	showMoreButton = $("#showMoreButton");
-	if(showMoreButton != null)
-		showMoreButton.remove();
-		
-	if(index < usersToDisplay.length) {
-		$("#dataContainer").append("<button class=\"btn btn-outline-primary\" id=\"showMoreButton\">Mostra altri</button>");
-		$("#showMoreButton").on("click", loadMoreUsers);
-	}
-}
-
-function loadUsers(users) {
-	index = 0;
-	shown = 0;
-	
-	$("#userRow").empty();
-	
-	loadMoreUsers(users);
-}
-
-function setupAutocomplete() {
-	var searchBar = $("#searchBar");
-
-	searchBar.on("input", function(){
-		
-		var val = this.value;
-		var matchingUsers = new Array();
-					
-		for(let i = 0; i < currentUsers.length; i++) {
-			let name = currentUsers[i].firstName + " " + currentUsers[i].lastName;
-			if(name.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-				matchingUsers.push(currentUsers[i]);
+	$.ajax({
+		type: "GET",
+		url: "loadUsers",
+		data: {
+			type: type,
+			sortBy: sortBy,
+			like: like,
+			offset: users.length
+		},
+		success: function(data) {
+			
+			var showMoreButton = $("#showMoreButton");
+			if(showMoreButton != null) {
+				showMoreButton.remove();
 			}
-		}
-		if(typeof(this.previousMatchingUsers) == "undefined" || this.previousMatchingUsers.length != matchingUsers.length )
-			loadUsers(matchingUsers);
-		this.previousMatchingUsers = matchingUsers;
-	});
+			
+			users = users.concat(data.slice(0, 6));
+			if(users.length <= 6)
+				index = 0;
+			for(; index < users.length; index++) {
+				$("#userRow").append(	"<div class=\"col-lg-2 col-md-4 col-sm-12 d-flex align-items-stretch\" id=\"card-" + users[index].cf + "\">" +
+											"<div class=\"card\">" +
+												//"<img class=\"card-img-top\" src=\"" + users[index].profilePicture + "\" alt=\"Card image\">" +
+												"<img class=\"card-img-top\" src=\"assets/images/img_avatar1.png\" alt=\"Card image\">" +
+													"<div class=\"card-body d-flex flex-column\">" +
+														"<h4 class=\"card-title\">" + users[index].firstName + " " + users[index].lastName + "</h4>" +
+												   		"<p class=\"card-text\">" + users[index].cf + "</p>" +
+														"<div id=\"icons\">" +
+															"<a href=\"#\" class=\"mt-auto align-self-start modify-button\"><i class=\"fas fa-pen\"></i></a>" +
+													    	"<a href=\"#\" class=\"mt-auto align-self-end remove-button\" style=\"float:right\" id=\"" + users[index].cf + "\"><i class=\"fas fa-trash\"></i></a>" +
+														"</div>" +
+												 	"</div>" +
+											"</div>" +
+										"</div>");
+				}
+			
+			$(".remove-button").on("click", function() {
+				let cf = this.id;
+				Swal.fire({
+					title: "Sei sicuro?",
+					text: "Sei sicuro di voler rimuovere questo utente?\nNon potrà più accedere alle funzionalità del sito e tutti i suoi dati verranno rimossi",
+					icon: "warning",
+					confirmButtonText: "Continua",
+					showCancelButton: true,
+					cancelButtonText: "Cancella"
+				}).then((result) => {
+					if(result.isConfirmed) {
+						$.ajax({
+							type: "POST",
+							data : {
+								cf : cf
+							},
+							url: "removeUser",
+							success : function(data) {
+								if(data == "ok") {
+									Swal.fire({
+										title: "Successo!",
+										text: "L'utente è stato eliminato con successo",
+										icon: "success"
+									})
+									users = new Array();
+									$("#userRow").empty();
+									loadMore();
+								}
+								else {
+									errorMessage();
+								}
+							},
+							error : errorMessage
+						})
+					}
+				});
+			})
+			
+			if(data.length == 7)
+				$("#dataContainer").append("<button class=\"btn btn-outline-primary\" id=\"showMoreButton\">Mostra altri</button>");
+			$("#showMoreButton").on("click", function() {
+				loadMore();
+			});
+		},
+		error : errorMessage
+	})
 }
 
-function changeCurrentUsers() {
-	if(students == null || professors == null || administrators == null)
-		return;
-		
-	if($("#allCheckbox").is(":checked")) {
-		currentUsers = students.concat(professors).concat(administrators);
-	}
-	else {
-		let combinedUsers = new Array();
-		
-		if($("#studentsCheckbox").is(":checked")) {
-			combinedUsers = combinedUsers.concat(students);
-		}
-		
-		if($("#professorsCheckbox").is(":checked")) {
-			combinedUsers = combinedUsers.concat(professors);
-		}
-		
-		if($("#administratorsCheckbox").is(":checked")) {
-			combinedUsers = combinedUsers.concat(administrators);
-		}
-		
-		currentUsers = combinedUsers;
-	}
-	loadUsers(currentUsers);
+function errorMessage() {
+	Swal.fire({
+		title: "Oops...",
+		text: "Qualcosa è andato storto.",
+		icon: "error"
+	});
 }

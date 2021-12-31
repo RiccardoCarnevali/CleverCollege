@@ -9,6 +9,8 @@ public interface ProfessorDao {
 
 	public List<User> findAll() throws SQLException;
 	
+	public List<User> findByLike(String sortBy, String like, int amount, int offset) throws SQLException;
+	
 	public User findByPrimaryKey(String cf) throws SQLException;
 	
 	public void saveOrUpdate(User professor) throws SQLException;
