@@ -36,28 +36,7 @@
          </div>
     </form>
 </div>
-<div class="container-fluid">
-    <h1>Non riesci ad accedere?</h1>
-    <section class="row">
-        <article class="col-md-6 col-lg-6">
-            <h2>La tua password sembra errata?</h2>
-            <p>
-                Controlla accuratamente che tu abbia digitato correttamente la password o che non ci sia il caps lock attivato impropriamente.
-                Se questo è il tuo primo accesso, controlla di aver inserito correttamente la password a te inviata dall'amministratore via email.
-                Se non hai ricevuto alcuna email, contatta la segreteria studenti.
-            </p>
-        </article>
-        <article class="col-md-6 col-lg-6">
-            <h2>Il tuo codice fiscale sembra errato?</h2>
-            <p>
-                Controlla accuratamente che tu abbia digitato correttamente il codice fiscale.
-                Se questo è il tuo primo accesso, assicurati prima di aver ricevuto la email a te inviata dall'amministratore che assicura che tu
-                sia stato registrato.
-                Se non hai ricevuto alcuna email, contatta la segreteria studenti.
-            </p>
-        </article>
-    </section>
-</div>
+
 <div class="footer"></div>
 </body>
 </html>

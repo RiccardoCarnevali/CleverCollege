@@ -93,22 +93,22 @@ body {
 	border-color: #7e57c2;
 }
 
-.btn-outline-primary:hover, .btn-outline-primary:active {
+.btn-outline-primary:hover, .btn-outline-primary:active, .btn-outline-primary:active:focus, .btn-outline-primary:focus {
 	color: #fff;
-	background-color: #7e57c2;
-	border-color: #7e57c2;
+	background-color: #7e57c2 !important;
+	border-color: #7e57c2 !important;
 	font-weight: bold;
 }
 
 .btn-outline-primary:active:focus, .btn-outline-primary:focus {
-	box-shadow: none;
+	box-shadow: 0 0 0 0.2rem rgba(126, 87, 194, 0.5) !important;
 }
 
 .hide {
 	display: none;
 }
 
-h4,h5 {
+h4, h5 {
 	text-align: center;
 }
 
@@ -119,15 +119,15 @@ a:hover {
 }
 
 a, h2, h3 {
-    color : #7e57c2;
+	color: #7e57c2;
 }
 
 footer {
 	display: flex;
     background-color: #7e57c2;
     color: #fff;
-    margin-top: 30px;
-
+    margin-top: 20%;
+   	padding: 50px 20px;
 }
 
 #changePasswordContainer {
