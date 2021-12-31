@@ -2,89 +2,95 @@ var users = new Array();
 var type = "users";
 var sortBy = "cf";
 var like = "";
+var errorShown = false;
 
 $(function() {
-	
+
 	$("#searchBar").on("input", function() {
 		like = $(this).val();
+		loadMore(false);
 	})
-	
-	$("#searchButton").on("click", function() {
-		users = new Array();
-		$("#userRow").empty();
-		loadMore();
-	})
-	
-	$(document).keypress(function(e){
-	    if (e.which == 13){
-	        users = new Array();
-			$("#userRow").empty();
-			loadMore();
-	    }
-	});
-	
+
 	$("#typeInput").on("change", function() {
 		type = $(this).val();
 		users = new Array();
-		$("#userRow").empty();
-		loadMore();
+		$("#rows").empty();
+		loadMore(false);
 	})
-	
+
 	$("#sortInput").on("change", function() {
-		sortBy=$(this).val();
+		sortBy = $(this).val();
 		users = new Array();
-		$("#userRow").empty();
-		loadMore();
+		$("#rows").empty();
+		loadMore(false);
 	})
-	
-	$(window).on("resize", function(){
+
+	$(window).on("resize", function() {
 		let classOnOff = window.matchMedia('(min-width: 450px)').matches;
 		$(".form-check").toggleClass("form-check-inline", classOnOff);
 	});
-	
-	loadMore();
+
+	loadMore(false);
 })
 
-function loadMore() {
-	
+function loadMore(showMore) {
+
+	if (showMore)
+		offset = users.length;
+	else
+		offset = 0;
+
 	$.ajax({
-		type: "GET",
+		type: "POST",
 		url: "loadUsers",
 		data: {
 			type: type,
 			sortBy: sortBy,
 			like: like,
-			offset: users.length
+			offset: offset
 		},
 		success: function(data) {
-			
+
 			var showMoreButton = $("#showMoreButton");
-			if(showMoreButton != null) {
+			if (showMoreButton != null) {
 				showMoreButton.remove();
 			}
-			
+
+			if (users.length != 0 && data.length != 0) {
+				if (areEquals(data, users))
+					return;
+			}
+
+			if (!showMore) {
+				users = new Array();
+				$("#rows").empty();
+			}
+
 			users = users.concat(data.slice(0, 6));
-			if(users.length <= 6)
+			if (users.length <= 6)
 				index = 0;
-			for(; index < users.length; index++) {
-				$("#userRow").append(	"<div class=\"col-lg-2 col-md-4 col-sm-12 d-flex align-items-stretch\" id=\"card-" + users[index].cf + "\">" +
-											"<div class=\"card\">" +
-												//"<img class=\"card-img-top\" src=\"" + users[index].profilePicture + "\" alt=\"Card image\">" +
-												"<img class=\"card-img-top\" src=\"assets/images/img_avatar1.png\" alt=\"Card image\">" +
-													"<div class=\"card-body d-flex flex-column\">" +
-														"<h4 class=\"card-title\">" + users[index].firstName + " " + users[index].lastName + "</h4>" +
-												   		"<p class=\"card-text\">" + users[index].cf + "</p>" +
-														"<div id=\"icons\">" +
-															"<a href=\"#\" class=\"mt-auto align-self-start modify-button\"><i class=\"fas fa-pen\"></i></a>" +
-													    	"<a href=\"#\" class=\"mt-auto align-self-end remove-button\" style=\"float:right\" id=\"" + users[index].cf + "\"><i class=\"fas fa-trash\"></i></a>" +
-														"</div>" +
-												 	"</div>" +
-											"</div>" +
-										"</div>");
-				}
-			
+
+			$("#rows").append("<div class=\"row user-row\"></div>");
+			var userRow = $(".user-row").last();
+			for (; index < users.length; index++) {
+				userRow.append("<div class=\"col-lg-2 col-md-4 col-sm-12 d-flex align-items-stretch\">" +
+					"<div class=\"card\">" +
+					//"<img class=\"card-img-top\" src=\"" + users[index].profilePicture + "\" alt=\"Card image\">" +
+					"<img class=\"card-img-top\" src=\"assets/images/img_avatar1.png\" alt=\"Card image\">" +
+					"<div class=\"card-body d-flex flex-column\">" +
+					"<h4 class=\"card-title\">" + users[index].firstName + " " + users[index].lastName + "</h4>" +
+					"<p class=\"card-text\">" + users[index].cf + "</p>" +
+					"<div class=\"icons\">" +
+					"<a href=\"#0\" class=\"mt-auto align-self-start modify-button\"><i class=\"fas fa-pen\"></i></a>" +
+					"<a href=\"#0\" class=\"mt-auto align-self-end remove-button\" style=\"float:right\" id=\"remove-" + users[index].cf + "\"><i class=\"fas fa-trash\"></i></a>" +
+					"</div>" +
+					"</div>" +
+					"</div>" +
+					"</div>");
+			}
+
 			$(".remove-button").on("click", function() {
-				let cf = this.id;
+				let cf = this.id.substr(7, 16);
 				Swal.fire({
 					title: "Sei sicuro?",
 					text: "Sei sicuro di voler rimuovere questo utente?\nNon potrà più accedere alle funzionalità del sito e tutti i suoi dati verranno rimossi",
@@ -93,48 +99,99 @@ function loadMore() {
 					showCancelButton: true,
 					cancelButtonText: "Cancella"
 				}).then((result) => {
-					if(result.isConfirmed) {
+					if (result.isConfirmed) {
+
 						$.ajax({
 							type: "POST",
-							data : {
-								cf : cf
+							url: "checkProfessorsCourses",
+							data: {
+								cf: cf
 							},
-							url: "removeUser",
-							success : function(data) {
-								if(data == "ok") {
+							success: function(data) {
+								if (data == true) {
 									Swal.fire({
-										title: "Successo!",
-										text: "L'utente è stato eliminato con successo",
-										icon: "success"
+										title: "Attenzione",
+										text: "Questo utente è un professore titolare di uno o più corsi, rimuovendolo verranno rimossi anche i corsi di cui è titolare.\nÈ consigliato cambiare il titolare di tali corsi prima di continuare.",
+										icon: "warning",
+										confirmButtonText: "Procedi comunque",
+										showCancelButton: true,
+										cancelButtonText: "Cancella"
+									}).then((result) => {
+										if (result.isConfirmed) {
+											removeUser(cf);
+										}
 									})
-									users = new Array();
-									$("#userRow").empty();
-									loadMore();
 								}
 								else {
-									errorMessage();
+									removeUser(cf);
 								}
 							},
-							error : errorMessage
-						})
+							error: errorMessage
+						});
 					}
 				});
-			})
-			
-			if(data.length == 7)
-				$("#dataContainer").append("<button class=\"btn btn-outline-primary\" id=\"showMoreButton\">Mostra altri</button>");
-			$("#showMoreButton").on("click", function() {
-				loadMore();
 			});
+
+			if (data.length == 7) {
+				$("#usersContainer").append("<button class=\"btn btn-outline-primary\" id=\"showMoreButton\">Mostra altri</button>");
+				$("#showMoreButton").on("click", function() {
+					loadMore(true);
+				});
+			}
 		},
-		error : errorMessage
+		error: errorMessage
 	})
 }
 
-function errorMessage() {
-	Swal.fire({
-		title: "Oops...",
-		text: "Qualcosa è andato storto.",
-		icon: "error"
+function removeUser(cf) {
+	$.ajax({
+		type: "POST",
+		url: "removeUser",
+		data: {
+			cf: cf
+		},
+		success: function(data) {
+			if (data == "ok") {
+				Swal.fire({
+					title: "Successo!",
+					text: "L'utente è stato eliminato con successo",
+					icon: "success"
+				})
+				users = new Array();
+				$("#userRow").empty();
+				loadMore();
+			}
+			else {
+				errorMessage();
+			}
+		},
+		error: errorMessage
 	});
+}
+
+function areEquals(users1, users2) {
+	if (users1.length != users2.length)
+		return false;
+
+	for (let i = 0; i < users1.length; i++) {
+		if (users1[i].id != users2[i].id)
+			return false;
+	}
+
+	return true;
+}
+
+function errorMessage() {
+	if (!errorShown) {
+		errorShown = true;
+		Swal.fire({
+			title: "Oops...",
+			text: "Qualcosa è andato storto.",
+			icon: "error"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				location.reload();
+			}
+		})
+	}
 }

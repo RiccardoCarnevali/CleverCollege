@@ -23,4 +23,17 @@ public class RemoveDataController {
 		return "ok";
 	}
 	
+	@PostMapping("/removeCourse")
+	public String removeCourse(long id) {
+		try {
+			DatabaseManager.getInstance().getCourseDao().delete(id);
+			DatabaseManager.getInstance().commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "error";
+		}
+		
+		return "ok";
+	}
+	
 }

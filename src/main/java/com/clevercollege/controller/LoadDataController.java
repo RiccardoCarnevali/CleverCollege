@@ -3,16 +3,17 @@ package com.clevercollege.controller;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clevercollege.model.Course;
 import com.clevercollege.model.User;
 import com.clevercollege.persistence.DatabaseManager;
 
 @RestController
 public class LoadDataController {
 	
-	@GetMapping("/loadUsers")
+	@PostMapping("/loadUsers")
 	public List<User> loadUsers(String type, String sortBy, String like, int offset) {
 		List<User> users = null;
 
@@ -35,5 +36,29 @@ public class LoadDataController {
 		
 		return users;
 	}
+	
+	@PostMapping("/loadCourses")
+	public List<Course> loadCourses(String like, int offset) {
+		List<Course> courses = null;
+		
+		try {
+			courses = DatabaseManager.getInstance().getCourseDao().findByLike("%" + like + "%", 16, offset);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
+		return courses;
+	}
+	
+	@PostMapping("/checkProfessorsCourses")
+	public String checkProfessorsCourses(String professor) {
+		try {
+			if(DatabaseManager.getInstance().getCourseDao().findByProfessor(professor).size() == 0)
+				return "yes";
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return "no";
+	}
 }

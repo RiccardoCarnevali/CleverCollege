@@ -1,0 +1,55 @@
+.course {
+	margin-top: 10px;
+}
+
+.icons {
+	float: right;
+}
+
+.icons .remove-button{
+	color: tomato;
+}
+
+.icons .modify-button {
+	color: #0d6efd;
+}
+
+.course-name {
+	font-weight: bold;
+}
+
+.professor-name {
+	font-style: italic;
+	color: grey;
+}
+
+#coursesContainer {
+	margin-top: 130px;
+	margin-bottom: 30px;
+}
+
+#searchBar {
+	border-radius: 20px;
+	margin-bottom: 10px;
+}
+
+#search-icon {
+	color: #7e57c2;
+}
+
+
+#searchBar:focus {   
+  border-color: #7e57c2;
+  box-shadow: 0 1px 1px #7e57c2 inset, 0 0 8px #7e57c2;
+  outline: 0 none;
+}
+
+#addButton {
+	margin-left: auto;
+	margin-right: 10px;
+	margin-bottom: 50px;
+}
+
+#showMoreButton{
+	margin:10px 0px;
+}

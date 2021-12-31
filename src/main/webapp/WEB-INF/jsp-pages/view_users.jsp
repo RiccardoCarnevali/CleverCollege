@@ -12,22 +12,25 @@
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		
-		<link rel="stylesheet" href="/css/header.css">
-		<link rel="stylesheet" href="/css/view_data.css">
+		<link rel="stylesheet" href="/css/common.css">
+		<link rel="stylesheet" href="/css/view_users.css">
 		
 		<script src="/js/header.js"></script>
 		<script src="/js/load_users.js" charset="UTF-8"></script>
-		<script src="/js/data_model.js"></script>
 		
-		<title>Gestisci dati</title>
+		<title>Utenti</title>
 	</head>
 	
 	<body>
 	
 		<div class="header"></div>
 		
-		<div class="container-fluid content-row" id="dataContainer">
-			<input class="col-lg-4 col-md-6 col-sm-11 col-11" type="search" id="searchBar" placeholder="Cerca"><a href="#" id="searchButton"><i class="fas fa-search"></i></a>
+		<div class="container-fluid content-row" id="usersContainer">
+			<div class="row justify-content-md-right">
+				<a href="#0" class="btn btn-outline-primary col-lg-2 col-md-2 col-sm-4 col-6" id="addButton">Aggiungi</a>
+			</div>
+		
+			<input class="col-lg-4 col-md-6 col-sm-11 col-11" type="search" id="searchBar" placeholder="Cerca"><i class="fas fa-search" id="search-icon"></i>
 				
 				<select class="form-control col-lg-2 col-md-6 col-sm-12" id="typeInput">
 			      <option selected value="users">Tutti</option>
@@ -42,7 +45,7 @@
 			      <option value="last_name">Cognome</option>
 			    </select>
 			
-			<div class="row" id="userRow">
+			<div id="rows">
 			</div>		
 		</div>
 
