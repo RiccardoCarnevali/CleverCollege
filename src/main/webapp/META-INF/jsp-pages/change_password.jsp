@@ -60,5 +60,6 @@
 			<script type="text/javascript">fireTokenExpiredAlert();</script>
 		</c:when>
 	</c:choose>
+<div class="footer"></div>
 </body>
 </html>

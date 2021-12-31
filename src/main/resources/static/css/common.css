@@ -123,12 +123,10 @@ a, h2, h3 {
 }
 
 footer {
-    position: fixed;
+	display: flex;
     background-color: #7e57c2;
     color: #fff;
     margin-top: 30px;
-    bottom:0;
-    height: 100px;
 
 }
 
