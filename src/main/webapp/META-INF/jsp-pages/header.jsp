@@ -7,7 +7,7 @@
 </a>
 
 <div class="header-top"></div>
-<div class="navbar navbar-light navbar-expand-md">
+<div class="navbar navbar-light navbar-expand-lg">
 	<button class="navbar-toggler" type="button" data-toggle="collapse"
 		data-target="#navbarMain" aria-controls="navbarMain"
 		aria-expanded="false" aria-label="Toggle navigation">
