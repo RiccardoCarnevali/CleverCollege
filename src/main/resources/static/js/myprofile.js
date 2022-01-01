@@ -13,14 +13,12 @@ var updateDescription = function() {
 	text = $("#description-text-area").text();
 	$.ajax({
 		type: 'POST',
-		url: '/updateDescription',
-		data: text,
-		success: showMode(),
-		failure: function() {
-			console.log("fai schifo a programmare");
-		}
-	}) 
-	showMode();
+		url: 'updateDescription',
+		data: {
+			description: text	
+		},
+		success: showMode,
+	});
 }
 
 var editMode = function() {
