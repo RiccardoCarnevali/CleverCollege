@@ -14,19 +14,6 @@ h2 {
 	width:75px;
 }
 
-#mainTable {
-	width:65%;
-	margin-right: 30px;
-}
-
-.card {
-	width:35%;
-}
-
-.content {
-	display: flex;
-}
-
 .card-text {
 	font-weight: bold;
 }
@@ -35,6 +22,15 @@ span {
 	font-weight: normal;
 }
 
-#changePassword {
-	float: right;
+.fa-pen {
+	float:right;
+}
+
+label {
+	font-weight: normal;
+	font-style: italic;
+}
+
+#modDescription {
+	cursor: pointer;
 }
