@@ -11,8 +11,7 @@ h1 {
 }
 
 .container {
-	width: 30%;
-	min-width: 450px;
+	max-width: 450px;
 	box-shadow: 0 10px 25px rgb(0 0 0 / 5%), 0 20px 48px rgb(0 0 0 / 5%), 0 1px 4px rgb(0 0 0 / 10%);
 	display: flex;
 	margin-bottom: 100px;
@@ -20,8 +19,6 @@ h1 {
 	background-color: rgba(255,255,255,0.6);
 	border-radius: 1em;
 }
-
-
 
 .form-control {
 	border-radius: 1em;

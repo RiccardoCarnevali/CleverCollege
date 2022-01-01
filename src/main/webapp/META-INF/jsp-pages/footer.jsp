@@ -4,8 +4,5 @@
 <footer>
     Lorem ipsum dolor sit amet, consectetur
     adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-    magna aliqua. Lectus mauris ultrices eros in cursus turpis. Egestas
-    sed tempus urna et pharetra pharetra massa. Massa sapien faucibus et
-    molestie ac feugiat sed. Maecenas ultricies mi eget mauris pharetra
-    et. Tellus mauris a diam maecenas sed enim ut sem.
+    magna aliqua. Lectus mauris ultrices eros in cursus turpis.
 </footer>
