@@ -4,6 +4,8 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<meta content='maximum-scale=1.0, initial-scale=1.0, width=device-width'
+		name='viewport'>
 <title>Recupera Account</title>
 
 <link rel="stylesheet"
