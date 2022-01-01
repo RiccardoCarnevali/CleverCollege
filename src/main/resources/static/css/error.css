@@ -1,0 +1,21 @@
+.container {
+	box-shadow: 0 10px 25px rgb(0 0 0 / 5%), 0 20px 48px rgb(0 0 0 / 5%), 0 1px 4px rgb(0 0 0 / 10%);
+	padding: 20px;
+	background-color: rgba(255,255,255,0.6);
+	border-radius: 1em;
+	text-align: center;
+}
+
+#no-exists {
+	display: block;
+	font-size:60px;
+	font-weight:bold;
+	color:#7e57c2
+}
+
+.fa-cog {
+	color:#7e57c2;
+	font-size: 150px;
+	display: block;
+	margin-bottom: 20px;
+}

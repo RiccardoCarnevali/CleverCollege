@@ -14,4 +14,6 @@ public interface WeeklyLessonDao {
 	public void saveOrUpdate(WeeklyLesson weeklyLesson) throws SQLException;
 	
 	public void delete(long id) throws SQLException;
+	
+	public List<WeeklyLesson> findByProfessor(String cf, boolean lazy) throws SQLException;
 }

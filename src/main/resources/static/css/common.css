@@ -20,7 +20,7 @@
 }
 
 body {
-	padding-top: 200px;
+	padding: 200px 0px;
 	position: relative;
 	min-height: 100vh;
 	font-family: 'Raleway', Helvetica, Arial, Lucida, sans-serif;

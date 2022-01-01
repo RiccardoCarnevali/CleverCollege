@@ -17,36 +17,35 @@ import com.clevercollege.persistence.dao.SingleLessonDao;
 public class SingleLessonDaoJDBC implements SingleLessonDao {
 
 	private Connection conn;
-	
+
 	public SingleLessonDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
-	
+
 	@Override
 	public List<SingleLesson> findAll(boolean lazy) throws SQLException {
 
 		List<SingleLesson> singleLessons = new ArrayList<>();
-		
+
 		String query = "select * from single_lessons order by id";
-		
+
 		Statement st = conn.createStatement();
-		
+
 		ResultSet rs = st.executeQuery(query);
-		
-		while(rs.next()) {
-			
+
+		while (rs.next()) {
+
 			Lesson lesson = DatabaseManager.getInstance().getLessonDao().findByPrimaryKey(rs.getLong("id"), lazy);
-			
+
 			SingleLesson singleLesson;
-			
-			if(lazy) {
+
+			if (lazy) {
 				singleLesson = new SingleLessonProxy();
-			}
-			else {
+			} else {
 				singleLesson = new SingleLesson();
 				singleLesson.setBookers(lesson.getBookers());
 			}
-			
+
 			singleLesson.setId(lesson.getId());
 			singleLesson.setTime(lesson.getTime());
 			singleLesson.setLength(lesson.getLength());
@@ -55,38 +54,37 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 			singleLesson.setClassroom(lesson.getClassroom());
 			singleLesson.setCourse(lesson.getCourse());
 			singleLesson.setDate(rs.getDate("lesson_date"));
-			
+
 			singleLessons.add(singleLesson);
 		}
-		
+
 		return singleLessons;
 	}
 
 	@Override
 	public SingleLesson findByPrimaryKey(long id, boolean lazy) throws SQLException {
-		
+
 		SingleLesson singleLesson = null;
-		
+
 		String query = "select * from single_lessons where id = ?";
-		
+
 		PreparedStatement st = conn.prepareStatement(query);
-		
+
 		st.setLong(1, id);
-		
+
 		ResultSet rs = st.executeQuery();
-		
-		if(rs.next()) {
-			
+
+		if (rs.next()) {
+
 			Lesson lesson = DatabaseManager.getInstance().getLessonDao().findByPrimaryKey(rs.getLong("id"), lazy);
-			
-			if(lazy) {
+
+			if (lazy) {
 				singleLesson = new SingleLessonProxy();
-			}
-			else {
+			} else {
 				singleLesson = new SingleLesson();
 				singleLesson.setBookers(lesson.getBookers());
 			}
-						
+
 			singleLesson.setId(lesson.getId());
 			singleLesson.setTime(lesson.getTime());
 			singleLesson.setLength(lesson.getLength());
@@ -96,45 +94,42 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 			singleLesson.setCourse(lesson.getCourse());
 			singleLesson.setDate(rs.getDate("lesson_date"));
 		}
-		
+
 		return singleLesson;
 	}
 
 	@Override
 	public void saveOrUpdate(SingleLesson singleLesson) throws SQLException {
-		
+
 		String query = "select * from single_lessons where id = ?";
-		
+
 		PreparedStatement st = conn.prepareStatement(query);
-		
+
 		st.setLong(1, singleLesson.getId());
-		
+
 		ResultSet rs = st.executeQuery();
-		
+
 		DatabaseManager.getInstance().getLessonDao().saveOrUpdate(singleLesson);
-		
-		if(rs.next()) {
-			
-			query = "update single_lessons set "
-					+ "lesson_date = ?"
-					+ "where id = ?";
-			
+
+		if (rs.next()) {
+
+			query = "update single_lessons set " + "lesson_date = ?" + "where id = ?";
+
 			PreparedStatement updateSt = conn.prepareStatement(query);
-			
+
 			updateSt.setDate(1, singleLesson.getDate());
 			updateSt.setLong(2, singleLesson.getId());
-			
+
 			updateSt.executeUpdate();
-		}
-		else {
-			
+		} else {
+
 			query = "insert into single_lessons values(?,?)";
-			
+
 			PreparedStatement insertSt = conn.prepareStatement(query);
-			
+
 			insertSt.setLong(1, singleLesson.getId());
 			insertSt.setDate(2, singleLesson.getDate());
-			
+
 			insertSt.executeUpdate();
 		}
 	}
@@ -143,14 +138,51 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 	public void delete(long id) throws SQLException {
 
 		String query = "delete from single_lessons where id = ?";
-		
+
 		PreparedStatement st = conn.prepareStatement(query);
-		
+
 		st.setLong(1, id);
-		
+
 		st.executeUpdate();
-		
+
 		DatabaseManager.getInstance().getLessonDao().delete(id);
+	}
+
+	@Override
+	public List<SingleLesson> findByProfessor(String cf, boolean lazy) throws SQLException {
+		List<SingleLesson> singleLessons = new ArrayList<>();
+
+		String query = "select * from single_lessons as x, activities as y, lessons as z where x.id = y.id and y.id = z.id and professor = ?";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, cf);
+
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			SingleLesson lesson;
+			if (lazy) {
+				lesson = new SingleLessonProxy();
+			} else {
+				lesson = new SingleLesson();
+				lesson.setBookers(
+						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id")));
+			}
+			lesson.setId(rs.getLong("id"));
+			lesson.setTime(rs.getTime("activity_time"));
+			lesson.setLength(rs.getInt("activity_length"));
+			lesson.setDescription(rs.getString("description"));
+			lesson.setManager(DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(cf));
+			lesson.setCourse(DatabaseManager.getInstance().getCourseDao().findByPrimaryKey(rs.getLong("course")));
+			lesson.setClassroom(
+					DatabaseManager.getInstance().getClassroomDao().findByPrimaryKey(rs.getLong("classroom")));
+
+			singleLessons.add(lesson);
+		}
+
+		return singleLessons;
 	}
 
 }

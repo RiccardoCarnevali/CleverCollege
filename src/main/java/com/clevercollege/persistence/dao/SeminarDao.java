@@ -3,6 +3,7 @@ package com.clevercollege.persistence.dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.clevercollege.model.Activity;
 import com.clevercollege.model.Seminar;
 
 public interface SeminarDao {
@@ -14,5 +15,7 @@ public interface SeminarDao {
 	public void saveOrUpdate(Seminar seminar) throws SQLException;
 
 	public void delete(long id) throws SQLException;
+
+	public List<Seminar> findByProfessor(String cf, boolean lazy) throws SQLException;
 
 }

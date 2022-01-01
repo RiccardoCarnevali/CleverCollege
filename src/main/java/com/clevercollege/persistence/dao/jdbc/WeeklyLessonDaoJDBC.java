@@ -147,5 +147,44 @@ public class WeeklyLessonDaoJDBC implements WeeklyLessonDao {
 		
 		DatabaseManager.getInstance().getLessonDao().delete(id);
 	}
+	
+	@Override
+	public List<WeeklyLesson> findByProfessor(String cf, boolean lazy) throws SQLException {
+		List<WeeklyLesson> lessons = new ArrayList<>();
+
+		String query = "select * from weekly_lessons as x, activities as y, lessons as z where x.id = y.id and y.id = z.id and professor = ?";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, cf);
+
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			WeeklyLesson lesson;
+			if (lazy) {
+				lesson = new WeeklyLessonProxy();
+			} else {
+				lesson = new WeeklyLesson();
+				lesson.setBookers(
+						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id")));
+			}
+			lesson.setId(rs.getLong("id"));
+			lesson.setTime(rs.getTime("activity_time"));
+			lesson.setLength(rs.getInt("activity_length"));
+			lesson.setWeekDay(rs.getInt("week_day"));
+			lesson.setDisabled(rs.getBoolean("is_disabled"));
+			lesson.setDisabledIndefinitely(rs.getBoolean("disabled_indefinitely"));
+			lesson.setDescription(rs.getString("description"));
+			lesson.setManager(DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(cf));
+			lesson.setClassroom(
+					DatabaseManager.getInstance().getClassroomDao().findByPrimaryKey(rs.getLong("classroom")));
+			lesson.setCourse(DatabaseManager.getInstance().getCourseDao().findByPrimaryKey(rs.getLong("course")));
+			lessons.add(lesson);
+		}
+
+		return lessons;
+	}
 
 }
