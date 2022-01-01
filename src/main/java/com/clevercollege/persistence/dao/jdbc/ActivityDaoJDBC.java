@@ -56,6 +56,45 @@ public class ActivityDaoJDBC implements ActivityDao {
 
 		return activities;
 	}
+	
+	@Override
+	public List<Activity> findByClassroom(long classroom, boolean lazy) throws SQLException {
+		List<Activity> activities = new ArrayList<>();
+
+		String query = "select * from activities where classroom = ?";
+
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setLong(1, classroom);
+		
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+			
+			Activity activity;
+			
+			if(lazy) {
+				activity = new ActivityProxy();
+			}
+			else {
+				activity = new Activity();
+				activity.setBookers(DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id")));
+			}
+
+			activity.setId(rs.getLong("id"));
+			activity.setTime(rs.getTime("activity_time"));
+			activity.setLength(rs.getInt("activity_length"));
+			activity.setDescription(rs.getString("description"));
+			activity.setManager(
+					DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(rs.getString("professor")));
+			activity.setClassroom(
+					DatabaseManager.getInstance().getClassroomDao().findByPrimaryKey(rs.getLong("classroom")));
+
+			activities.add(activity);
+		}
+
+		return activities;
+	}
 
 	@Override
 	public Activity findByPrimaryKey(long id, boolean lazy) throws SQLException {

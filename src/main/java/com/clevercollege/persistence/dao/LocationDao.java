@@ -9,6 +9,8 @@ public interface LocationDao {
 
 	public List<Location> findAll() throws SQLException;
 	
+	public List<Location> findByLike(String like, int amount, int offset) throws SQLException;
+	
 	public Location findByPrimaryKey(long id) throws SQLException;
 	
 	public void saveOrUpdate(Location location) throws SQLException;

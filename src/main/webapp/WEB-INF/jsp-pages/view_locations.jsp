@@ -13,43 +13,37 @@
 		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		
 		<link rel="stylesheet" href="/css/common.css">
-		<link rel="stylesheet" href="/css/view_users.css">
 		<link rel="stylesheet" href="/css/view_data.css">
 		
 		<script src="/js/header.js"></script>
-		<script src="/js/load_users.js" charset="UTF-8"></script>
-		
-		<title>Utenti</title>
+		<script src="/js/load_locations.js" charset="UTF-8"></script>
+				
+		<title>Corsi</title>
 	</head>
 	
 	<body>
 	
 		<div class="header"></div>
 		
-		<div class="container-fluid content-row" id="usersContainer">
+		<div class="container-fluid" id="locationsContainer">
+		
 			<div class="row justify-content-md-right">
 				<a href="#0" class="btn btn-outline-primary col-lg-2 col-md-2 col-sm-4 col-6" id="addButton">Aggiungi</a>
 			</div>
-			
-			<span id="label">Utenti</span>
+		
+			<span id="label">Luoghi</span>
 			<input class="col-lg-4 col-md-6 col-sm-11 col-11" type="search" id="searchBar" placeholder="Cerca"><i class="fas fa-search" id="search-icon"></i>
-				
-				<select class="form-control col-lg-2 col-md-6 col-sm-12" id="typeInput">
-			      <option selected value="users">Tutti</option>
-			      <option value="students">Studenti</option>
-			      <option value="professors">Professori</option>
-			      <option value="administrators">Amministratori</option>
-			    </select>
 			
-			    <select class="form-control col-lg-2 col-md-6 col-sm-12" id="sortInput">
-			      <option selected disabled value="cf">Ordina per</option>
-			      <option value="first_name">Nome</option>
-			      <option value="last_name">Cognome</option>
-			    </select>
+			<select class="form-control col-lg-2 col-md-6 col-sm-12" id="typeInput">
+			      <option selected value="locations">Tutti</option>
+			      <option value="classrooms">Aule</option>
+			</select>
 			
-			<div id="rows">
-			</div>		
+			<ul class="list-group" id="locations">
+					  
+			</ul>
+					
 		</div>
-
+	
 	</body>
 </html>

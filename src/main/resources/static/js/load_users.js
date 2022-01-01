@@ -57,8 +57,16 @@ function loadMore(showMore) {
 			}
 
 			if (users.length != 0 && data.length != 0) {
-				if (areEquals(data, users))
+				if (areEquals(data.slice(0,6), users)){
+					if (data.length == 7) {
+						$("#usersContainer").append("<button class=\"btn btn-outline-primary\" id=\"showMoreButton\">Mostra altri</button>");
+						$("#showMoreButton").on("click", function() {
+							loadMore(true);
+						});
+					}
+					
 					return;
+				}
 			}
 
 			if (!showMore) {
@@ -81,8 +89,8 @@ function loadMore(showMore) {
 					"<h4 class=\"card-title\">" + users[index].firstName + " " + users[index].lastName + "</h4>" +
 					"<p class=\"card-text\">" + users[index].cf + "</p>" +
 					"<div class=\"icons\">" +
-					"<a href=\"#0\" class=\"mt-auto align-self-start modify-button\"><i class=\"fas fa-pen\"></i></a>" +
-					"<a href=\"#0\" class=\"mt-auto align-self-end remove-button\" style=\"float:right\" id=\"remove-" + users[index].cf + "\"><i class=\"fas fa-trash\"></i></a>" +
+					"<span class=\"clickable mt-auto align-self-start modify-button\"><i class=\"fas fa-pen\"></i></span>" +
+					"<span class=\"clickable mt-auto align-self-end remove-button\" style=\"float:right\" id=\"remove-" + users[index].cf + "\"><i class=\"fas fa-trash\"></i></span>" +
 					"</div>" +
 					"</div>" +
 					"</div>" +
@@ -100,15 +108,14 @@ function loadMore(showMore) {
 					cancelButtonText: "Cancella"
 				}).then((result) => {
 					if (result.isConfirmed) {
-
 						$.ajax({
 							type: "POST",
 							url: "checkProfessorsCourses",
 							data: {
-								cf: cf
+								professor: cf
 							},
 							success: function(data) {
-								if (data == true) {
+								if (data == "yes") {
 									Swal.fire({
 										title: "Attenzione",
 										text: "Questo utente è un professore titolare di uno o più corsi, rimuovendolo verranno rimossi anche i corsi di cui è titolare.\nÈ consigliato cambiare il titolare di tali corsi prima di continuare.",
@@ -174,8 +181,8 @@ function areEquals(users1, users2) {
 		return false;
 
 	for (let i = 0; i < users1.length; i++) {
-		if (users1[i].id != users2[i].id)
-			return false;
+		if (users1[i].cf != users2[i].cf)
+			return false;	
 	}
 
 	return true;

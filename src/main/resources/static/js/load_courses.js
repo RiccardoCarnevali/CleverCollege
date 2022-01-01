@@ -34,8 +34,15 @@ function loadMore(showMore) {
 			}
 			
 			if(courses.length != 0 && data.length != 0){
-				if(areEquals(data, courses))
+				if(areEquals(data.slice(0,15), courses)) {
+					if(data.length == 16) {
+						$("#coursesContainer").append("<button class=\"btn btn-outline-primary\" id=\"showMoreButton\">Mostra altri</button>");
+						$("#showMoreButton").on("click", function() {
+							loadMore(true);
+						});
+					}
 					return;
+				}
 			}
 			
 			if(!showMore) {
@@ -51,13 +58,11 @@ function loadMore(showMore) {
 			for(; index < courses.length; index++) {
 				coursesList.append(	"	<li class='list-group-item course'>" +
 											"<span class='course-name'>" + courses[index].name + "</span>" +
-											"<div class='icons'>" +
-												"<a href='#0' class='modify-button'><i class='fas fa-pen' style='float:right'></i></a>" +
-													"<br /><br />" +
-												"<a href='#0' class='remove-button' id='remove-" + courses[index].id + "'><i class='fas fa-trash' style='float:right'></i></a>" +
+											"<div class='icons' style='float:right'>" +
+												"<span class='clickable modify-button' style='display:block;margin-bottom:20px'><i class='fas fa-pen'></i></span>" +
+												"<span class='clickable remove-button' id='remove-" + courses[index].id + "'><i class='fas fa-trash'></i></span>" +
 											"</div>" +
-											"<br />" +
-											"<span class='professor-name'>" + courses[index].lecturer.firstName + " " + courses[index].lecturer.lastName + "</span>" +
+											"<span class='professor-name' style='display:block'>" + courses[index].lecturer.firstName + " " + courses[index].lecturer.lastName + "</span>" +
 										"</li>");
 			}
 			
@@ -109,7 +114,7 @@ function removeCourse(id) {
 				loadMore();
 			}
 		},
-		error: errorMessage()
+		error: errorMessage
 	})
 }
 
@@ -133,7 +138,7 @@ function areEquals(courses1, courses2) {
 		return false;
 		
 	for(let i = 0; i < courses1.length; i++) {
-		if(courses1[i].cf != courses2[i].cf)
+		if(courses1[i].id != courses2[i].id)
 			return false;
 	}
 	

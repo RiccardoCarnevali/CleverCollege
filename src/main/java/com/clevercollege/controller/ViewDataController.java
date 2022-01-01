@@ -6,13 +6,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ViewDataController {
 
-	@GetMapping("/viewUsers")
+	@GetMapping("/users")
 	public String viewUsersPage() {
 		return "view_users";
 	}
 	
-	@GetMapping("/viewCourses")
+	@GetMapping("/courses")
 	public String viewCoursesPage() {
 		return "view_courses";
+	}
+	
+	@GetMapping("/locations")
+	public String viewLocationsPage() {
+		return "view_locations";
 	}
 }

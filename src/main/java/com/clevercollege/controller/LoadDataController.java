@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clevercollege.model.Course;
+import com.clevercollege.model.Location;
 import com.clevercollege.model.User;
 import com.clevercollege.persistence.DatabaseManager;
 
@@ -50,15 +51,19 @@ public class LoadDataController {
 		return courses;
 	}
 	
-	@PostMapping("/checkProfessorsCourses")
-	public String checkProfessorsCourses(String professor) {
+	@PostMapping("/loadLocations")
+	public List<Location> loadLocations(String type, String like, int offset) {
+		List<Location> locations = null;
+		
 		try {
-			if(DatabaseManager.getInstance().getCourseDao().findByProfessor(professor).size() == 0)
-				return "yes";
+			if(type.equals("locations"))
+				locations = DatabaseManager.getInstance().getLocationDao().findByLike("%" + like + "%", 16, offset);
+			else
+				locations = DatabaseManager.getInstance().getClassroomDao().findByLike("%" + like + "%", 16, offset);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		return "no";
+		return locations;
 	}
 }

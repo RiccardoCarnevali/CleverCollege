@@ -33,6 +33,10 @@ body {
 	z-index: 100;
 }
 
+.clickable {
+	cursor: pointer;
+}
+
 #loginButton {
 	margin-left: 25vw;
 }

@@ -51,13 +51,14 @@ public class CourseDaoJDCBC implements CourseDao {
 
 		List<Course> courses = new ArrayList<>();
 
-		String query = "select * from courses where upper(course_name) like upper(?) order by course_name limit ? offset ?";
+		String query = "select * from courses C, users U where C.professor = U.cf and (upper(course_name) like upper(?) or upper(U.first_name) || ' ' || upper(U.last_name) like upper(?)) order by course_name limit ? offset ?";
 
 		PreparedStatement st = conn.prepareStatement(query);
 
 		st.setString(1, like);
-		st.setInt(2, amount);
-		st.setInt(3, offset);
+		st.setString(2, like);
+		st.setInt(3, amount);
+		st.setInt(4, offset);
 		
 		ResultSet rs = st.executeQuery();
 
