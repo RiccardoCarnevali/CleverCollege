@@ -11,6 +11,8 @@ public interface ActivityDao {
 	
 	public Activity findByPrimaryKey(long id, boolean lazy) throws SQLException;
 	
+	public List<Activity> findByProfessor(String professorCf, boolean lazy) throws SQLException;
+	
 	public void saveOrUpdate(Activity activity) throws SQLException;
 	
 	public void delete(long id) throws SQLException;

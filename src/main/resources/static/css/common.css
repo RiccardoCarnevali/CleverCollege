@@ -90,19 +90,19 @@ body {
 
 
 .btn-outline-primary {
-    color: #7e57c2;
-    border-color: #7e57c2;
+	color: #7e57c2;
+	border-color: #7e57c2;
 }
 
 .btn-outline-primary:hover, .btn-outline-primary:active, .btn-outline-primary:active:focus, .btn-outline-primary:focus {
-    color: #fff;
-    background-color: #7e57c2 !important;
-    border-color: #7e57c2 !important;
-    font-weight: bold;
+	color: #fff;
+	background-color: #7e57c2 !important;
+	border-color: #7e57c2 !important;
+	font-weight: bold;
 }
 
 .btn-outline-primary:active:focus, .btn-outline-primary:focus {
-    box-shadow: 0 0 0 0.2rem rgba(126, 87, 194, 0.5) !important;
+	box-shadow: 0 0 0 0.2rem rgba(126, 87, 194, 0.5) !important;
 }
 
 .hide {
