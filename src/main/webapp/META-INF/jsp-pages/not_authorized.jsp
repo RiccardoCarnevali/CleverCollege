@@ -20,7 +20,7 @@
 		<div class="header"></div>
 		<div class="container">
 			<div id="not-authorized">Non puoi accedere a questa pagina</div>
-			<i class="fas fa-user-lock"></i>
+			<div><i class="fas fa-user-lock"></i></div>
 			<a href="/" class="btn btn-outline-primary">Torna alla home page</a>
 		</div>
 		<div class="footer"></div>

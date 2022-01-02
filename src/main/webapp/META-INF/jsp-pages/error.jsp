@@ -20,7 +20,7 @@
 		<div class="header"></div>
 		<div class="container">
 			<div id="no-exists">Questa pagina non esiste</div>
-			<i class="fas fa-cog fa-spin"></i>
+			<div><i class="fas fa-cog fa-spin"></i></div>
 			<a href="/" class="btn btn-outline-primary">Torna alla home page</a>
 		</div>
 		<div class="footer"></div>
