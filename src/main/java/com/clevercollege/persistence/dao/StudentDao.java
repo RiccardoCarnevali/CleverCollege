@@ -20,4 +20,6 @@ public interface StudentDao {
 	public void bookActivityForStudent(long activityId, String studentCf) throws SQLException;
 	
 	public void unbookActivityForStudent(long activityId, String studentCf) throws SQLException;
+
+	public Student findByIdStudent(String idStudent) throws SQLException;
 }

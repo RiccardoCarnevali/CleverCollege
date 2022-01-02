@@ -5,14 +5,14 @@ body {
 .first-column {
     width: 33%;
     float: left;
-    margin-top: 10vh;
+    margin-top: 4vh;
     margin-right: 15px;
     margin-left: 20px;
 }
 
 .second-column {
-    width: 66%;
-    float: right;
+    width: 59%;
+    float: left;
     margin-left: 15px;
     margin-right: 20px;
 }
@@ -125,4 +125,8 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active  {
     -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+}
+
+form {
+    width: 100%;
 }

@@ -193,4 +193,34 @@ public class StudentDaoJDBC implements StudentDao {
 		
 		st.executeUpdate();
 	}
+
+	@Override
+	public Student findByIdStudent(String idStudent) throws SQLException {
+		Student student = null;
+
+		String query = "select * from students where student_number = ?";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, idStudent);
+
+		ResultSet rs = st.executeQuery();
+
+		if(rs.next()) {
+			student = new Student();
+
+			User user = DatabaseManager.getInstance().getUserDao().findByPrimaryKey(rs.getString("cf"));
+
+			student.setCf(rs.getString("cf"));
+			student.setFirstName(user.getFirstName());
+			student.setLastName(user.getLastName());
+			student.setEmail(user.getEmail());
+			student.setPassword(user.getPassword());
+			student.setDescription(user.getDescription());
+			student.setProfilePicture(user.getProfilePicture());
+			student.setStudentNumber(rs.getString("student_number"));
+		}
+
+		return student;
+	}
 }

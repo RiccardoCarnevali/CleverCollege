@@ -34,6 +34,17 @@ public class EmailService {
 		sendEmail(to, subject, text);
 	}
 
+	public void sendFirstPassword(String to, String tmpPasswordToken) {
+		String subject = "Accesso in CleverCollege";
+		String text = "I tuoi dati sono stati inseriti e registrati all'interno dell'applicazione web Clever College, " +
+					"usa il tuo codice fiscale e la seguente password per autenticarti. " +
+					System.lineSeparator() + "Password temporanea: " + tmpPasswordToken + System.lineSeparator() +
+					"Ricorda di modificare la password al tuo primo accesso.";
+
+		sendEmail(to, subject, text);
+	}
+
+
 	private EmailService() {
 		emailSender = new JavaMailSenderImpl();
 

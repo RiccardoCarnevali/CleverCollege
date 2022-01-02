@@ -9,15 +9,15 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="sweetalert2.all.min.js"></script>
+    <script src="/js/sweetalert2.all.min.js"></script>
     <script src="/js/common.js"></script>
     <script src="/js/insertDataField.js"></script>
 
 <body>
 <div class="header"></div>
 <div class="container">
-    <div class="first-column" style="margin-top: 17vh">
-        <form name="kindOfUserForm" action="/action_page.php">
+    <form id="radioButton">
+    <div class="first-column" style="margin-top: 17vh!important;">
             <p>Scegli il tipo di utente che desideri inserire:</p>
             <div class="radio-item">
                 <input type="radio" id="student" name="kindOfUser" value="student">
@@ -31,10 +31,8 @@
                 <input type="radio" id="admin" name="kindOfUser" value="admin">
                 <label for="admin">Amministratore</label>
             </div>
-        </form>
     </div>
     <div class="second-column">
-        <form method="post" action="doLogin">
             <div class="mb-3 mt-3">
                 <label for="fiscalCodeUser" class="form-label">Codice fiscale:</label>
                 <input type="text" class="form-control insert-user-element" id="fiscalCodeUser" placeholder="Inserisci il codice fiscale..." name="cf">
@@ -56,11 +54,12 @@
                 <input type="text" class="form-control insert-user-element" id="idStudent" placeholder="Inserisci la matricola..." name="idStudent" style="display: none">
             </div>
             <div class="button-container">
-                <button type="submit" id="insert-user-button" class="btn btn-outline-primary" disabled>Inserisci utente</button>
+                <button type="button" id="insert-user-button" class="btn btn-outline-primary" disabled>Inserisci utente</button>
+                <div class="spinner-border loader" style="display: none;"></div>
                 <button type="button" class="btn btn-outline-danger danger-button">Annulla inserimento</button>
             </div>
-        </form>
     </div>
+    </form>
 </div>
 
 </body>

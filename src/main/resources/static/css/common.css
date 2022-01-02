@@ -128,9 +128,16 @@ footer {
     margin-top: 30px;
     bottom:0;
     height: 100px;
-
 }
 
 #changePasswordContainer {
 	display: block;
+}
+
+.loader {
+	vertical-align: middle;
+	border: .20em solid #7e57c2;
+	border-right-color: transparent;
+	-webkit-animation: spinner-border 1s linear infinite;
+	animation: spinner-border 1s linear infinite;
 }
