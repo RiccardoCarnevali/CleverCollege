@@ -1,0 +1,66 @@
+@charset "ISO-8859-1";
+
+.container {
+	width: 80%;
+	min-width: 700px;
+	box-shadow: 0 10px 25px rgb(0 0 0 / 5%), 0 20px 48px rgb(0 0 0 / 5%), 0 1px 4px rgb(0 0 0 / 10%);
+	margin-bottom: 100px;
+	padding: 20px;
+	background-color: rgba(255,255,255,0.6);
+	border-radius: 1em;
+}
+
+.accicon {
+  	font-size: 24px;  
+  	width: 1.2em;
+}
+
+.rotate-icon {
+	transition: all 0.3s;
+}
+
+.accicon:not(.collapsed) .rotate-icon {
+  	transform: rotate(180deg);
+}
+
+.card {
+	border-bottom: 1px solid rgba(0,0,0,.125) !important;
+	border-radius: 1em !important;
+}
+
+.card-header {
+	display: flex;
+}
+
+.card-title {
+	font-weight: bold;
+	line-height: 2em;
+}
+
+.custom-switch {
+	margin: 5px 20px 0px auto; 
+}
+
+.activity-info {
+	float: right;
+}
+
+.enabled-activity-info, .disabled-activity-info {
+	margin: 3em 0 0 0;
+	font-size: 0.8em;
+	font-style: italic;
+}
+
+.enabled-activity-info {
+	color: #117d17;
+}
+
+.disabled-activity-info {
+	color: #961115;
+}
+
+.add-activity {
+	font-size: 2.3em;
+	width: 100%;
+	text-align: center;
+}
