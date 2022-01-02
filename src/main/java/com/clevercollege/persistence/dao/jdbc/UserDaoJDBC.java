@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.clevercollege.model.RecoveryToken;
 import com.clevercollege.model.User;
 import com.clevercollege.persistence.dao.UserDao;
 

@@ -150,5 +150,42 @@ public class SeminarDaoJDBC implements SeminarDao {
 		
 		DatabaseManager.getInstance().getActivityDao().delete(id);
 	}
+	
+	@Override
+	public List<Seminar> findByProfessor(String cf, boolean lazy) throws SQLException {
+		List<Seminar> activities = new ArrayList<>();
+
+		String query = "select * from seminars as x, activities as y where x.id = y.id and professor = ?";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, cf);
+
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			Seminar seminar;
+			if (lazy) {
+				seminar = new SeminarProxy();
+			} else {
+				seminar = new Seminar();
+				seminar.setBookers(
+						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id")));
+			}
+			seminar.setId(rs.getLong("id"));
+			seminar.setTime(rs.getTime("activity_time"));
+			seminar.setDate(rs.getDate("seminar_date"));
+			seminar.setLength(rs.getInt("activity_length"));
+			seminar.setDescription(rs.getString("description"));
+			seminar.setManager(DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(cf));
+			seminar.setClassroom(
+					DatabaseManager.getInstance().getClassroomDao().findByPrimaryKey(rs.getLong("classroom")));
+
+			activities.add(seminar);
+		}
+
+		return activities;
+	}
 
 }

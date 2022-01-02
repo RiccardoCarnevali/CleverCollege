@@ -34,6 +34,15 @@ public class LoginController {
             
             if((u != null) && (BCrypt.checkpw(password, u.getPassword()))) {
                 request.getSession().setAttribute("user", u);
+                request.getSession().setAttribute("user_cf", u.getCf());
+                String type = null;
+                if(DatabaseManager.getInstance().getStudentDao().findByPrimaryKey(cf) != null)
+                	type = "student";
+                else if(DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(cf) != null)
+                	type = "professor";
+                else if(DatabaseManager.getInstance().getAdministratorDao().findByPrimaryKey(cf) != null)
+                	type = "admin";
+                request.getSession().setAttribute("user_type", type);
                 return "redirect:/";
             }
             else if(u != null) {

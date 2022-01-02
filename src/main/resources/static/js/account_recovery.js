@@ -35,7 +35,7 @@ function fireSuccessAlert() {
 	Swal.fire({
 		title: 'Password Reimpostata!',
 		text: 'La password è stata reimpostata con successo.',
-		type: 'success'
+		icon: 'success'
 	}).then(function() {
 		document.location.href = '/';
 	});
@@ -45,7 +45,7 @@ function fireTokenExpiredAlert() {
 	Swal.fire({
 		title: 'Token scaduto',
 		text: 'Il token è scaduto.',
-		type: 'failure'
+		icon: 'error'
 	}).then(function() {
 		document.location.href = '/';
 	})
@@ -55,6 +55,6 @@ function fireWrongTokenAlert() {
 	Swal.fire({
 		title: 'Token errato',
 		text: "Il token è errato, controlla che sia stato digitato correttamente.",
-		type: 'failure'
+		icon: 'error'
 	})
 }

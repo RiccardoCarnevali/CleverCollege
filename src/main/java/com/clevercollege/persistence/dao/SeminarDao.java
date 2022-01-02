@@ -15,4 +15,6 @@ public interface SeminarDao {
 
 	public void delete(long id) throws SQLException;
 
+	public List<Seminar> findByProfessor(String cf, boolean lazy) throws SQLException;
+
 }

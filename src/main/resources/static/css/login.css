@@ -5,31 +5,20 @@ h1 {
 	color: #b71c1c;
 }
 
-footer {
-	position: inherit;
-	background-color: #7e57c2;
-	color: #fff;
-	margin-top: 30px;
-	bottom:0;
-	height: 100px;
-}
-
 .empty-field-error, .login-error {
 	font-size: 0.8em;
 	color: red;
 }
 
 .container {
-	width: 30%;
-	min-width: 450px;
-	margin-bottom: 150px;
+	max-width: 450px;
+	box-shadow: 0 10px 25px rgb(0 0 0 / 5%), 0 20px 48px rgb(0 0 0 / 5%), 0 1px 4px rgb(0 0 0 / 10%);
+	display: flex;
+	margin-bottom: 100px;
 	padding: 20px;
 	background-color: rgba(255,255,255,0.6);
 	border-radius: 1em;
-	box-shadow: 0 10px 25px rgb(0 0 0 / 5%), 0 20px 48px rgb(0 0 0 / 5%), 0 1px 4px rgb(0 0 0 / 10%);
 }
-
-
 
 .form-control {
 	border-radius: 1em;
@@ -57,16 +46,6 @@ h2 {
 .empty-field-error, .login-error {
 	font-size: 0.8em;
 	color: red;
-}
-
-.container {
-	display: flex;
-	width: 30%;
-	margin-bottom: 100px;
-	padding: 20px;
-	background-color: rgba(255,255,255,0.6);
-	border-radius: 1em;
-	box-shadow: 0 10px 25px rgb(0 0 0 / 5%), 0 20px 48px rgb(0 0 0 / 5%), 0 1px 4px rgb(0 0 0 / 10%);
 }
 
 .form-control {

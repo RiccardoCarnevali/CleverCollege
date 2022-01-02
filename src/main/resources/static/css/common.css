@@ -20,9 +20,13 @@
 }
 
 body {
+	padding: 200px 0px;
+	position: relative;
+	min-height: 100vh;
 	font-family: 'Raleway', Helvetica, Arial, Lucida, sans-serif;
 	word-break: break-word;
 	background-color: #f0edf5;
+	overflow: auto;
 }
 
 .navbar {
@@ -84,23 +88,20 @@ body {
 	color: #333333;
 }
 
-.container {
-	margin-top: 200px;
-}
 
 .btn-outline-primary, .btn-outline-primary:disabled {
 	color: #7e57c2;
 	border-color: #7e57c2;
 }
 
-.btn-outline-primary:hover:not([disabled]), .btn-outline-primary:active {
+.btn-outline-primary:hover:not([disabled]), .btn-outline-primary:active, .btn-outline-primary:active:focus, .btn-outline-primary:focus {
 	color: #fff;
-	background-color: #7e57c2;
-	border-color: #7e57c2;
+	background-color: #7e57c2 !important;
+	border-color: #7e57c2 !important;
 }
 
 .btn-outline-primary:active:focus, .btn-outline-primary:focus {
-	box-shadow: none;
+	box-shadow: 0 0 0 0.2rem rgba(126, 87, 194, 0.5) !important;
 }
 
 .hide {
@@ -122,12 +123,12 @@ a, h2, h3 {
 }
 
 footer {
-    position: fixed;
+	position: absolute;
+	width: 100%;
     background-color: #7e57c2;
     color: #fff;
-    margin-top: 30px;
-    bottom:0;
-    height: 100px;
+    bottom: 0;
+	padding: 50px 20px;
 }
 
 #changePasswordContainer {

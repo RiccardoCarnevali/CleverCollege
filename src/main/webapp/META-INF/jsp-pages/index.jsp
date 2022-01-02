@@ -162,6 +162,6 @@
 		morbi enim nunc. Adipiscing tristique risus nec feugiat. Sagittis id
 		consectetur purus ut faucibus pulvinar elementum integer enim.
 		Ultrices in iaculis nunc sed.</div>
-
+	<div class="footer"></div>
 </body>
 </html>

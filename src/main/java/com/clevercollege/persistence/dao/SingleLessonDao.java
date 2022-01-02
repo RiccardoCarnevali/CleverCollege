@@ -14,4 +14,6 @@ public interface SingleLessonDao {
 	public void saveOrUpdate(SingleLesson singleLesson) throws SQLException;
 
 	public void delete(long id) throws SQLException;
+
+	public List<SingleLesson> findByProfessor(String cf, boolean lazy) throws SQLException;
 }
