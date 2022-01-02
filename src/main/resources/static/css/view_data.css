@@ -38,14 +38,15 @@
 
 
 #searchBar {
-	border-radius: 20px;
+	display: inline;
+	border-radius: 1em;
 	margin-bottom: 10px;
 }
 
-#searchBar:focus {   
-  border-color: #7e57c2;
-  box-shadow: 0 1px 1px #7e57c2 inset, 0 0 8px #7e57c2;
-  outline: 0 none;
+#searchBar:focus, #searchBar:hover {   
+  	outline: 0 none;
+  	box-shadow: none;
+  	border-color: #7e57c2;
 }
 
 #addButton {

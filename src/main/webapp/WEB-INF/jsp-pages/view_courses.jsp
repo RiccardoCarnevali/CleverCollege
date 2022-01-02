@@ -32,15 +32,14 @@
 			</div>
 		
 			<span id="label">Corsi</span>
-			<input class="col-lg-4 col-md-6 col-sm-11 col-11" type="search" id="searchBar" placeholder="Cerca"><i class="fas fa-search" id="search-icon"></i>
+			<input class="form-control col-lg-4 col-md-6 col-sm-11 col-11" type="search" id="searchBar" placeholder="Cerca"><i class="fas fa-search" id="search-icon"></i>
 			
-			<ul class="list-group" id="courses">
-				
-
-					  
+			<ul class="list-group" id="courses">	  
 			</ul>
 					
 		</div>
+	
+		<div class="footer"></div>
 	
 	</body>
 </html>

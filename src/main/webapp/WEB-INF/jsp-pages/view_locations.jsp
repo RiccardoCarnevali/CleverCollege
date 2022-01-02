@@ -32,7 +32,7 @@
 			</div>
 		
 			<span id="label">Luoghi</span>
-			<input class="col-lg-4 col-md-6 col-sm-11 col-11" type="search" id="searchBar" placeholder="Cerca"><i class="fas fa-search" id="search-icon"></i>
+			<input class="form-control col-lg-4 col-md-6 col-sm-11 col-11" type="search" id="searchBar" placeholder="Cerca"><i class="fas fa-search" id="search-icon"></i>
 			
 			<select class="form-control col-lg-2 col-md-6 col-sm-12" id="typeInput">
 			      <option selected value="locations">Tutti</option>
@@ -40,10 +40,11 @@
 			</select>
 			
 			<ul class="list-group" id="locations">
-					  
 			</ul>
 					
 		</div>
 	
+		<div class="footer"></div>
+		
 	</body>
 </html>
