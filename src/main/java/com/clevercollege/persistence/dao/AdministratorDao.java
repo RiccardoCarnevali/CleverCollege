@@ -8,6 +8,8 @@ import com.clevercollege.model.User;
 public interface AdministratorDao {
 
 	public List<User> findAll() throws SQLException;
+	
+	public List<User> findByLike(String sortBy, String like, int amount, int offset) throws SQLException;
 
 	public User findByPrimaryKey(String cf) throws SQLException;
 

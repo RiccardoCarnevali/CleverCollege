@@ -1,5 +1,7 @@
 package com.clevercollege.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SimpleErrorController implements ErrorController {
 
 	@RequestMapping("/error")
-	public String handleError() {
+	public String handleError(HttpServletRequest req) {
 		return "error";
 	}
 }

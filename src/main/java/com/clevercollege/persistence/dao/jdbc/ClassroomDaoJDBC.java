@@ -40,6 +40,29 @@ public class ClassroomDaoJDBC implements ClassroomDao {
 	}
 
 	@Override
+	public List<Location> findByLike(String like, int amount, int offset) throws SQLException {
+		List<Location> classrooms = new ArrayList<>();
+
+		String query = "select * from classrooms C, locations L where C.id = L.id and upper(L.location_name) like upper(?) order by L.location_name limit ? offset ?";
+
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setString(1, like);
+		st.setInt(2, amount);
+		st.setInt(3, offset);
+
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			Location classroom = DatabaseManager.getInstance().getLocationDao().findByPrimaryKey(rs.getLong("id"));
+			classrooms.add(classroom);
+		}
+
+		return classrooms;
+	}
+	
+	@Override
 	public Location findByPrimaryKey(long id) throws SQLException {
 		Location classroom = null;
 

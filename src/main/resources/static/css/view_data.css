@@ -1,0 +1,64 @@
+.course, .location {
+	margin-top: 10px;
+}
+
+.icons .remove-button{
+	color: tomato;
+}
+
+.icons .modify-button {
+	color: #0d6efd;
+}
+
+.professor-name, .location-capacity {
+	font-style: italic;
+	color: grey;
+}
+
+.course-name, .location-name {
+	font-weight: bold;
+}
+
+#label {
+	display:  block;
+	font-size: 30px;
+	color: #7e57c2;
+}
+
+#search-icon {
+	color: #7e57c2;
+	margin-left: 10px;
+}
+
+
+#searchBar {
+	display: inline;
+	border-radius: 1em;
+	margin-bottom: 10px;
+}
+
+#searchBar:focus, #searchBar:hover {   
+  	outline: 0 none;
+  	box-shadow: none;
+  	border-color: #7e57c2;
+}
+
+#addButton {
+	margin-left: auto;
+	margin-right: 10px;
+	margin-bottom: 50px;
+}
+
+#showMoreButton{
+	margin:10px 0px;
+}
+
+#sortInput:focus, #typeInput:focus {
+	border-color: #7e57c2;
+  	box-shadow: 0 1px 1px rgba(126, 87, 194, 0.075) inset, 0 0 8px rgba(126, 87, 194, 0.6);
+  	outline: 0 none;
+}
+
+#sortInput, #typeInput {
+	margin: 5px 0px;
+}

@@ -7,6 +7,7 @@
     <meta content='maximum-scale=1.0, initial-scale=1.0, width=device-width' name='viewport'>
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.13.0/css/all.css">
     <link rel="stylesheet" href="/css/common.css">
 	<link rel="stylesheet" href="/css/login.css">
 
@@ -26,7 +27,10 @@
             </div>
             <div class="mb-3" id="password">
                 <label for="passwordInput" class="form-label"><strong>Password:</strong></label>
-                <input type="password" class="form-control" id="passwordInput" placeholder="Inserisci la tua password..." name="password">
+                <div style="position:relative">
+	                <input type="password" class="form-control" id="passwordInput" placeholder="Inserisci la tua password..." name="password">
+	                <i class="fas fa-eye-slash clickable" id="see-password"></i>
+                </div>
             </div>
             <div class="mb-3">
                 <a href="account-recovery">Non riesci ad accedere? Clicca qui.</a>
