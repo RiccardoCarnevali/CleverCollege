@@ -70,4 +70,23 @@ public class ViewDataController {
 		
 		return "view_locations";
 	}
+	
+	@GetMapping("/book-activity")
+	public String viewBookActivityPage(HttpServletRequest req) {
+		
+		HttpSession session = req.getSession();
+		
+		User u = (User) session.getAttribute("user");
+		
+		if(u == null) {
+			session.setAttribute("after-login", "/book-activity");
+			return "redirect:/login";
+		}
+		else {
+			if(!session.getAttribute("user_type").equals("student"))
+				return "not_authorized";
+		}
+		
+		return "book_activity";
+	}
 }
