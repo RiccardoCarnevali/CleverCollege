@@ -10,13 +10,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.UUID;
 
 @Controller
 public class InsertDataController {
     @PostMapping("/insertData")
-    public String insertData(String name, Integer capacity ) {
+    public String insertData(String name, Integer capacity) {
 
         //if the radio button checked is a place
             //check if the type of place is a classroom

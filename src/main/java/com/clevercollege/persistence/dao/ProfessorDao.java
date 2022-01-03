@@ -14,4 +14,6 @@ public interface ProfessorDao {
 	public void saveOrUpdate(User professor) throws SQLException;
 	
 	public void delete(String cf) throws SQLException;
+
+	public List<User> professorWithSubstring(String substring) throws SQLException;
 }
