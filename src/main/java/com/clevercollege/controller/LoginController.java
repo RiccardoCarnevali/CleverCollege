@@ -34,6 +34,10 @@ public class LoginController {
     public String login(Model model,HttpServletRequest request, String cf, String password) {
 
     	try {
+    		
+    		if(cf == null || password == null)
+    			return "login";
+    		
             User u = DatabaseManager.getInstance().getUserDao().findByPrimaryKey(cf);
             
             if((u != null) && (BCrypt.checkpw(password, u.getPassword()))) {

@@ -25,7 +25,7 @@ public class EmailService {
 		String subject = "Ripristino password CleverCollege";
 		String text;
 		if (userExists) {
-			text = "Usa il seguente token per ripristinare la password del tuo account CleverCollege: " + token
+			text = "Usa il seguente codice per ripristinare la password del tuo account CleverCollege: " + token
 					+ System.lineSeparator() + "Se non sei stato tu a chiedere il "
 					+ "reset della password ignora questa email.";
 		} else {
