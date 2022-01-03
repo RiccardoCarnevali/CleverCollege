@@ -16,7 +16,7 @@
 		<link rel="stylesheet" href="/css/view_data.css">
 		
 		<script src="/js/common.js"></script>
-		<script src="/js/load_courses.js" charset="UTF-8"></script>
+		<script src="/js/load_activities.js" charset="UTF-8"></script>
 				
 		<title>Prenota attività</title>
 	</head>
@@ -29,7 +29,12 @@
 		
 			<span id="label">Corsi</span>
 			<input class="form-control col-lg-4 col-md-6 col-sm-11 col-11" type="search" id="searchBar" placeholder="Cerca"><i class="fas fa-search" id="search-icon"></i>
-			
+				
+				<select class="form-control col-lg-2 col-md-6 col-sm-12" id="typeInput">
+			      <option selected value="all">Tutti</option>
+			      <option value="favorites">I miei corsi</option>
+			    </select>
+			    
 			<ul class="list-group" id="courses">	  
 			</ul>
 					

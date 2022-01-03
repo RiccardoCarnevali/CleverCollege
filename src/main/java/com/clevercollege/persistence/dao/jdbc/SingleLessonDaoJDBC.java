@@ -168,7 +168,7 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 			} else {
 				lesson = new SingleLesson();
 				lesson.setBookers(
-						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id")));
+						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id"), true));
 			}
 			lesson.setId(rs.getLong("id"));
 			lesson.setTime(rs.getTime("activity_time"));

@@ -24,6 +24,7 @@ function loadMore(showMore) {
 		url: "loadCourses",
 		data: {
 			like: like,
+			type: "all",
 			offset: offset
 		},
 		success: function(data) {

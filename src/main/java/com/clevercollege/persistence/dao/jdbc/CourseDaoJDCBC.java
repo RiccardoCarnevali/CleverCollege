@@ -104,6 +104,26 @@ public class CourseDaoJDCBC implements CourseDao {
 
 		return courses;
 	}
+	
+	@Override
+	public List<Course> findCoursesFollowedBy(String student) throws SQLException {
+
+		List<Course> courses = new ArrayList<>();
+		
+		String query = "select * from follows where student = ?";
+		
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setString(1, student);
+		
+		ResultSet rs = st.executeQuery();
+		
+		while(rs.next()) {
+			courses.add(findByPrimaryKey(rs.getLong("course")));
+		}
+		
+		return courses;
+	}
 
 	@Override
 	public Course findByPrimaryKey(long id) throws SQLException {

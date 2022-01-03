@@ -39,7 +39,7 @@ public class ActivityDaoJDBC implements ActivityDao {
 			} else {
 				activity = new Activity();
 				activity.setBookers(
-						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id")));
+						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id"), true));
 			}
 
 			activity.setId(rs.getLong("id"));
@@ -78,7 +78,7 @@ public class ActivityDaoJDBC implements ActivityDao {
 			}
 			else {
 				activity = new Activity();
-				activity.setBookers(DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id")));
+				activity.setBookers(DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id"), true));
 			}
 
 			activity.setId(rs.getLong("id"));
@@ -116,7 +116,7 @@ public class ActivityDaoJDBC implements ActivityDao {
 			} else {
 				activity = new Activity();
 				activity.setBookers(
-						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id")));
+						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id"), true));
 			}
 			activity.setId(rs.getLong("id"));
 			activity.setTime(rs.getTime("activity_time"));
@@ -152,7 +152,7 @@ public class ActivityDaoJDBC implements ActivityDao {
 			} else {
 				activity = new Activity();
 				activity.setBookers(
-						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id")));
+						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id"), true));
 			}
 
 			activity.setId(rs.getLong("id"));

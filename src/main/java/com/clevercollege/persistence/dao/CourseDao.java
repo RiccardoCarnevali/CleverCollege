@@ -10,8 +10,10 @@ public interface CourseDao {
 	public List<Course> findAll() throws SQLException;
 	
 	public List<Course> findByLike(String like, int amount, int offset) throws SQLException;
-	
+		
 	public List<Course> findByProfessor(String professor) throws SQLException;
+	
+	public List<Course> findCoursesFollowedBy(String student) throws SQLException;
 	
 	public Course findByPrimaryKey(long id) throws SQLException;
 	

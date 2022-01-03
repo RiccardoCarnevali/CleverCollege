@@ -171,7 +171,7 @@ public class SeminarDaoJDBC implements SeminarDao {
 			} else {
 				seminar = new Seminar();
 				seminar.setBookers(
-						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id")));
+						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id"), true));
 			}
 			seminar.setId(rs.getLong("id"));
 			seminar.setTime(rs.getTime("activity_time"));
