@@ -46,7 +46,39 @@ public class UserDaoJDBC implements UserDao {
 
 		return users;
 	}
+	
+	@Override
+	public List<User> findByLike(String sortBy, String like, int amount, int offset) throws SQLException {
+		List<User> users = new ArrayList<>();
 
+		String query = "select * from users  where upper(first_name) || ' ' || upper(last_name) like upper(?) order by " + sortBy + " limit ? offset ?";
+
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setString(1, like);
+		st.setInt(2, amount);
+		st.setInt(3, offset);
+
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			User user = new User();
+
+			user.setCf(rs.getString("cf"));
+			user.setFirstName(rs.getString("first_name"));
+			user.setLastName(rs.getString("last_name"));
+			user.setEmail(rs.getString("e_mail"));
+			user.setPassword(rs.getString("hashed_password"));
+			user.setDescription(rs.getString("description"));
+			user.setProfilePicture(rs.getString("profile_picture"));
+
+			users.add(user);
+		}
+
+		return users;
+	}
+	
 	@Override
 	public User findByPrimaryKey(String cf) throws SQLException {
 

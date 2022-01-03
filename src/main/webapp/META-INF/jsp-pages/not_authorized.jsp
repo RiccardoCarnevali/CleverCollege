@@ -19,8 +19,8 @@
 	
 		<div class="header"></div>
 		<div class="container">
-			<div id="no-exists">Questa pagina non esiste</div>
-			<div><i class="fas fa-cog fa-spin"></i></div>
+			<div id="not-authorized">Non puoi accedere a questa pagina</div>
+			<div><i class="fas fa-user-lock"></i></div>
 			<a href="/" class="btn btn-outline-primary">Torna alla home page</a>
 		</div>
 		<div class="footer"></div>

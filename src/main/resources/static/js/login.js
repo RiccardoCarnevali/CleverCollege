@@ -36,6 +36,19 @@ $(function() {
 		if(!$("#passwordInput").val().length && !error)
 			$("#password").append('<div class="empty-field-error">Inserisci la password</div>')
 	})
+	
+	$("#see-password").on("click", function() {
+		if($(this).hasClass("fa-eye-slash")) {
+			$(this).removeClass("fa-eye-slash");
+			$(this).addClass("fa-eye");
+			$("#passwordInput").attr("type", "text");
+		}
+		else {
+			$(this).removeClass("fa-eye");
+			$(this).addClass("fa-eye-slash");
+			$("#passwordInput").attr("type", "password");
+		}
+	})
 })
 
 

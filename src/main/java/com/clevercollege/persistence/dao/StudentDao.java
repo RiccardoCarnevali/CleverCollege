@@ -4,10 +4,13 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.clevercollege.model.Student;
+import com.clevercollege.model.User;
 
 public interface StudentDao {
 
 	public List<Student> findAll() throws SQLException;
+	
+	public List<User> findByLike(String sortBy, String like, int amount, int offset) throws SQLException;
 	
 	public Student findByPrimaryKey(String cf) throws SQLException;
 	

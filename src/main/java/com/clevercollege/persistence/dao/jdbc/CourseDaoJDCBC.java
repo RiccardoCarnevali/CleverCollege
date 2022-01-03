@@ -45,6 +45,65 @@ public class CourseDaoJDCBC implements CourseDao {
 
 		return courses;
 	}
+	
+	@Override
+	public List<Course> findByLike(String like, int amount, int offset) throws SQLException {
+
+		List<Course> courses = new ArrayList<>();
+
+		String query = "select * from courses C, users U where C.professor = U.cf and (upper(course_name) like upper(?) or upper(U.first_name) || ' ' || upper(U.last_name) like upper(?)) order by course_name limit ? offset ?";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, like);
+		st.setString(2, like);
+		st.setInt(3, amount);
+		st.setInt(4, offset);
+		
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			Course course = new Course();
+
+			course.setId(rs.getLong("id"));
+			course.setName(rs.getString("course_name"));
+			course.setLecturer(
+					DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(rs.getString("professor")));
+
+			courses.add(course);
+		}
+
+		return courses;
+	}
+	
+	@Override
+	public List<Course> findByProfessor(String professor) throws SQLException {
+		
+		List<Course> courses = new ArrayList<>();
+		
+		String query = "select * from courses where professor = ?";
+		
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setString(1, professor);
+		
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			Course course = new Course();
+
+			course.setId(rs.getLong("id"));
+			course.setName(rs.getString("course_name"));
+			course.setLecturer(
+					DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(rs.getString("professor")));
+
+			courses.add(course);
+		}
+
+		return courses;
+	}
 
 	@Override
 	public Course findByPrimaryKey(long id) throws SQLException {

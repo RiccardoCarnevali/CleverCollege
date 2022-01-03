@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +19,7 @@ import com.clevercollege.persistence.DatabaseManager;
 @Controller
 public class AccountRecoveryController {
 	@GetMapping("/account-recovery")
-	public String accountRecovery(Model model) {
+	public String accountRecovery(Model model, HttpServletRequest req) {
 		model.addAttribute("email_sent", null);
 		model.addAttribute("recovery_email", null);
 		model.addAttribute("password_reset", null);
@@ -71,7 +73,6 @@ public class AccountRecoveryController {
 			e.printStackTrace();
 		}
 		return "change_password";
-		
 		
 	}
 }

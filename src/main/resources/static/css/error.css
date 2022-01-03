@@ -6,16 +6,15 @@
 	text-align: center;
 }
 
-#no-exists {
+#no-exists, #not-authorized {
 	display: block;
 	font-size:60px;
 	font-weight:bold;
 	color:#7e57c2
 }
 
-.fa-cog {
+.fa-cog, .fa-user-lock {
 	color:#7e57c2;
 	font-size: 150px;
-	display: block;
 	margin-bottom: 20px;
 }

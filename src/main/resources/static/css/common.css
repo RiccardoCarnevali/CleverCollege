@@ -20,7 +20,7 @@
 }
 
 body {
-	padding: 200px 0px;
+	padding: 130px 0px;
 	position: relative;
 	min-height: 100vh;
 	font-family: 'Raleway', Helvetica, Arial, Lucida, sans-serif;
@@ -35,6 +35,10 @@ body {
 	padding: 20px 10px;
 	transition: padding .2s linear;
 	z-index: 100;
+}
+
+.clickable {
+	cursor: pointer;
 }
 
 #loginButton {

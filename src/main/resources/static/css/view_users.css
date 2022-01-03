@@ -1,0 +1,15 @@
+.card {
+	border: 2px solid #7e57c2;
+	margin: 10px 0px;
+	background-color: rgba(255,255,255,0.4);
+	border-radius: 1em;
+	box-shadow: 0 10px 25px rgb(0 0 0 / 5%), 0 20px 48px rgb(0 0 0 / 5%), 0 1px 4px rgb(0 0 0 / 10%);
+}
+
+.card-img-top {
+	border-radius: 50%;
+}
+
+.card-text {
+	text-align: center;
+}

@@ -9,6 +9,8 @@ public interface ActivityDao {
 
 	public List<Activity> findAll(boolean lazy) throws SQLException;
 	
+	public List<Activity> findByClassroom(long classroom, boolean lazy) throws SQLException;
+	
 	public Activity findByPrimaryKey(long id, boolean lazy) throws SQLException;
 	
 	public List<Activity> findByProfessor(String professorCf, boolean lazy) throws SQLException;
