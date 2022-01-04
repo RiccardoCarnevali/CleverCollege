@@ -19,51 +19,69 @@ import com.clevercollege.persistence.DatabaseManager;
 
 @RestController
 public class LoadDataController {
-	
+
 	@PostMapping("/loadUsers")
 	public List<User> loadUsers(String type, String sortBy, String like, int offset) {
 		List<User> users = null;
 
 		try {
-			if(type.equals("users")) {
+			if (type.equals("users")) {
 				users = DatabaseManager.getInstance().getUserDao().findByLike(sortBy, "%" + like + "%", 7, offset);
-			}
-			else if(type.equals("students")) {
+			} else if (type.equals("students")) {
 				users = DatabaseManager.getInstance().getStudentDao().findByLike(sortBy, "%" + like + "%", 7, offset);
-			}
-			else if(type.equals("professors")) {
+			} else if (type.equals("professors")) {
 				users = DatabaseManager.getInstance().getProfessorDao().findByLike(sortBy, "%" + like + "%", 7, offset);
-			}
-			else {
-				users = DatabaseManager.getInstance().getAdministratorDao().findByLike(sortBy, "%" + like + "%", 7, offset);
+			} else {
+				users = DatabaseManager.getInstance().getAdministratorDao().findByLike(sortBy, "%" + like + "%", 7,
+						offset);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return users;
 	}
-	
+
 	@PostMapping("/loadCourses")
-	public List<Course> loadCourses(String like, String type, int offset, HttpServletRequest req) {
-		List<Course> courses = null;
+	public List<Course> loadCourses(String like, String type, Integer offset, HttpServletRequest req) {
+
+		HttpSession session = req.getSession();
+
+		String user_type = (String) session.getAttribute("user_type");
 		
+		if (user_type == null || (!user_type.equals("admin") && !user_type.equals("student")) || like == null
+				|| offset == null)
+			return null;
+
+		List<Course> courses = null;
+
 		try {
-			if(type.equals("all"))
+			if (type.equals("all"))
 				courses = DatabaseManager.getInstance().getCourseDao().findByLike("%" + like + "%", 16, offset);
-			else {
-				HttpSession session = req.getSession();
+			else if (type.equals("followed")) {
+
+				if (!user_type.equals("student")) 
+					return null;
 				
 				Student student = (Student) session.getAttribute("user");
+
+				if (student == null)
+					return null;
+
 				List<Course> followedCourses = student.getFollowedCourses();
-				
+
 				courses = new ArrayList<>();
-				
-				for(int i = 0; i < followedCourses.size(); ++i) {
-					String professorName = followedCourses.get(i).getLecturer().getFirstName() + " " + followedCourses.get(i).getLecturer().getLastName();
-					if(followedCourses.get(i).getName().contains(like) || professorName.contains(like))
+
+				for (int i = 0; i < followedCourses.size(); ++i) {
+					String professorName = followedCourses.get(i).getLecturer().getFirstName() + " "
+							+ followedCourses.get(i).getLecturer().getLastName();
+					if (followedCourses.get(i).getName().contains(like) || professorName.contains(like))
 						courses.add(followedCourses.get(i));
 				}
+
+				courses = courses.subList(offset, (offset + 16) > courses.size() ? courses.size() : (offset + 16));
+			} else {
+				return null;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -71,39 +89,47 @@ public class LoadDataController {
 
 		return courses;
 	}
-	
+
 	@PostMapping("/checkFollowed")
-	public boolean[] checkFollowed(@RequestBody Course[] courses, HttpServletRequest req)  {
+	public boolean[] checkFollowed(@RequestBody Course[] courses, HttpServletRequest req) {
+
+		HttpSession session = req.getSession();
+
+		String user_type = (String) session.getAttribute(("user_type"));
+
+		if (user_type == null || !user_type.equals("student") || courses == null)
+			return null;
+
+		Student student = (Student) session.getAttribute("user");
+
+		if (student == null)
+			return null;
 
 		boolean[] followed = new boolean[courses.length];
-		
-		HttpSession session = req.getSession();
-		
-		Student student = (Student) session.getAttribute("user");
-		
-		for(int i = 0; i < courses.length; ++i) {
-			if(student.getFollowedCourses().contains(courses[i]))
+
+		for (int i = 0; i < courses.length; ++i) {
+			if (student.getFollowedCourses().contains(courses[i]))
 				followed[i] = true;
 			else
 				followed[i] = false;
 		}
-		
+
 		return followed;
 	}
-	
+
 	@PostMapping("/loadLocations")
 	public List<Location> loadLocations(String type, String like, int offset) {
 		List<Location> locations = null;
-		
+
 		try {
-			if(type.equals("locations"))
+			if (type.equals("locations"))
 				locations = DatabaseManager.getInstance().getLocationDao().findByLike("%" + like + "%", 16, offset);
 			else
 				locations = DatabaseManager.getInstance().getClassroomDao().findByLike("%" + like + "%", 16, offset);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return locations;
 	}
 }

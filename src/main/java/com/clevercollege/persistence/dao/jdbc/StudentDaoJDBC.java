@@ -216,4 +216,30 @@ public class StudentDaoJDBC implements StudentDao {
 		
 		st.executeUpdate();
 	}
+	
+	@Override
+	public void followCourseForStudent(long courseId, String studentCf) throws SQLException {
+		
+		String query = "insert into follows values(?,?)";
+		
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setString(1, studentCf);
+		st.setLong(2, courseId);
+		
+		st.executeUpdate();
+	}
+	
+	@Override
+	public void unfollowCourseForStudent(long courseId, String studentCf) throws SQLException {
+		
+		String query = "delete from follows where student = ? and course = ?";
+		
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setString(1, studentCf);
+		st.setLong(2, courseId);
+		
+		st.executeUpdate();
+	}
 }

@@ -32,15 +32,16 @@ function loadMore(showMore) {
 	
 	$.ajax({
 		type: "POST",
-		url: "loadCourses",
+		url: "/loadCourses",
 		data: {
 			like: like,
 			type: type,
 			offset: offset
 		},
 		success: function(data) {
-			
+
 			var showMoreButton = $("#showMoreButton");
+			
 			if(showMoreButton != null) {
 				showMoreButton.remove();
 			}
@@ -49,7 +50,7 @@ function loadMore(showMore) {
 				if(areEquals(data.slice(0,15), courses)) {
 					if(data.length == 16) {
 						$("#coursesContainer").append("<button class=\"btn btn-outline-primary\" id=\"showMoreButton\">Mostra altri</button>");
-						$("#showMoreButton").on("click", function() {
+						$("#showMoreButton").off().on("click", function() {
 							loadMore(true);
 						});
 					}
@@ -70,18 +71,17 @@ function loadMore(showMore) {
 			if(type == "all") {
 				$.ajax({
 					type: "POST",
-					url: "checkFollowed",
+					url: "/checkFollowed",
 					contentType: "application/json",
 					data: JSON.stringify(courses.slice(offset, offset + 15)),
 					success: function(data2) {
 						
 						followed = followed.concat(data2);
-						
 						displayCourses();
 						
 						if(data.length == 16) {
 							$("#coursesContainer").append("<button class=\"btn btn-outline-primary\" id=\"showMoreButton\">Mostra altri</button>");
-							$("#showMoreButton").on("click", function() {
+							$("#showMoreButton").off().on("click", function() {
 								loadMore(true);
 							});
 						}
@@ -95,10 +95,9 @@ function loadMore(showMore) {
 				}
 				
 				displayCourses();
-				
 				if(data.length == 16) {
 					$("#coursesContainer").append("<button class=\"btn btn-outline-primary\" id=\"showMoreButton\">Mostra altri</button>");
-					$("#showMoreButton").on("click", function() {
+					$("#showMoreButton").off().on("click", function() {
 						loadMore(true);
 					});
 				}
@@ -106,30 +105,6 @@ function loadMore(showMore) {
 		},
 		error: errorMessage 
 	});
-}
-
-function removeCourse(id) {
-	
-	$.ajax({
-		type: "POST",
-		url: "removeCourse",
-		data: {
-			id: id
-		},
-		success: function(data) {
-			if(data == "ok") {
-				Swal.fire({
-					title: "Successo!",
-					text: "Il corso è stato eliminato con successo",
-					icon: "success"
-				})
-				courses = new Array();
-				$("#courses").empty();
-				loadMore();
-			}
-		},
-		error: errorMessage
-	})
 }
 
 function displayCourses() {
@@ -156,18 +131,46 @@ function displayCourses() {
 								"</li>");
 	}
 	
-	$(".add-favorite-button").on("click", function() {
-		
+	$(".add-favorite-button").off().on("click", function(event) {
+
 		var icon = this.childNodes[0];
 		var id = this.id.substr(13);
-		alert(id);
+		
 		if(icon.classList.contains("far")) {
-			icon.classList.remove("far")
-			icon.classList.add("fas");	
+			$.ajax({
+				type: "POST",
+				url: "/setFollowedCourse",
+				data: {
+					courseId: id,
+					followed: true
+				},
+				success: function() {
+					icon.classList.remove("far")
+					icon.classList.add("fas");	
+				},
+				error: errorMessage
+			})
 		}
 		else {
-			icon.classList.remove("fas")
-			icon.classList.add("far");	
+			$.ajax({
+				type: "POST",
+				url: "/setFollowedCourse",
+				data: {
+					courseId: id,
+					followed: false
+				},
+				success: function(data) {
+					
+					if(data == "ok") {
+						icon.classList.remove("fas")
+						icon.classList.add("far");
+					} 
+					else {
+						errorMessage();
+					}
+				},
+				error: errorMessage
+			})
 		}
 	})
 }

@@ -71,15 +71,15 @@ public class ViewDataController {
 		return "view_locations";
 	}
 	
-	@GetMapping("/book-activity")
+	@GetMapping("/activities/book_activities")
 	public String viewBookActivityPage(HttpServletRequest req) {
-		
+
 		HttpSession session = req.getSession();
 		
 		User u = (User) session.getAttribute("user");
 		
 		if(u == null) {
-			session.setAttribute("after-login", "/book-activity");
+			session.setAttribute("after-login", "/activities/book_activities");
 			return "redirect:/login";
 		}
 		else {

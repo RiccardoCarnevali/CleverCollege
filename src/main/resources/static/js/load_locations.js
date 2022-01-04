@@ -46,7 +46,7 @@ function loadMore(showMore) {
 				if(areEquals(data.slice(0,15), locations)) {
 					if(data.length == 16) {
 						$("#locationsContainer").append("<button class=\"btn btn-outline-primary\" id=\"showMoreButton\">Mostra altri</button>");
-						$("#showMoreButton").on("click", function() {
+						$("#showMoreButton").off().on("click", function() {
 							loadMore(true);
 						});
 					}
@@ -75,7 +75,7 @@ function loadMore(showMore) {
 										"</li>");
 			}
 			
-			$(".remove-button").on("click", function() {
+			$(".remove-button").off().on("click", function() {
 				let id = this.id.substr(7);
 				Swal.fire({
 					title: "Sei sicuro?",
@@ -119,7 +119,7 @@ function loadMore(showMore) {
 			
 			if(data.length == 16) {
 				$("#locationsContainer").append("<button class=\"btn btn-outline-primary\" id=\"showMoreButton\">Mostra altri</button>");
-				$("#showMoreButton").on("click", function() {
+				$("#showMoreButton").off().on("click", function() {
 					loadMore(true);
 				});
 			}

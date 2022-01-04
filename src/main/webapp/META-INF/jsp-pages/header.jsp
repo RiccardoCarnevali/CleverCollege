@@ -16,9 +16,10 @@
 	<div class="collapse navbar-collapse" id="navbarMain">
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-			<li class="nav-item"><a class="nav-link<c:if test="${user_type == 'admin' || user_type == null}"> hide</c:if>" 
+			<li class="nav-item"><a class="nav-link<c:if test="${user_type == null || user_type == 'admin'}"> hide</c:if>" 
 				href=<c:if test="${user == null}">"/login"</c:if>
-					<c:if test="${user != null && user_type == 'professor'}">"/activities/handle_activities"</c:if>>Attività</a></li>
+					<c:if test="${user != null && user_type != null && user_type == 'professor'}">"/activities/handle_activities"</c:if>
+					<c:if test="${user != null && user_type != null && user_type == 'student'}">"/activities/book_activities"</c:if>>Attività</a></li>
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
 				role="button" data-toggle="dropdown" aria-haspopup="true"

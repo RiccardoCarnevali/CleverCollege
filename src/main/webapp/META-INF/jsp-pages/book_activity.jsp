@@ -32,7 +32,7 @@
 				
 				<select class="form-control col-lg-2 col-md-6 col-sm-12" id="typeInput">
 			      <option selected value="all">Tutti</option>
-			      <option value="favorites">I miei corsi</option>
+			      <option value="followed">I miei corsi</option>
 			    </select>
 			    
 			<ul class="list-group" id="courses">	  

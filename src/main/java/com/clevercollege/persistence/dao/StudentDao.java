@@ -23,4 +23,8 @@ public interface StudentDao {
 	public void bookActivityForStudent(long activityId, String studentCf) throws SQLException;
 	
 	public void unbookActivityForStudent(long activityId, String studentCf) throws SQLException;
+	
+	public void followCourseForStudent(long courseId, String studentCf) throws SQLException;
+	
+	public void unfollowCourseForStudent(long courseId, String studentCf) throws SQLException;
 }
