@@ -55,13 +55,13 @@ public class RemoveDataController {
 	}
 	
 	@PostMapping("/removeCourse")
-	public String removeCourse(long id, HttpServletRequest req) {
+	public String removeCourse(Long id, HttpServletRequest req) {
 		
 		HttpSession session = req.getSession();
 		
 		String user_type = (String) session.getAttribute("user_type");
 		
-		if(user_type == null || !user_type.equals("admin"))
+		if(user_type == null || !user_type.equals("admin") || id == null)
 			return "error";
 		
 		try {
@@ -76,13 +76,13 @@ public class RemoveDataController {
 	}
 	
 	@PostMapping("/checkClassroomsActivities")
-	public String checkClassroomsActivities(long classroom, HttpServletRequest req) {
+	public String checkClassroomsActivities(Long classroom, HttpServletRequest req) {
 		
 		HttpSession session = req.getSession();
 		
 		String user_type = (String) session.getAttribute("user_type");
 		
-		if(!user_type.equals("admin"))
+		if(user_type == null || !user_type.equals("admin") || classroom == null)
 			return "error";
 		
 		try {
@@ -96,13 +96,13 @@ public class RemoveDataController {
 	}
 	
 	@PostMapping("/removeLocation")
-	public String removeLocation(long id, HttpServletRequest req) {
+	public String removeLocation(Long id, HttpServletRequest req) {
 		
 		HttpSession session = req.getSession();
 		
 		String user_type = (String) session.getAttribute("user_type");
 		
-		if(user_type == null || !user_type.equals("admin"))
+		if(user_type == null || !user_type.equals("admin") || id == null)
 			return "error";
 		
 		try {

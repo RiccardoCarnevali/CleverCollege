@@ -19,13 +19,13 @@ import com.clevercollege.persistence.DatabaseManager;
 public class LoadDataController {
 	
 	@PostMapping("/loadUsers")
-	public List<User> loadUsers(String type, String sortBy, String like, int offset, HttpServletRequest req) {
+	public List<User> loadUsers(String type, String sortBy, String like, Integer offset, HttpServletRequest req) {
 		
 		HttpSession session = req.getSession();
 		
 		String user_type = (String) session.getAttribute("user_type");
 		
-		if(user_type == null || !user_type.equals("admin") || type == null || sortBy == null || like == null)
+		if(user_type == null || !user_type.equals("admin") || type == null || sortBy == null || like == null || offset == null)
 			return null;
 		
 		List<User> users = null;
@@ -78,13 +78,13 @@ public class LoadDataController {
 	}
 	
 	@PostMapping("/loadLocations")
-	public List<Location> loadLocations(String type, String like, int offset, HttpServletRequest req) {
+	public List<Location> loadLocations(String type, String like, Integer offset, HttpServletRequest req) {
 		
 		HttpSession session = req.getSession();
 		
 		String user_type = (String) session.getAttribute("user_type");
 		
-		if(user_type == null || !user_type.equals("admin") || type == null || like == null)
+		if(user_type == null || !user_type.equals("admin") || type == null || like == null || offset == null)
 			return null;
 		
 		List<Location> locations = null;
