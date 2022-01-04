@@ -20,7 +20,7 @@ public class RemoveDataController {
 		
 		String user_type = (String) session.getAttribute("user_type");
 		
-		if(!user_type.equals("admin") || cf == null)
+		if(user_type == null || !user_type.equals("admin") || cf == null)
 			return "error";
 		
 		try {
@@ -41,7 +41,7 @@ public class RemoveDataController {
 		
 		String user_type = (String) session.getAttribute("user_type");
 		
-		if(!user_type.equals("admin") || professor == null)
+		if(user_type == null || !user_type.equals("admin") || professor == null)
 			return "error";
 		
 		try {
@@ -61,7 +61,7 @@ public class RemoveDataController {
 		
 		String user_type = (String) session.getAttribute("user_type");
 		
-		if(!user_type.equals("admin"))
+		if(user_type == null || !user_type.equals("admin"))
 			return "error";
 		
 		try {
@@ -102,7 +102,7 @@ public class RemoveDataController {
 		
 		String user_type = (String) session.getAttribute("user_type");
 		
-		if(!user_type.equals("admin"))
+		if(user_type == null || !user_type.equals("admin"))
 			return "error";
 		
 		try {

@@ -25,7 +25,7 @@ public class LoadDataController {
 		
 		String user_type = (String) session.getAttribute("user_type");
 		
-		if(!user_type.equals("admin") || type == null || sortBy == null || like == null)
+		if(user_type == null || !user_type.equals("admin") || type == null || sortBy == null || like == null)
 			return null;
 		
 		List<User> users = null;
@@ -63,7 +63,7 @@ public class LoadDataController {
 		
 		String user_type = (String) session.getAttribute("user_type");
 		
-		if(!user_type.equals("admin") || like == null)
+		if(user_type == null || !user_type.equals("admin") || like == null)
 			return null;
 		
 		List<Course> courses = null;
@@ -84,7 +84,7 @@ public class LoadDataController {
 		
 		String user_type = (String) session.getAttribute("user_type");
 		
-		if(!user_type.equals("admin") || type == null || like == null)
+		if(user_type == null || !user_type.equals("admin") || type == null || like == null)
 			return null;
 		
 		List<Location> locations = null;
