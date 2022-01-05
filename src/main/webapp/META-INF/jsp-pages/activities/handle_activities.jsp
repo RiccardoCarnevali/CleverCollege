@@ -20,17 +20,23 @@
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/common.js"></script>
-<script src="/js/activities.js"></script>
+<script src="/js/data-model.js"></script>
+<script src="/js/handle_activities.js"></script>
 
 
 </head>
 <body>
 	<div class="header"></div>
-	<div class="container">
-		<h2>Attività Settimanali</h2>
-		<div class="accordion" id="weeklyLessonsAccordion">
-			
-			
+	
+	<div class="container" id="activitiesContainer">
+		<h2>Lezioni Settimanali</h2>
+		<div class="accordion" id="weeklyLessonsAccordion"></div>
+		<h2>Lezioni singole</h2>
+		<div class="accordion" id="singleLessonsAccordion"></div>
+		<h2>Seminari</h2>
+		<div class="accordion" id="seminarsAccordion"></div>
+		<div class="add-activity">
+			<a href="create_activity" class="far fa-calendar-plus"></a>
 		</div>
 	</div>
 	<div class="footer"></div>

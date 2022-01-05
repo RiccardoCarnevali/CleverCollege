@@ -1,6 +1,5 @@
 package com.clevercollege.model;
 
-import java.sql.Time;
 import java.util.List;
 
 public class WeeklyLesson extends Lesson {
@@ -13,7 +12,7 @@ public class WeeklyLesson extends Lesson {
 		super();
 	}
 
-	public WeeklyLesson(long id, Time time, int length, String description, User manager,
+	public WeeklyLesson(long id, String time, int length, String description, User manager,
 			Location classroom, Course course, int weekDay, boolean disabled, boolean disabledIndefinitely) {
 		super(id, time, length, description, manager, null, classroom, course);
 		this.weekDay = weekDay;

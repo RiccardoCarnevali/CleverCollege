@@ -1,6 +1,7 @@
 package com.clevercollege.persistence.dao.jdbc;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,7 +54,7 @@ public class SeminarDaoJDBC implements SeminarDao {
 			seminar.setDescription(activity.getDescription());
 			seminar.setManager(activity.getManager());
 			seminar.setClassroom(activity.getClassroom());
-			seminar.setDate(rs.getDate("seminar_date"));
+			seminar.setDate(rs.getDate("seminar_date").toString());
 
 			seminars.add(seminar);
 		}
@@ -92,7 +93,7 @@ public class SeminarDaoJDBC implements SeminarDao {
 			seminar.setDescription(activity.getDescription());
 			seminar.setManager(activity.getManager());
 			seminar.setClassroom(activity.getClassroom());
-			seminar.setDate(rs.getDate("seminar_date"));
+			seminar.setDate(rs.getDate("seminar_date").toString());
 		}
 		
 		return seminar;
@@ -119,7 +120,7 @@ public class SeminarDaoJDBC implements SeminarDao {
 			
 			PreparedStatement updateSt = conn.prepareStatement(query);
 			
-			updateSt.setDate(1, seminar.getDate());
+			updateSt.setDate(1, Date.valueOf(seminar.getDate()));
 			updateSt.setLong(2, seminar.getId());
 			
 			updateSt.executeUpdate();
@@ -131,7 +132,7 @@ public class SeminarDaoJDBC implements SeminarDao {
 			PreparedStatement insertSt = conn.prepareStatement(query);
 			
 			insertSt.setLong(1, seminar.getId());
-			insertSt.setDate(2, seminar.getDate());
+			insertSt.setDate(2, Date.valueOf(seminar.getDate()));
 			
 			insertSt.executeUpdate();
 		}		
@@ -174,8 +175,8 @@ public class SeminarDaoJDBC implements SeminarDao {
 						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id")));
 			}
 			seminar.setId(rs.getLong("id"));
-			seminar.setTime(rs.getTime("activity_time"));
-			seminar.setDate(rs.getDate("seminar_date"));
+			seminar.setTime(rs.getTime("activity_time").toString());
+			seminar.setDate(rs.getDate("seminar_date").toString());
 			seminar.setLength(rs.getInt("activity_length"));
 			seminar.setDescription(rs.getString("description"));
 			seminar.setManager(DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(cf));

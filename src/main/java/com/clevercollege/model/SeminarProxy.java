@@ -1,8 +1,6 @@
 package com.clevercollege.model;
 
-import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.List;
 
 import com.clevercollege.persistence.DatabaseManager;
@@ -13,7 +11,7 @@ public class SeminarProxy extends Seminar {
 		super();
 	}
 	
-	public SeminarProxy(long id, Time time, int length, String description, User manager, Location classroom, Date date) {
+	public SeminarProxy(long id, String time, int length, String description, User manager, Location classroom, String date) {
 		super(id, time, length, description, manager, null, classroom, date);
 	}
 

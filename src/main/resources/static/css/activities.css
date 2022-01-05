@@ -3,28 +3,37 @@
 .container {
 	width: 80%;
 	min-width: 700px;
-	box-shadow: 0 10px 25px rgb(0 0 0 / 5%), 0 20px 48px rgb(0 0 0 / 5%), 0 1px 4px rgb(0 0 0 / 10%);
+	box-shadow: 0 10px 25px rgb(0 0 0/ 5%), 0 20px 48px rgb(0 0 0/ 5%), 0
+		1px 4px rgb(0 0 0/ 10%);
 	margin-bottom: 100px;
 	padding: 20px;
-	background-color: rgba(255,255,255,0.6);
+	background-color: rgba(255, 255, 255, 0.6);
 	border-radius: 1em;
 }
 
+.float-right {
+	margin: 0px 0px 0px auto;
+}
+
+.accordion {
+	margin-bottom: 30px;
+}
+
 .accicon {
-  	font-size: 24px;  
-  	width: 1.2em;
+	font-size: 24px;
+	width: 1.2em;
 }
 
 .rotate-icon {
-	transition: all 0.3s;
+	transition: all 0.3s ease-in;
 }
 
 .accicon:not(.collapsed) .rotate-icon {
-  	transform: rotate(180deg);
+	transform: rotate(180deg);
 }
 
 .card {
-	border-bottom: 1px solid rgba(0,0,0,.125) !important;
+	border-bottom: 1px solid rgba(0, 0, 0, .125) !important;
 	border-radius: 1em !important;
 }
 
@@ -32,13 +41,19 @@
 	display: flex;
 }
 
+.custom-switch {
+	margin-top: 5px;
+	margin-right: 25px;
+	margin-left: auto;
+}
+
+.accicon:nth-child(2) {
+	margin-left: auto;
+}
+
 .card-title {
 	font-weight: bold;
 	line-height: 2em;
-}
-
-.custom-switch {
-	margin: 5px 20px 0px auto; 
 }
 
 .activity-info {
@@ -46,7 +61,6 @@
 }
 
 .enabled-activity-info, .disabled-activity-info {
-	margin: 3em 0 0 0;
 	font-size: 0.8em;
 	font-style: italic;
 }
@@ -63,4 +77,84 @@
 	font-size: 2.3em;
 	width: 100%;
 	text-align: center;
+}
+
+.no-activities {
+	text-transform: uppercase;
+	text-align: center;
+	font-weight: bold;
+	width: 100%;
+	box-shadow: 0 10px 25px rgb(0 0 0/ 5%), 0 20px 48px rgb(0 0 0/ 5%), 0
+		1px 4px rgb(0 0 0/ 10%);
+	padding: 20px;
+	border-radius: 1em;
+}
+
+.bottom-activity-body {
+	display: flex;
+	margin-top: 5em;
+}
+
+.fa-trash {
+	cursor: pointer;
+}
+
+.fa-pencil {
+	border: none;
+	background: transparent;
+	margin-right: 20px;
+}
+
+form {
+	margin-left: auto;
+	margin-right: 15px;
+}
+
+/*Create Activity*/
+.empty-form-error {
+	font-size: 0.8em;
+	color: red;
+}
+
+.hide-visually {
+	opacity: 0;
+}
+
+.form-group {
+	transition: all 1s linear;
+}
+
+#createActivityContainer {
+	display: block;
+	width: 60vw;
+}
+
+#createActivityContainer h3 {
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: bolder;
+}
+
+#pickActivityType {
+	position: relative;
+	top: 150px;
+	left: 40px;
+	width: 50%;
+	align-self: center;
+}
+
+#dateLengthContainer, #descriptionInput {
+	width: 30%;
+	margin-left: auto;
+}
+
+#descriptionInput {
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#createActivityBttn, #editActivityBttn {
+	display: flex;
+	margin: 15px auto 0 auto;
 }

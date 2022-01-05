@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class ActivityDaoJDBC implements ActivityDao {
 			}
 
 			activity.setId(rs.getLong("id"));
-			activity.setTime(rs.getTime("activity_time"));
+			activity.setTime(rs.getTime("activity_time").toString());
 			activity.setLength(rs.getInt("activity_length"));
 			activity.setDescription(rs.getString("description"));
 			activity.setManager(
@@ -80,7 +81,7 @@ public class ActivityDaoJDBC implements ActivityDao {
 						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id")));
 			}
 			activity.setId(rs.getLong("id"));
-			activity.setTime(rs.getTime("activity_time"));
+			activity.setTime(rs.getTime("activity_time").toString());
 			activity.setLength(rs.getInt("activity_length"));
 			activity.setDescription(rs.getString("description"));
 			activity.setManager(DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(professorCf));
@@ -117,7 +118,7 @@ public class ActivityDaoJDBC implements ActivityDao {
 			}
 
 			activity.setId(rs.getLong("id"));
-			activity.setTime(rs.getTime("activity_time"));
+			activity.setTime(rs.getTime("activity_time").toString());
 			activity.setLength(rs.getInt("activity_length"));
 			activity.setDescription(rs.getString("description"));
 			activity.setManager(
@@ -146,7 +147,7 @@ public class ActivityDaoJDBC implements ActivityDao {
 
 			PreparedStatement updateSt = conn.prepareStatement(query);
 
-			updateSt.setTime(1, activity.getTime());
+			updateSt.setTime(1, Time.valueOf(activity.getTime()));
 			updateSt.setInt(2, activity.getLength());
 			updateSt.setString(3, activity.getDescription());
 			updateSt.setString(4, activity.getManager().getCf());
@@ -160,7 +161,7 @@ public class ActivityDaoJDBC implements ActivityDao {
 			PreparedStatement insertSt = conn.prepareStatement(query);
 
 			insertSt.setLong(1, activity.getId());
-			insertSt.setTime(2, activity.getTime());
+			insertSt.setTime(2, Time.valueOf(activity.getTime()));
 			insertSt.setInt(3, activity.getLength());
 			insertSt.setString(4, activity.getDescription());
 			insertSt.setString(5, activity.getManager().getCf());
