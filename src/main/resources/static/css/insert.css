@@ -2,12 +2,15 @@ body {
     word-break: break-word;
 }
 
+.padding-div {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
 .first-column {
     width: 33%;
     float: left;
-    margin-top: 4vh;
-    margin-right: 15px;
-    margin-left: 20px;
+    margin: auto 15px auto 20px;
 }
 
 .second-column {
@@ -19,8 +22,7 @@ body {
 
 .container {
     display: flex;
-    margin-top: 200px;
-    margin-bottom: 130px;
+    margin: 30px auto;
     padding: 20px;
     background-color: rgba(255,255,255,0.6);
     border-radius: 1em;
@@ -83,19 +85,6 @@ input[type="number"]:focus, input[type="number"]:active, input[type="number"]:fo
     border-radius: 1em;
 }
 
-select {
-    border: 1px solid #ced4da;
-    border-radius: 1em;
-    padding: .375rem .75rem;
-    outline: none;
-    background: #fff;
-}
-
-select:hover {
-    border: 1px solid #7e57c2;
-    border-radius: 1em;
-}
-
 .button-container {
     margin-top: 20px;
 }
@@ -129,4 +118,25 @@ input:-webkit-autofill:active  {
 
 form {
     width: 100%;
+}
+
+.professor-list {
+    margin: 6px 8px;
+    max-height: 100px;
+    overflow: auto;
+}
+
+.professor-list li {
+    list-style: none;
+    padding: 0px 12px;
+    width: 100%;
+    cursor: default;
+    border-radius: 1em;
+    margin-top: 4px;
+    background-color: #e9ecefc7;
+}
+
+.professor-list li:hover {
+    background: #7e57c2;
+    color: #fff;
 }

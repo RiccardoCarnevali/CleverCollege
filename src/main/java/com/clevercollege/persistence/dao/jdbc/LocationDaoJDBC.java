@@ -153,4 +153,29 @@ public class LocationDaoJDBC implements LocationDao {
 		
 	}
 
+	@Override
+	public Location findByName(String name) throws SQLException {
+		Location location = null;
+
+		String query = "select * from locations where location_name = ?";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, name);
+
+		ResultSet rs = st.executeQuery();
+
+		if (rs.next()) {
+
+			location = new Location();
+
+			location.setId(rs.getLong("id"));
+			location.setName(rs.getString("location_name"));
+			location.setCapacity(rs.getInt("capacity"));
+
+		}
+
+		return location;
+	}
+
 }

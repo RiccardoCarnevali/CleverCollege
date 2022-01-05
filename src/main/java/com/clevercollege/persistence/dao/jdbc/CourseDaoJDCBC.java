@@ -184,4 +184,31 @@ public class CourseDaoJDCBC implements CourseDao {
 		st.executeUpdate();
 	}
 
+	@Override
+	public Course findByNameAndProfessor(String name, String cf) throws SQLException {
+		Course course = null;
+
+		String query = "select * from courses where professor = ? and course_name = ?";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, cf);
+		st.setString(2, name);
+
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			course = new Course();
+
+			course.setId(rs.getLong("id"));
+			course.setName(rs.getString("course_name"));
+			course.setLecturer(
+					DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(rs.getString("professor")));
+
+		}
+
+		return course;
+	}
+
 }

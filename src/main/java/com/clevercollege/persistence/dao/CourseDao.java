@@ -18,4 +18,6 @@ public interface CourseDao {
 	public void saveOrUpdate(Course course) throws SQLException;
 	
 	public void delete(long id) throws SQLException;
+
+	public Course findByNameAndProfessor(String name, String cf) throws SQLException;
 }

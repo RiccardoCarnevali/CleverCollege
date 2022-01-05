@@ -1,73 +1,176 @@
 package com.clevercollege.controller;
 
+import com.clevercollege.model.Course;
+import com.clevercollege.model.Location;
 import com.clevercollege.model.Student;
 import com.clevercollege.model.User;
 import com.clevercollege.persistence.DatabaseManager;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
 public class InsertDataController {
-    @PostMapping("/insertData")
-    public String insertData(String name, Integer capacity) {
 
-        //if the radio button checked is a place
-            //check if the type of place is a classroom
-            //create place and check if it already exists
-        //if the radio button checked is a course
-            //create course and check if it already exists
-        //add into database
-        return null;
+    @GetMapping("/insertOtherData")
+    public String insertDataPage(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User u = (User) session.getAttribute("user");
+        if(u == null) {
+            session.setAttribute("after-login", "/insertOtherData");
+            return "redirect:/login";
+        }
+        else {
+            if(!session.getAttribute("user_type").equals("admin"))
+                return "not_authorized";
+        }
+        return "insertOtherData";
+    }
+
+
+    @GetMapping("/insertNewUser")
+    public String insertUserPage(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User u = (User) session.getAttribute("user");
+        if(u == null) {
+            session.setAttribute("after-login", "/insertNewUser");
+            return "redirect:/login";
+        }
+        else {
+            if(!session.getAttribute("user_type").equals("admin")) {
+                return "not_authorized";
+            }
+        }
+        return "insertNewUser";
+    }
+
+    @PostMapping("/insertData")
+    @ResponseBody
+    public String insertData(HttpServletRequest request, String dataFromForm, String kindOfData, String kindOfPlace, String cfProfessor) {
+        HttpSession session = request.getSession();
+        User u = (User) session.getAttribute("user");
+        if(u == null) {
+            session.setAttribute("after-login", "/insertOtherData");
+            return "no logged user";
+        }
+
+        if(dataFromForm == null || kindOfData == null)
+        return "server error";
+
+        ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        try {
+            Location l;
+            Course c;
+            if(kindOfData.equals("place")) {
+                l = mapper.readValue(dataFromForm, Location.class);
+                if (DatabaseManager.getInstance().getLocationDao().findByName(l.getName()) != null)
+                    return "place already exists";
+                else {
+                    l.setId(DatabaseManager.getInstance().getIdBroker().getNextLocationId());
+                    if(kindOfPlace != null)
+                        DatabaseManager.getInstance().getClassroomDao().saveOrUpdate(l);
+                    else
+                        DatabaseManager.getInstance().getLocationDao().saveOrUpdate(l);
+                    DatabaseManager.getInstance().commit();
+                    return "data inserted";
+                }
+            }
+            else {
+                if(cfProfessor == null || cfProfessor.isEmpty())
+                    return "no prof selected";
+                c = mapper.readValue(dataFromForm, Course.class);
+                if(DatabaseManager.getInstance().getCourseDao().findByNameAndProfessor(c.getName(), cfProfessor) != null)
+                    return "course already exists";
+                else {
+                    User prof = DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(cfProfessor);
+                    c.setId(DatabaseManager.getInstance().getIdBroker().getNextCourseId());
+                    c.setLecturer(prof);
+                    DatabaseManager.getInstance().getCourseDao().saveOrUpdate(c);
+                    DatabaseManager.getInstance().commit();
+                    return "data inserted";
+                }
+            }
+        } catch (SQLException e) {
+            return "server error";
+        } catch (JsonMappingException e) {
+            return "server error";
+        } catch (JsonProcessingException e) {
+            return "server error";
+        }
     }
 
     @PostMapping("/insertUser")
     @ResponseBody
-    public String insertUser(String kindOfUser, String cf, String name, String surname, String email, String idStudent) {
+    public String insertUser(HttpServletRequest request, String userFromForm, String kindOfUser) {
+        HttpSession session = request.getSession();
+        User userFromSession = (User) session.getAttribute("user");
+        if(userFromSession == null) {
+            session.setAttribute("after-login", "/insertNewUser");
+            return "no logged user";
+        }
+
+        if(userFromForm == null || kindOfUser == null)
+            return "server error";
+
+        ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        User u;
+        try {
+            u = mapper.readValue(userFromForm, User.class);
+        } catch (JsonProcessingException e) {
+            return "server error";
+        }
 
         String token = UUID.randomUUID().toString();
         String tmpPassword = BCrypt.hashpw(token, BCrypt.gensalt(12));
 
-        if(!checkValidCf(name, surname, cf))
+        if(!checkValidCf(u.getFirstName(), u.getLastName(), u.getCf()))
             return "cf not valid";
 
             try {
-                if(DatabaseManager.getInstance().getUserDao().findByEmail(email) != null)
+                if(DatabaseManager.getInstance().getUserDao().findByEmail(u.getEmail()) != null)
                     return "email already exists";
-                if(DatabaseManager.getInstance().getUserDao().findByPrimaryKey(cf) != null)
+                if(DatabaseManager.getInstance().getUserDao().findByPrimaryKey(u.getCf()) != null)
                     return "user already exists";
 
                 if(kindOfUser.equals("student")) {
-                    Student s = new Student(cf, name, surname, email, tmpPassword, null, null, idStudent);
-                    if(DatabaseManager.getInstance().getStudentDao().findByIdStudent(idStudent) != null)
+                    Student s;
+                    try {
+                        s = mapper.readValue(userFromForm, Student.class);
+                    } catch (JsonProcessingException e) {
+                        return "server error";
+                    }
+                    if(DatabaseManager.getInstance().getStudentDao().findByIdStudent(s.getStudentNumber()) != null)
                         return "idStudent already exists";
                     else {
+                        s.setPassword(tmpPassword);
                         DatabaseManager.getInstance().getStudentDao().saveOrUpdate(s);
                         DatabaseManager.getInstance().commit();
-                        EmailService.getInstance().sendFirstPassword(email, token);
+                        EmailService.getInstance().sendFirstPassword(s.getEmail(), token);
                         return "user inserted";
                     }
                 }
                 else {
-                    User u = new User(cf, name, surname, email, tmpPassword, null, null);
-                    if(kindOfUser.equals("professor")) {
+                    u.setPassword(tmpPassword);
+                    if(kindOfUser.equals("professor"))
                         DatabaseManager.getInstance().getProfessorDao().saveOrUpdate(u);
-                        DatabaseManager.getInstance().commit();
-                        EmailService.getInstance().sendFirstPassword(email, token);
-                        return "user inserted";
-
-                    }
-                    else {
+                    else
                        DatabaseManager.getInstance().getAdministratorDao().saveOrUpdate(u);
-                       DatabaseManager.getInstance().commit();
-                       EmailService.getInstance().sendFirstPassword(email, token);
-                       return "user inserted";
-                    }
+                    DatabaseManager.getInstance().commit();
+                    EmailService.getInstance().sendFirstPassword(u.getEmail(), token);
+                    return "user inserted";
                 }
             } catch (SQLException e) {
                 return "server error";
@@ -120,4 +223,13 @@ public class InsertDataController {
         return valid3.equals(char3);
     }
 
+    @PostMapping("/searchProfessor")
+    @ResponseBody
+    public List<User> searchProfessorFromSubstring(String substring) {
+        try {
+            return DatabaseManager.getInstance().getProfessorDao().professorWithSubstring(substring);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
 }
