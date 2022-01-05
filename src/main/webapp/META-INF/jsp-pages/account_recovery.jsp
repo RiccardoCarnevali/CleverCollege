@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -32,10 +32,10 @@
 		<form method="post" action="recoverPassword">
 			<div class="mb-3" id="insertEmail">
 				<p>Hai dimenticato la tua password? Inserisci la tua email e
-					ricevererai un link per recuperarla.</p>
+					ricevererai un codice per recuperarla.</p>
 				<label for="emailInput" class="form-label"><strong>Email:</strong></label>
-				<input type="text" class="form-control" id="emailInput"
-					placeholder="Email" name="email">
+				<input type="text" class="form-control <c:if test="${ no_existing_mail_error != null && no_existing_mail_error == true}">error-color</c:if>" id="emailInput" placeholder="Email" name="email">
+				<c:if test="${ no_existing_mail_error != null && no_existing_mail_error == true}"><span class="error-color mail-error">La mail inserita non corrisponde ad alcun utente.</span></c:if>
 			</div>
 			<button type="submit" class="btn btn-outline-primary"
 				id="recoverAccountButton">Richiedi reset password</button>

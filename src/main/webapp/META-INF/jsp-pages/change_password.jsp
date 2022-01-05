@@ -7,6 +7,7 @@
 <title>Change Password</title>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.13.0/css/all.css">
 <link rel="stylesheet" href="/css/common.css">
 <link rel="stylesheet" href="/css/login.css">
 <meta content='maximum-scale=1.0, initial-scale=1.0, width=device-width' name='viewport'>
@@ -23,28 +24,40 @@
 <body>
 <div class="header"></div>
 <div class="container" id="changePasswordContainer">
-		<h5>
-			Email di recupero inviata a
-			<c:out value="${recovery_email}" />
-		</h5>
-		<p>Inserisci il token e la tua nuova password.</p>
-		<form method="post" action="changePassword">
-			<div class="mb-3">
-				<label for="tokenInput" class="form-label"><strong>Token:</strong></label>
+
+		<h5>Un codice di recupero è stato inviato alla mail inserita</h5>
+		<p>Inserisci il codice e la tua nuova password.</p>
+		<form method="post" action="resetPassword">
+	
+			<div class="mb-3" id="email">
+				<label for="emailInput" class="form-label"><strong>Email:</strong></label>
+				<input type="text" class="form-control <c:if test="${ (no_existing_mail_error != null && no_existing_mail_error == true) || (wrong_mail_error != null && wrong_mail_error == true)}">error-color</c:if>" id="emailInput" placeholder="Email" name="email"
+				value="<c:if test="${recovery_email != null}">${recovery_email}</c:if>">
+				<c:if test="${ no_existing_mail_error != null && no_existing_mail_error == true}"><span class="error-color" style="font-size: 0.8em; color: red;">La mail inserita non corrisponde ad alcun utente.</span></c:if>
+				<c:if test="${ wrong_mail_error != null && wrong_mail_error == true}"><span class="error-color" style="font-size: 0.8em; color: red;">La mail inserita non corrisponde ad alcuna richiesta di recupero della password.</span></c:if>
+			</div>
+		
+			<div class="mb-3" id="token">
+				<label for="tokenInput" class="form-label"><strong>Codice:</strong></label>
 				<input type="text" class="form-control" id="tokenInput"
 					placeholder="Token" name="token">
 			</div>
 			<div class="mb-3" id="password">
 				<label for="passwordInput" class="form-label"><strong>Password:</strong></label>
-				<input type="password" class="form-control" id="passwordInput"
-					placeholder="Password" name="newPassword">
+				<div style="position:relative">
+					<input type="password" class="form-control" id="passwordInput"
+						placeholder="Password" name="newPassword">
+					<i class="fas fa-eye-slash clickable" id="see-password"></i>
+				</div>
 			</div>
 			<div class="mb-3" id="passwordRepeat">
 				<label for="passwordRepeatInput" class="form-label"><strong>Ripeti password:</strong></label>
-				<input type="password" class="form-control" id="passwordRepeatInput"
-					placeholder="Ripeti password" name="newPasswordConfirm">
+				<div style="position:relative">
+					<input type="password" class="form-control" id="passwordRepeatInput"
+						placeholder="Ripeti password" name="newPasswordConfirm">
+					<i class="fas fa-eye-slash clickable" id="see-password-repeat"></i>
+				</div>
 			</div>
-				<input type="hidden" class="form-control" name="mail" value="${recovery_email}">
 			<button type="submit" class="btn btn-outline-primary" id="changePasswordButton">Crea nuova password</button>
 		</form>
 		

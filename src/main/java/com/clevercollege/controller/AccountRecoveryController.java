@@ -19,7 +19,7 @@ import com.clevercollege.persistence.DatabaseManager;
 @Controller
 public class AccountRecoveryController {
 	@GetMapping("/account-recovery")
-	public String accountRecovery(Model model, HttpServletRequest req) {
+	public String accountRecovery(Model model) {
 		model.addAttribute("email_sent", null);
 		model.addAttribute("recovery_email", null);
 		model.addAttribute("password_reset", null);
@@ -27,33 +27,60 @@ public class AccountRecoveryController {
 	}
 	
 	@PostMapping("/recoverPassword")
-	public String recoverPassword(Model model, String email) {
+	public String recoverPassword(Model model, String email, HttpServletRequest req) {
 		try {
+			
+			if(email == null)
+				return "account_recovery";
+			
 			User user = DatabaseManager.getInstance().getUserDao().findByEmail(email);
 			
+			if(user == null) {
+				model.addAttribute("no_existing_mail_error", true);
+				return "account_recovery";
+			}
+						
 			String token = UUID.randomUUID().toString();
 			RecoveryToken recoveryToken = new RecoveryToken(BCrypt.hashpw(token, BCrypt.gensalt(12)), user.getCf());
 			DatabaseManager.getInstance().getRecoveryTokenDao().saveOrUpdate(recoveryToken);
 			DatabaseManager.getInstance().commit();
 			
 			//invia email con recovery token
-			EmailService.getInstance().sendResetTokenEmail(token, email, user != null);
-			model.addAttribute("email_sent", true);
-			model.addAttribute("recovery_email", email);
+			EmailService.getInstance().sendResetTokenEmail(token, email, true);
+			req.getSession().setAttribute("recovery_email", email);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return "redirect:/changePassword";
+	}
+	
+	@GetMapping("/changePassword")
+	public String changePassword() {
 		return "change_password";
 	}
 	
 	
-	@PostMapping("/changePassword")
-	public String checkToken(Model model, String token, String newPassword, String mail) {
-		model.addAttribute("recovery_email",mail);
+	@PostMapping("/resetPassword")
+	public String checkToken(Model model, String token, String newPassword, String email, HttpServletRequest req) {
 		try {
-			User user = DatabaseManager.getInstance().getUserDao().findByEmail(mail);
+			if(email == null)
+				return "change_password";
+			
+			User user = DatabaseManager.getInstance().getUserDao().findByEmail(email);
+			
+			if(user == null) {
+				model.addAttribute("no_existing_mail_error", true);
+				return "change_password";
+			}
+			
 			RecoveryToken recoveryToken = DatabaseManager.getInstance().getRecoveryTokenDao().findByPrimaryKey(user.getCf());
+			
+			if(recoveryToken == null) {
+				model.addAttribute("wrong_mail_error", true);
+				return "change_password";
+			}
+			
 			if(recoveryToken.getExpiryDate().isBefore(LocalDate.now())) {
 				model.addAttribute("token_expired", true);
 				model.addAttribute("password_reset", false);

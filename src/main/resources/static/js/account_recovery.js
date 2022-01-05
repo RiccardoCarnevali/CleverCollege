@@ -26,8 +26,41 @@ $(function() {
 			event.preventDefault();
 			$("#passwordRepeat").append('<div class="empty-field-error">Le password devono essere uguali.</div>');
 		}
+		if (!$("#emailInput").val().length) {
+			event.preventDefault();
+			$("#email").append('<div class="empty-field-error">Inserisci una email.</div>')
+		}
+		if(!$("#tokenInput").val().length) {
+			event.preventDefault();
+			$("#token").append('<div class="empty-field-error">Inserisci un token.</div>')
+		}
 	})
 
+	$("#see-password").on("click", function() {
+		if($(this).hasClass("fa-eye-slash")) {
+			$(this).removeClass("fa-eye-slash");
+			$(this).addClass("fa-eye");
+			$("#passwordInput").attr("type", "text");
+		}
+		else {
+			$(this).removeClass("fa-eye");
+			$(this).addClass("fa-eye-slash");
+			$("#passwordInput").attr("type", "password");
+		}
+	})
+	
+	$("#see-password-repeat").on("click", function() {
+		if($(this).hasClass("fa-eye-slash")) {
+			$(this).removeClass("fa-eye-slash");
+			$(this).addClass("fa-eye");
+			$("#passwordRepeatInput").attr("type", "text");
+		}
+		else {
+			$(this).removeClass("fa-eye");
+			$(this).addClass("fa-eye-slash");
+			$("#passwordRepeatInput").attr("type", "password");
+		}
+	})
 
 })
 

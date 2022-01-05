@@ -102,6 +102,7 @@ body {
 	color: #fff;
 	background-color: #7e57c2 !important;
 	border-color: #7e57c2 !important;
+	font-weight: bold;
 }
 
 .btn-outline-primary:active:focus, .btn-outline-primary:focus {
@@ -145,4 +146,9 @@ footer {
 	border-right-color: transparent;
 	-webkit-animation: spinner-border 1s linear infinite;
 	animation: spinner-border 1s linear infinite;
+}
+
+.error-color, .error-color:hover, .error-color:focus {
+	box-shadow: none;
+	border-color: #b71c1c;
 }

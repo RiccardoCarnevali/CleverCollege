@@ -24,7 +24,8 @@ public class ViewDataController {
 		}
 		
 		else {
-			if(!session.getAttribute("user_type").equals("admin"))
+			String user_type = (String) session.getAttribute("user_type");
+			if(user_type == null || !user_type.equals("admin"))
 				return "not_authorized";
 		}
 		
@@ -44,7 +45,8 @@ public class ViewDataController {
 		}
 		
 		else {
-			if(!session.getAttribute("user_type").equals("admin"))
+			String user_type = (String) session.getAttribute("user_type");
+			if(user_type == null || !user_type.equals("admin"))
 				return "not_authorized";
 		}
 		
@@ -64,7 +66,8 @@ public class ViewDataController {
 		}
 		
 		else {
-			if(!session.getAttribute("user_type").equals("admin"))
+			String user_type = (String) session.getAttribute("user_type");
+			if(user_type == null || !user_type.equals("admin"))
 				return "not_authorized";
 		}
 		

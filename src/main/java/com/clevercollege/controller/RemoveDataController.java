@@ -2,6 +2,9 @@ package com.clevercollege.controller;
 
 import java.sql.SQLException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,7 +14,15 @@ import com.clevercollege.persistence.DatabaseManager;
 public class RemoveDataController {
 
 	@PostMapping("/removeUser")
-	public String removeUser(String cf) {
+	public String removeUser(String cf, HttpServletRequest req) {
+		
+		HttpSession session = req.getSession();
+		
+		String user_type = (String) session.getAttribute("user_type");
+		
+		if(user_type == null || !user_type.equals("admin") || cf == null)
+			return "error";
+		
 		try {
 			DatabaseManager.getInstance().getUserDao().delete(cf);
 			DatabaseManager.getInstance().commit();
@@ -24,7 +35,15 @@ public class RemoveDataController {
 	}
 	
 	@PostMapping("/checkProfessorsCourses")
-	public String checkProfessorsCourses(String professor) {
+	public String checkProfessorsCourses(String professor, HttpServletRequest req) {
+		
+		HttpSession session = req.getSession();
+		
+		String user_type = (String) session.getAttribute("user_type");
+		
+		if(user_type == null || !user_type.equals("admin") || professor == null)
+			return "error";
+		
 		try {
 			if(DatabaseManager.getInstance().getCourseDao().findByProfessor(professor).size() != 0)
 				return "yes";
@@ -36,7 +55,15 @@ public class RemoveDataController {
 	}
 	
 	@PostMapping("/removeCourse")
-	public String removeCourse(long id) {
+	public String removeCourse(Long id, HttpServletRequest req) {
+		
+		HttpSession session = req.getSession();
+		
+		String user_type = (String) session.getAttribute("user_type");
+		
+		if(user_type == null || !user_type.equals("admin") || id == null)
+			return "error";
+		
 		try {
 			DatabaseManager.getInstance().getCourseDao().delete(id);
 			DatabaseManager.getInstance().commit();
@@ -49,7 +76,15 @@ public class RemoveDataController {
 	}
 	
 	@PostMapping("/checkClassroomsActivities")
-	public String checkClassroomsActivities(long classroom) {
+	public String checkClassroomsActivities(Long classroom, HttpServletRequest req) {
+		
+		HttpSession session = req.getSession();
+		
+		String user_type = (String) session.getAttribute("user_type");
+		
+		if(user_type == null || !user_type.equals("admin") || classroom == null)
+			return "error";
+		
 		try {
 			if(DatabaseManager.getInstance().getActivityDao().findByClassroom(classroom, true).size() != 0)
 				return "yes";
@@ -61,7 +96,15 @@ public class RemoveDataController {
 	}
 	
 	@PostMapping("/removeLocation")
-	public String removeLocation(long id) {
+	public String removeLocation(Long id, HttpServletRequest req) {
+		
+		HttpSession session = req.getSession();
+		
+		String user_type = (String) session.getAttribute("user_type");
+		
+		if(user_type == null || !user_type.equals("admin") || id == null)
+			return "error";
+		
 		try {
 			DatabaseManager.getInstance().getLocationDao().delete(id);
 			DatabaseManager.getInstance().commit();
