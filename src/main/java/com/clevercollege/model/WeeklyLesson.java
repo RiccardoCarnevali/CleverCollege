@@ -48,4 +48,9 @@ public class WeeklyLesson extends Lesson {
 	public List<Student> getBookers() {
 		return null;
 	}
+	
+	@Override
+	public boolean checkValid() {
+		return super.checkValid();
+	}
 }

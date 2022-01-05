@@ -23,4 +23,9 @@ public class Seminar extends Activity {
 	public void setDate(String date) {
 		this.date = date;
 	}
+	
+	@Override
+	public boolean checkValid() {
+		return (super.checkValid() && date != null);
+	}
 }

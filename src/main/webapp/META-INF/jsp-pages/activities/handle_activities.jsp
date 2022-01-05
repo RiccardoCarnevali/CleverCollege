@@ -27,7 +27,7 @@
 </head>
 <body>
 	<div class="header"></div>
-	
+
 	<div class="container" id="activitiesContainer">
 		<h2>Lezioni Settimanali</h2>
 		<div class="accordion" id="weeklyLessonsAccordion"></div>
@@ -39,6 +39,7 @@
 			<a href="create_activity" class="far fa-calendar-plus"></a>
 		</div>
 	</div>
+
 	<div class="footer"></div>
 </body>
 </html>

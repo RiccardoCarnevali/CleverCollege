@@ -102,4 +102,10 @@ public class Activity {
 		return id == other.id;
 	}
 
+	public boolean checkValid() {
+		if(time != null && description != null && manager != null && classroom != null)
+			return true;
+		return false;
+	}
+
 }

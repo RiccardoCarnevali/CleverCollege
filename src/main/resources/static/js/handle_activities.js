@@ -102,11 +102,15 @@ function loadWeeklyCard(activity) {
 
 	activityBody.innerHTML =
 		'<div class="activity-info">' +
-		'<i class="far fa-clock"></i>' +
-		' <strong>Orario:</strong> ' + activity.time.slice(0, 5) + '</p>' +
-		'<i class="far fa-hourglass"></i>' +
-		' <strong>Durata:</strong> ' + toHHMM(activity.length) + '</p>' +
-		'</div>' +
+		'<div><strong>Orario: </strong>' + activity.time.slice(0, 5) + 
+		' <i class="far fa-clock"></i></div>' +
+		'<div><strong>Durata: </strong>' + toHHMM(activity.length) + 
+		' <i class="far fa-hourglass"></i></div>' +
+		'<div><strong>Luogo: </strong>' + activity.classroom.name +
+		' <i class="far fa-map-marker"></i></div>'+
+		'<div><strong>Corso: </strong>' + activity.course.name +
+		' <i class="far fa-book"></i></div>' +
+		'</div>' + 
 		activity.description +
 		'<div class="bottom-activity-body">' +
 		'<p class="disabled-activity-info ' + (activity.disabled ? '' : 'hide') +
@@ -166,11 +170,15 @@ function loadSingleCard(activity) {
 
 	activityBody.innerHTML =
 		'<div class="activity-info">' +
-		'<i class="far fa-clock"></i>' +
-		' <strong>Orario:</strong> ' + activity.time.slice(0, 5) + '</p>' +
-		'<i class="far fa-hourglass"></i>' +
-		' <strong>Durata:</strong> ' + toHHMM(activity.length) + '</p>' +
-		'</div>' +
+		'<div><strong>Orario: </strong>' + activity.time.slice(0, 5) + 
+		' <i class="far fa-clock"></i></div>' +
+		'<div><strong>Durata: </strong>' + toHHMM(activity.length) + 
+		' <i class="far fa-hourglass"></i></div>' +
+		'<div><strong>Luogo: </strong>' + activity.classroom.name +
+		' <i class="far fa-map-marker"></i></div>'+
+		'<div><strong>Corso: </strong>' + activity.course.name +
+		' <i class="far fa-book"></i></div>' +
+		'</div>' + 
 		activity.description +
 		'<div class="bottom-activity-body">' +
 		'<form method="post" action="/activities/edit_activity">' + 
@@ -220,11 +228,13 @@ function loadSeminarCard(activity) {
 
 	activityBody.innerHTML =
 		'<div class="activity-info">' +
-		'<i class="far fa-clock"></i>' +
-		' <strong>Orario:</strong> ' + activity.time.slice(0, 5) + '</p>' +
-		'<i class="far fa-hourglass"></i>' +
-		' <strong>Durata:</strong> ' + toHHMM(activity.length) + '</p>' +
-		'</div>' +
+		'<div><strong>Orario: </strong>' + activity.time.slice(0, 5) + 
+		' <i class="far fa-clock"></i></div>' +
+		'<div><strong>Durata: </strong>' + toHHMM(activity.length) + 
+		' <i class="far fa-hourglass"></i></div>' +
+		'<div><strong>Luogo: </strong>' + activity.classroom.name +
+		' <i class="far fa-map-marker"></i></div>'+
+		'</div>' + 
 		activity.description +
 		'<div class="bottom-activity-body">' +
 		'<form method="post" action="/activities/edit_activity">' + 

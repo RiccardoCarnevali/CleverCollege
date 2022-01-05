@@ -60,7 +60,7 @@
 			</div>
 		</div>
 		<div id="activityInfoInput">
-			<div id="dateLengthContainer">
+			<div id="infoContainerRight">
 				<div class="form-group" id='dateInput'>
 					<label for="activityDatePicker"><strong>Data</strong></label> <input
 						type="date" id="activityDatePicker" name="activity-date"

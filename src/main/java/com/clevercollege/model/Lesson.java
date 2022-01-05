@@ -23,4 +23,9 @@ public class Lesson extends Activity {
 	public void setCourse(Course course) {
 		this.course = course;
 	}
+	
+	@Override
+	public boolean checkValid() {
+		return (super.checkValid() && course != null);
+	}
 }

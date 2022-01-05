@@ -25,11 +25,7 @@ public class SingleLesson extends Lesson {
 	}
 
 	@Override
-	public String toString() {
-		return "SingleLesson [date=" + date + ", getCourse()=" + getCourse() + ", getId()=" + getId() + ", getTime()="
-				+ getTime() + ", getLength()=" + getLength() + ", getDescription()=" + getDescription()
-				+ ", getManager()=" + getManager() + ", getBookers()=" + getBookers() + ", getClassroom()="
-				+ getClassroom() + ", hashCode()=" + hashCode() + ", getClass()=" + getClass() + ", toString()="
-				+ super.toString() + "]";
+	public boolean checkValid() {
+		return(super.checkValid() && date == null);
 	}
 }
