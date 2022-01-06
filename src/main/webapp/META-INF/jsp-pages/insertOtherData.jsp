@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <head>
     <title>Insert data</title>
@@ -54,7 +55,7 @@
                 <div class="button-container">
                     <button type="submit" id="insert-other-data-button" class="btn btn-outline-primary" disabled>Inserisci dato</button>
                     <div class="spinner-border loader" style="display: none;"></div>
-                    <button type="button" class="btn btn-outline-danger danger-button">Annulla inserimento</button>
+                    <button type="button" id="cancel-insertion" class="btn btn-outline-danger danger-button">Annulla inserimento</button>
                 </div>
             </form>
         </div>

@@ -71,6 +71,10 @@ $(document).ready(function () {
         }
     });
 
+    $("#cancel-insertion").on("click", function () {
+        window.location = "/users";
+    })
+
 });
 
 var stringContainsNumber = function(string){
@@ -157,12 +161,17 @@ var insertUser = function (userFromForm, kindOfUser) {
                 });
             }
             else {
-                console.log(response);
                 Swal.fire(
                     'Ben fatto!',
                     'Inserimento avvenuto con successo!',
                     'success'
                 )
+                $("#fiscalCodeUser").val('');
+                $("#name").val('');
+                $("#surname").val('');
+                $("#email").val('');
+                $("#idStudent").val('');
+                $("#insert-user-button").prop('disabled', true);
             }
         },
         fail: function () {

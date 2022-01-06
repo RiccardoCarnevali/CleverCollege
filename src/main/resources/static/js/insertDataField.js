@@ -8,27 +8,23 @@ $(document).ready(function () {
                 $("#kindOfPlace").css('display', 'block');
                 $("#div-for-place").css('display', 'block');
                 $("#div-for-professor").css('display', 'none');
+                checkField();
             }
             else {
                 $("#kindOfPlace").css('display', 'none');
                 $("#div-for-professor").css('display', 'block');
                 $("#div-for-place").css('display', 'none');
+                checkField();
             }
         });
     }
 
-    $("#dataName").on('input', function () {
-        if($("#dataName").val().length === 0) {
-            $("#insert-other-data-button").prop('disabled', true);
-        }
-        else {
-            $("#insert-other-data-button").prop('disabled', false);
-        }
-    });
-
-    $("#professor").on('input', function () {
-
-    })
+    var inputText = document.getElementsByClassName("form-control");
+    for(let i = 0, length = inputText.length; i < length; i++) {
+        inputText[i].addEventListener("input" , function () {
+            checkField();
+        });
+    }
 
     var inputField = document.getElementById("professor");
     inputField.onkeyup = function () {
@@ -47,11 +43,29 @@ $(document).ready(function () {
             dataFromForm = new Location(null, $('#dataName').val(), $('#capacity').val());
         else
             dataFromForm = new Location(null, $('#dataName').val(), null);
-        alert(selectedProfessor);
         insertData(JSON.stringify(dataFromForm), $('input[name="kindOfData"]:checked').val(), $('input[name="kindOfPlace"]:checked').val(), selectedProfessor);
     });
 
+    $("#cancel-insertion").on("click", function () {
+        if(document.getElementById("place").checked)
+            window.location = '/locations';
+        else
+            window.location = '/courses';
+    })
+
 });
+
+var checkField = function () {
+    console.log("ci sono");
+    console.log($("#professor").val().length);
+    if($("#dataName").val().length === 0 && document.getElementById("place").checked)
+        $("#insert-other-data-button").prop('disabled', true);
+    else if(!document.getElementById("place").checked && ($("#professor").val().length === 0 || $("#dataName").val().length === 0))
+        $("#insert-other-data-button").prop('disabled', true);
+    else {
+        $("#insert-other-data-button").prop('disabled', false);
+    }
+}
 
 function Course(id, name, lecturer) {
     this.id = id;
@@ -149,12 +163,15 @@ var insertData = function (dataFromForm, kindOfData, kindOfPlace, cfProfessor) {
                 });
             }
             else {
-                console.log(response);
                 Swal.fire(
                     'Ben fatto!',
                     'Inserimento avvenuto con successo!',
                     'success'
                 )
+                $("#professor").val('');
+                $("#dataName").val('');
+                document.getElementsByClassName("professor-list")[0].innerHTML = "";
+                $("#insert-other-data-button").prop('disabled', true);
             }
         },
         fail: function () {
