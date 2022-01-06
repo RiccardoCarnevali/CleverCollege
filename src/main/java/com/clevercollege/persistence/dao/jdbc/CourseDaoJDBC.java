@@ -12,11 +12,11 @@ import com.clevercollege.model.Course;
 import com.clevercollege.persistence.DatabaseManager;
 import com.clevercollege.persistence.dao.CourseDao;
 
-public class CourseDaoJDCBC implements CourseDao {
+public class CourseDaoJDBC implements CourseDao {
 
 	private Connection conn;
 
-	public CourseDaoJDCBC(Connection conn) {
+	public CourseDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
 

@@ -7,6 +7,10 @@ $(function() {
 	
 	loadMore(false);
 	
+	$("#searchBar").val("");
+	
+	("#typeInput").val("locations");
+	
 	$("#searchBar").on("input", function() {
 		like = $(this).val();
 		loadMore(false);

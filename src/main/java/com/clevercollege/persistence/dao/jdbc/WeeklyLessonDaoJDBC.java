@@ -171,7 +171,7 @@ public class WeeklyLessonDaoJDBC implements WeeklyLessonDao {
 						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id"), true));
 			}
 			lesson.setId(rs.getLong("id"));
-			lesson.setTime(rs.getTime("activity_time"));
+			lesson.setTime(rs.getTime("activity_time").toString());
 			lesson.setLength(rs.getInt("activity_length"));
 			lesson.setWeekDay(rs.getInt("week_day"));
 			lesson.setDisabled(rs.getBoolean("is_disabled"));

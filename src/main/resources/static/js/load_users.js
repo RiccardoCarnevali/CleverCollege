@@ -6,6 +6,10 @@ var errorShown = false;
 
 $(function() {
 
+	$("#typeInput").val("users"),
+	$("#sortInput").val("cf"),
+	$("#searchBar").val("");
+
 	$("#searchBar").on("input", function() {
 		like = $(this).val();
 		loadMore(false);

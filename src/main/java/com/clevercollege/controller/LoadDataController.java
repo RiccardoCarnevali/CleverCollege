@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.clevercollege.model.Course;
 import com.clevercollege.model.Location;
+import com.clevercollege.model.SingleLesson;
 import com.clevercollege.model.Student;
 import com.clevercollege.model.User;
 import com.clevercollege.persistence.DatabaseManager;
@@ -78,8 +79,9 @@ public class LoadDataController {
 					if (followedCourses.get(i).getName().contains(like) || professorName.contains(like))
 						courses.add(followedCourses.get(i));
 				}
-
-				courses = courses.subList(offset, (offset + 16) > courses.size() ? courses.size() : (offset + 16));
+				
+				if(offset < courses.size())
+					courses = courses.subList(offset, (offset + 16) > courses.size() ? courses.size() : (offset + 16));
 			} else {
 				return null;
 			}
@@ -131,5 +133,52 @@ public class LoadDataController {
 		}
 
 		return locations;
+	}
+	
+	@PostMapping("/loadLessonsForCourse")
+	public List<SingleLesson> loadLessonsForCourse(Long courseId, HttpServletRequest req) {
+		
+		List<SingleLesson> singleLessons = null;
+		
+		HttpSession session = req.getSession();
+		
+		String user_type = (String) session.getAttribute("user_type");
+		
+		if(user_type == null || !user_type.equals("student") || courseId == null)
+			return null;
+		
+		try {
+			singleLessons = DatabaseManager.getInstance().getSingleLessonDao().findByCourseNotExpired(courseId, true);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return singleLessons;
+	}
+	
+	@PostMapping("/loadBookedLessons")
+	public List<SingleLesson> loadBookedLessons(HttpServletRequest req) {
+		
+		List<SingleLesson> singleLessons = null;
+		
+		HttpSession session = req.getSession();
+		
+		String user_type = (String) session.getAttribute("user_type");
+		
+		if(user_type == null || !user_type.equals("student"))
+			return null;
+		
+		Student student = (Student) session.getAttribute("user");
+		
+		if(student == null)
+			return null;
+		
+		try {
+			return DatabaseManager.getInstance().getSingleLessonDao().findBookedByStudentNotExpired(student.getCf(), true);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return singleLessons;
 	}
 }

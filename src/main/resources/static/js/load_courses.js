@@ -6,6 +6,8 @@ $(function() {
 	
 	loadMore(false);
 	
+	$("#searchBar").val("");
+	
 	$("#searchBar").on("input", function() {
 		like = $(this).val();
 		loadMore(false);

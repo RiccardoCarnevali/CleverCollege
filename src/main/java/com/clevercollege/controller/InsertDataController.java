@@ -46,4 +46,34 @@ public class InsertDataController {
 		return "ok";
 	}
 	
+	@PostMapping("/setBookedLesson")
+	public String bookLesson(Long lessonId, Boolean booked, HttpServletRequest req) {
+
+		HttpSession session = req.getSession();
+		
+		String user_type = (String) session.getAttribute("user_type");
+		
+		if(user_type == null || !user_type.equals("student") || lessonId == null || booked == null)
+			return "error";
+		
+		Student student = (Student) session.getAttribute("user");
+		
+		if(student == null)
+			return "error";
+		
+		try {
+			if(booked) {
+				DatabaseManager.getInstance().getStudentDao().bookActivityForStudent(lessonId, student.getCf());
+			}
+			else {
+				DatabaseManager.getInstance().getStudentDao().unbookActivityForStudent(lessonId, student.getCf());
+			}
+			DatabaseManager.getInstance().commit();
+		} catch (SQLException e) {
+			return "error";
+		}
+		
+		return "ok";
+	}
+	
 }

@@ -1,6 +1,7 @@
 package com.clevercollege.persistence.dao.jdbc;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,7 +54,7 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 			singleLesson.setManager(lesson.getManager());
 			singleLesson.setClassroom(lesson.getClassroom());
 			singleLesson.setCourse(lesson.getCourse());
-			singleLesson.setDate(rs.getDate("lesson_date"));
+			singleLesson.setDate(rs.getDate("lesson_date").toString());
 
 			singleLessons.add(singleLesson);
 		}
@@ -92,7 +93,7 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 			singleLesson.setManager(lesson.getManager());
 			singleLesson.setClassroom(lesson.getClassroom());
 			singleLesson.setCourse(lesson.getCourse());
-			singleLesson.setDate(rs.getDate("lesson_date"));
+			singleLesson.setDate(rs.getDate("lesson_date").toString());
 		}
 
 		return singleLesson;
@@ -117,7 +118,7 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 
 			PreparedStatement updateSt = conn.prepareStatement(query);
 
-			updateSt.setDate(1, singleLesson.getDate());
+			updateSt.setDate(1, Date.valueOf(singleLesson.getDate()));
 			updateSt.setLong(2, singleLesson.getId());
 
 			updateSt.executeUpdate();
@@ -128,7 +129,7 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 			PreparedStatement insertSt = conn.prepareStatement(query);
 
 			insertSt.setLong(1, singleLesson.getId());
-			insertSt.setDate(2, singleLesson.getDate());
+			insertSt.setDate(2, Date.valueOf(singleLesson.getDate()));
 
 			insertSt.executeUpdate();
 		}
@@ -171,7 +172,7 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id"), true));
 			}
 			lesson.setId(rs.getLong("id"));
-			lesson.setTime(rs.getTime("activity_time"));
+			lesson.setTime(rs.getTime("activity_time").toString());
 			lesson.setLength(rs.getInt("activity_length"));
 			lesson.setDescription(rs.getString("description"));
 			lesson.setManager(DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(cf));
@@ -185,4 +186,85 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 		return singleLessons;
 	}
 
+	@Override
+	public List<SingleLesson> findByCourseNotExpired(long courseId, boolean lazy) throws SQLException {
+		
+		List<SingleLesson> singleLessons = new ArrayList<>();
+
+		String query = "select * from single_lessons SL, lessons L, activities A where SL.id = L.id and L.id = A.id and L.course = ? and (lesson_date > current_date or (lesson_date = current_date and activity_time > current_time))";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setLong(1, courseId);
+
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			Lesson lesson = DatabaseManager.getInstance().getLessonDao().findByPrimaryKey(rs.getLong("id"), lazy);
+
+			SingleLesson singleLesson;
+			
+			if (lazy) {
+				singleLesson = new SingleLessonProxy();
+			} else {
+				singleLesson = new SingleLesson();
+				singleLesson.setBookers(lesson.getBookers());
+			}
+
+			singleLesson.setId(lesson.getId());
+			singleLesson.setTime(lesson.getTime());
+			singleLesson.setLength(lesson.getLength());
+			singleLesson.setDescription(lesson.getDescription());
+			singleLesson.setManager(lesson.getManager());
+			singleLesson.setClassroom(lesson.getClassroom());
+			singleLesson.setCourse(lesson.getCourse());
+			singleLesson.setDate(rs.getDate("lesson_date").toString());
+			
+			singleLessons.add(singleLesson);
+		}
+
+		return singleLessons;
+	}
+	
+	@Override
+	public List<SingleLesson> findBookedByStudentNotExpired(String studentCf, boolean lazy) throws SQLException {
+
+		List<SingleLesson> singleLessons = new ArrayList<>();
+		
+		String query = "select * from activities A, single_lessons SL, books B where SL.id = A.id and A.id = B.activity and B.student = ? and (lesson_date > current_date or (lesson_date = current_date and activity_time > current_time))";
+	
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setString(1, studentCf);
+		
+		ResultSet rs = st.executeQuery();
+		
+		while (rs.next()) {
+
+			Lesson lesson = DatabaseManager.getInstance().getLessonDao().findByPrimaryKey(rs.getLong("id"), lazy);
+
+			SingleLesson singleLesson;
+			
+			if (lazy) {
+				singleLesson = new SingleLessonProxy();
+			} else {
+				singleLesson = new SingleLesson();
+				singleLesson.setBookers(lesson.getBookers());
+			}
+
+			singleLesson.setId(lesson.getId());
+			singleLesson.setTime(lesson.getTime());
+			singleLesson.setLength(lesson.getLength());
+			singleLesson.setDescription(lesson.getDescription());
+			singleLesson.setManager(lesson.getManager());
+			singleLesson.setClassroom(lesson.getClassroom());
+			singleLesson.setCourse(lesson.getCourse());
+			singleLesson.setDate(rs.getDate("lesson_date").toString());
+			
+			singleLessons.add(singleLesson);
+		}
+
+		return singleLessons;
+	}
 }

@@ -14,6 +14,7 @@
 		
 		<link rel="stylesheet" href="/css/common.css">
 		<link rel="stylesheet" href="/css/view_data.css">
+		<link rel="stylesheet" href="/css/book_activities.css">
 		
 		<script src="/js/common.js"></script>
 		<script src="/js/load_activities.js" charset="UTF-8"></script>

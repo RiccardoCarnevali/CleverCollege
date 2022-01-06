@@ -16,4 +16,8 @@ public interface SingleLessonDao {
 	public void delete(long id) throws SQLException;
 
 	public List<SingleLesson> findByProfessor(String cf, boolean lazy) throws SQLException;
+	
+	public List<SingleLesson> findByCourseNotExpired(long courseId, boolean lazy) throws SQLException;
+	
+	public List<SingleLesson> findBookedByStudentNotExpired(String studentCf, boolean lazy) throws SQLException;
 }
