@@ -148,13 +148,41 @@ form {
 	margin-left: auto;
 }
 
-#descriptionInput {
+#descriptionInput, #locationsContainer {
 	width: 90%;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-#createActivityBttn, #editActivityBttn {
+#createActivityBttn, #editActivityBttn, #showMoreButton {
 	display: flex;
 	margin: 15px auto 0 auto;
+}
+
+#locations {
+	width: 100%;
+	padding-left: 0;
+}
+
+#locationList {
+	width: 100%;
+	display: block;
+	max-height: 300px;
+}
+
+
+#locationsContainer {
+	border-style: solid;
+	border-width: thin;
+	border-radius: 1em;
+	border-color: rgba(0,0,0,0.1);
+}
+
+.location {
+	width: 100%;
+	display: flex;
+}
+
+.location .radio-item {
+	margin-left: auto;
 }

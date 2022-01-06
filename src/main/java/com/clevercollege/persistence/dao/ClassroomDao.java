@@ -14,4 +14,6 @@ public interface ClassroomDao {
 	public void saveOrUpdate(Location classroom) throws SQLException;
 
 	public void delete(long id) throws SQLException;
+
+	List<Location> findByLike(String like, int amount, int offset) throws SQLException;
 }

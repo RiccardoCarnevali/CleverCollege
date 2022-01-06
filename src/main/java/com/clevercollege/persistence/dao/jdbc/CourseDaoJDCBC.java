@@ -45,6 +45,34 @@ public class CourseDaoJDCBC implements CourseDao {
 
 		return courses;
 	}
+	
+	@Override
+	public List<Course> findByProfessor(String professor) throws SQLException {
+		
+		List<Course> courses = new ArrayList<>();
+		
+		String query = "select * from courses where professor = ?";
+		
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setString(1, professor);
+		
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			Course course = new Course();
+
+			course.setId(rs.getLong("id"));
+			course.setName(rs.getString("course_name"));
+			course.setLecturer(
+					DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(rs.getString("professor")));
+
+			courses.add(course);
+		}
+
+		return courses;
+	}
 
 	@Override
 	public Course findByPrimaryKey(long id) throws SQLException {
@@ -124,5 +152,5 @@ public class CourseDaoJDCBC implements CourseDao {
 		
 		st.executeUpdate();
 	}
-
+	
 }

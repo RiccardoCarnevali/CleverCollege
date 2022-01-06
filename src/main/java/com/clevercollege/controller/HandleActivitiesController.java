@@ -22,10 +22,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 public class HandleActivitiesController {
-	@GetMapping("/view_activities")
-	public List<Activity> viewActivities(HttpSession session) {
+	@GetMapping("/getActivities")
+	public List<Activity> getActivities(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("user_type") == null || session.getAttribute("user") == null) {
+			return null;
+		}
 		String userType = (String) session.getAttribute("user_type");
-		String cf = (String) session.getAttribute("user_cf");
+		String cf = ((User) session.getAttribute("user")).getCf();
 		List<Activity> activities = new ArrayList<Activity>();
 		if (userType == "professor")
 			try {
@@ -39,10 +43,14 @@ public class HandleActivitiesController {
 		return activities;
 	}
 
-	@GetMapping("/view_single_lessons")
-	public List<SingleLesson> viewSingleLessons(HttpSession session) {
+	@GetMapping("/getSingleLessons")
+	public List<SingleLesson> getSingleLessons(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("user_type") == null || session.getAttribute("user") == null) {
+			return null;
+		}
 		String userType = (String) session.getAttribute("user_type");
-		String cf = (String) session.getAttribute("user_cf");
+		String cf = ((User) session.getAttribute("user")).getCf();
 		List<SingleLesson> singleLessons = new ArrayList<SingleLesson>();
 		if (userType == "professor")
 			try {
@@ -56,10 +64,14 @@ public class HandleActivitiesController {
 		return singleLessons;
 	}
 
-	@GetMapping("/view_weekly_lessons")
-	public List<WeeklyLesson> viewWeeklyLessons(HttpSession session) {
+	@GetMapping("/getWeeklyLessons")
+	public List<WeeklyLesson> getWeeklyLessons(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("user_type") == null || session.getAttribute("user") == null) {
+			return null;
+		}
 		String userType = (String) session.getAttribute("user_type");
-		String cf = (String) session.getAttribute("user_cf");
+		String cf = ((User) session.getAttribute("user")).getCf();
 		List<WeeklyLesson> weeklyLessons = new ArrayList<WeeklyLesson>();
 		if (userType == "professor")
 			try {
@@ -73,10 +85,14 @@ public class HandleActivitiesController {
 		return weeklyLessons;
 	}
 
-	@GetMapping("/view_seminars")
-	public List<Seminar> viewSeminars(HttpSession session) {
+	@GetMapping("/getSeminars")
+	public List<Seminar> getSeminars(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("user_type") == null || session.getAttribute("user") == null) {
+			return null;
+		}
 		String userType = (String) session.getAttribute("user_type");
-		String cf = (String) session.getAttribute("user_cf");
+		String cf = ((User) session.getAttribute("user")).getCf();
 		List<Seminar> seminars = new ArrayList<Seminar>();
 		if (userType == "professor")
 			try {
@@ -90,9 +106,13 @@ public class HandleActivitiesController {
 		return seminars;
 	}
 
-	@PostMapping("/enable_weekly_lesson")
-	public void enableWeeklyLesson(Long id, boolean disable, boolean indefinite) {
-		try {
+	@PostMapping("/enableWeeklyLesson")
+	public void enableWeeklyLesson(HttpServletRequest request, Long id, boolean disable, boolean indefinite) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("user_type") == null || !("professor").equals(session.getAttribute("user_type"))) {
+			return;
+		}
+		try {	
 			WeeklyLesson lesson = DatabaseManager.getInstance().getWeeklyLessonDao().findByPrimaryKey(id);
 			lesson.setDisabled(disable);
 			lesson.setDisabledIndefinitely(indefinite);
@@ -103,19 +123,20 @@ public class HandleActivitiesController {
 		}
 	}
 
-	@PostMapping("/create_activity")
-	public void createActivity(HttpSession session, HttpServletRequest request, String jsonString, String type) {
-		if(jsonString == null || type == null)
+	@PostMapping("/createActivity")
+	public void createActivity(HttpServletRequest request, String jsonString, String type) {
+		if (jsonString == null || type == null)
 			return;
+		HttpSession session = request.getSession();
+		if (session.getAttribute("user_type") == null || session.getAttribute("user") == null
+				|| !("professor").equals(session.getAttribute("user_type"))) {
+			return;
+		}
+		
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			if(request.getSession().getAttribute("user_type") == null || request.getSession().getAttribute("user") == null) {
-				return;
-			}
-			if (!request.getSession().getAttribute("user_type").equals("professor")) {
-				return;
-			}
-			User user = (User) request.getSession().getAttribute("user");
+			
+			User user = (User) session.getAttribute("user");
 			Long id = DatabaseManager.getInstance().getIdBroker().getNextActivityId();
 
 			if (type.equals("single")) {
@@ -143,8 +164,14 @@ public class HandleActivitiesController {
 
 	}
 
-	@PostMapping("/delete_activity")
-	public void deleteActivity(Long id) {
+	@PostMapping("/deleteActivity")
+	public void deleteActivity(HttpServletRequest request, Long id) {
+		HttpSession session = request.getSession();
+		String userType = (String) session.getAttribute("user_type");
+		if (userType == null || session.getAttribute("user") == null || 
+				(!("professor").equals(userType) && !("admin").equals(userType))) {
+			return;
+		}
 		try {
 			DatabaseManager.getInstance().getActivityDao().delete(id);
 		} catch (SQLException e) {

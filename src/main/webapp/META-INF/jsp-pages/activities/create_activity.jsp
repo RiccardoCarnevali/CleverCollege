@@ -75,13 +75,8 @@
 				<div class="form-group">
 					<label for="activityLengthPicker"><strong>Durata</strong></label> <input
 						type="time" id="activityLengthPicker" name="activity-length"
-						min="07:00" max="21:00" step="600"
+						min="00:00" max="10:00" step="600"
 						<c:if test="${activity != null}">value="${lengthHour}:${lengthMinute}"</c:if>>
-				</div>
-				<div class="form-group" id="locationInput">
-					<strong>Luogo</strong><select class="form-control"
-						id="locationSelect"
-						<c:if test="${activity != null}">value="activity.classroom.name"</c:if>></select>
 				</div>
 				<div class="form-group" id="courseInput">
 					<strong>Corso</strong><select class="form-control"
@@ -103,6 +98,24 @@
 							<c:if test="${activity_type == 'weekly' && activity.weekDay == 4}">selected="selected"</c:if>>Venerdì</option>
 					</select>
 				</div>
+			</div>
+			<label for="locationSearchBar" style="margin-left: 32px;"><strong>Location:</strong></label>
+			<div id="locationsContainer">
+				<input type="search" id="locationSearchBar" class="form-control" />
+				<div id="locationList">
+					<ul id="locations">
+						<c:if test="${activity != null}">
+							<li class="list-group-item location"><div
+									class="location-name">${activity.classroom.name}</div>
+								<div class="radio-item">
+									<input type="radio" name="location-select" value="location0"
+										id="location0" checked="checked"><label
+										for="location0"></label>
+								</div></li>
+						</c:if>
+					</ul>
+				</div>
+
 			</div>
 			<div class="form-row" id="descriptionInput">
 				<label for="descriptionTextarea"><strong>Descrizione</strong></label>

@@ -72,56 +72,80 @@ public class LocationDaoJDBC implements LocationDao {
 
 	@Override
 	public void saveOrUpdate(Location location) throws SQLException {
-	
+
 		String query = "select * from locations where id = ?";
-		
+
 		PreparedStatement st = conn.prepareStatement(query);
 
 		st.setLong(1, location.getId());
-		
+
 		ResultSet rs = st.executeQuery();
-		
-		if(rs.next()) {
-			
-			query = "update locations set "
-					+ "location_name = ?,"
-					+ "capacity = ?"
-					+ "where id = ?";
-			
+
+		if (rs.next()) {
+
+			query = "update locations set " + "location_name = ?," + "capacity = ?" + "where id = ?";
+
 			PreparedStatement updateSt = conn.prepareStatement(query);
-			
+
 			updateSt.setString(1, location.getName());
 			updateSt.setInt(2, location.getCapacity());
 			updateSt.setLong(3, location.getId());
-			
+
 			updateSt.executeUpdate();
-		}
-		else {
-			
+		} else {
+
 			query = "insert into locations values(?,?,?)";
-			
+
 			PreparedStatement insertSt = conn.prepareStatement(query);
-			
+
 			insertSt.setLong(1, location.getId());
 			insertSt.setString(2, location.getName());
 			insertSt.setInt(3, location.getCapacity());
-			
+
 			insertSt.executeUpdate();
 		}
-		
+
 	}
 
 	@Override
 	public void delete(long id) throws SQLException {
-		
+
 		String query = "delete from locations where id = ?";
-		
+
 		PreparedStatement st = conn.prepareStatement(query);
-		
+
 		st.setLong(1, id);
-		
+
 		st.executeUpdate();
-		
+
+	}
+
+	@Override
+	public List<Location> findByLike(String like, int amount, int offset) throws SQLException {
+		List<Location> locations = new ArrayList<>();
+
+		String query = "select * from locations where (upper(location_name)) like upper(?) "
+				+ "order by location_name limit ? offset ?";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, like);
+		st.setInt(2, amount);
+		st.setInt(3, offset);
+
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			Location location = new Location();
+
+			location.setId(rs.getLong("id"));
+			location.setName(rs.getString("location_name"));
+			location.setCapacity(rs.getInt("capacity"));
+			locations.add(location);
+		}
+
+		return locations;
 	}
 
 }

@@ -16,7 +16,7 @@ function loadActivities() {
 
 	$.ajax({
 		type: "get",
-		url: "/view_weekly_lessons",
+		url: "/getWeeklyLessons",
 		success: function(activities) {
 			if (activities.length === 0)
 				loadNoActivitiesCard('#weeklyLessonsAccordion');
@@ -29,7 +29,7 @@ function loadActivities() {
 
 	$.ajax({
 		type: "get",
-		url: "/view_single_lessons",
+		url: "/getSingleLessons",
 		success: function(activities) {
 			if (activities.length === 0)
 				loadNoActivitiesCard('#singleLessonsAccordion');
@@ -43,7 +43,7 @@ function loadActivities() {
 
 	$.ajax({
 		type: "get",
-		url: "/view_seminars",
+		url: "/getSeminars",
 		success: function(activities) {
 			if (activities.length === 0)
 				loadNoActivitiesCard('#seminarsAccordion');
@@ -303,7 +303,7 @@ function disableOrEnableActivity(id, disable, indefinite) {
 	else {
 		$('#disabledActivity' + id).addClass('hide');
 	}
-	$.post("/enable_weekly_lesson", {
+	$.post("/enableWeeklyLesson", {
 		id: id,
 		disable: disable,
 		indefinite: indefinite
@@ -334,7 +334,7 @@ function deleteActivity(id) {
 		if (result.isConfirmed) {
 			$.ajax({
 				type: 'post',
-				url: '/delete-activity',
+				url: '/deleteActivity',
 				data: { id: id },
 				success: function() {
 					Swal.fire({
@@ -359,7 +359,7 @@ function editActivity(id, type) {
 
 	$.ajax({
 		type: 'post',
-		url: 'edit_activity',
+		url: 'editActivity',
 		data: {
 			activityJSON: JSON.stringify(activity),
 			type: type

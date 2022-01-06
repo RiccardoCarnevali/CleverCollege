@@ -14,4 +14,6 @@ public interface LocationDao {
 	public void saveOrUpdate(Location location) throws SQLException;
 	
 	public void delete(long id) throws SQLException;
+
+	public List<Location> findByLike(String like, int amount, int offset) throws SQLException;
 }
