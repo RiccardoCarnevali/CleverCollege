@@ -93,12 +93,12 @@ body {
 }
 
 
-.btn-outline-primary {
+.btn-outline-primary, .btn-outline-primary:disabled {
 	color: #7e57c2;
 	border-color: #7e57c2;
 }
 
-.btn-outline-primary:hover, .btn-outline-primary:active, .btn-outline-primary:active:focus, .btn-outline-primary:focus {
+.btn-outline-primary:hover:not([disabled]), .btn-outline-primary:active, .btn-outline-primary:active:focus, .btn-outline-primary:focus {
 	color: #fff;
 	background-color: #7e57c2 !important;
 	border-color: #7e57c2 !important;
@@ -138,6 +138,14 @@ footer {
 
 #changePasswordContainer {
 	display: block;
+}
+
+.loader {
+	vertical-align: middle;
+	border: .20em solid #7e57c2;
+	border-right-color: transparent;
+	-webkit-animation: spinner-border 1s linear infinite;
+	animation: spinner-border 1s linear infinite;
 }
 
 .error-color, .error-color:hover, .error-color:focus {
