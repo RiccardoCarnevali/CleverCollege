@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.clevercollege.model.Course;
 import com.clevercollege.model.Location;
+import com.clevercollege.model.Seminar;
 import com.clevercollege.model.SingleLesson;
 import com.clevercollege.model.Student;
 import com.clevercollege.model.User;
@@ -157,7 +158,33 @@ public class LoadDataController {
 	}
 	
 	@PostMapping("/loadBookedLessons")
-	public List<SingleLesson> loadBookedLessons(HttpServletRequest req) {
+	public List<SingleLesson> loadBookedLessons(int offset, HttpServletRequest req) {
+		
+		List<SingleLesson> singleLessons = null;
+		
+		HttpSession session = req.getSession();
+		
+		String user_type = (String) session.getAttribute("user_type");
+		
+		if(user_type == null || !user_type.equals("student"))
+			return null;
+		
+		Student student = (Student) session.getAttribute("user");
+		
+		if(student == null)
+			return null;
+		
+		try {
+			return DatabaseManager.getInstance().getSingleLessonDao().findBookedByStudent(student.getCf(), true, 16, offset);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return singleLessons;	
+	}
+	
+	@PostMapping("/loadBookedLessonsNotExpired")
+	public List<SingleLesson> loadBookedLessonsNotExpired(HttpServletRequest req) {
 		
 		List<SingleLesson> singleLessons = null;
 		
@@ -180,5 +207,78 @@ public class LoadDataController {
 		}
 		
 		return singleLessons;
+	}
+	
+	@PostMapping("/loadSeminars")
+	public List<Seminar> loadSeminars(HttpServletRequest req) {
+		
+		List<Seminar> seminars = null;
+		
+		HttpSession session = req.getSession();
+		
+		String user_type = (String) session.getAttribute("user_type");
+		
+		if(user_type == null || !user_type.equals("student"))
+			return null;
+		
+		try {
+			seminars = DatabaseManager.getInstance().getSeminarDao().findNotExpired(true);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return seminars;
+	}
+	
+	@PostMapping("/loadBookedSeminars")
+	public List<Seminar> loadBookedSeminars(Integer offset, HttpServletRequest req) {
+		
+		List<Seminar> seminars = null;
+		
+		HttpSession session = req.getSession();
+		
+		String user_type = (String) session.getAttribute("user_type");
+		
+		if(user_type == null || !user_type.equals("student") || offset == null)
+			return null;
+		
+		Student student = (Student) session.getAttribute("user");
+		
+		if(student == null)
+			return null;
+		
+		try {
+			return DatabaseManager.getInstance().getSeminarDao().findBookedByStudent(student.getCf(), true, 16, offset);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return seminars;
+	}
+	
+	@PostMapping("/loadBookedSeminarsNotExpired")
+	public List<Seminar> loadBookedSeminarsNotExpired(HttpServletRequest req) {
+		
+		List<Seminar> seminars = null;
+		
+		HttpSession session = req.getSession();
+		
+		String user_type = (String) session.getAttribute("user_type");
+		
+		if(user_type == null || !user_type.equals("student"))
+			return null;
+		
+		Student student = (Student) session.getAttribute("user");
+		
+		if(student == null)
+			return null;
+		
+		try {
+			return DatabaseManager.getInstance().getSeminarDao().findBookedByStudentNotExpired(student.getCf(), true);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return seminars;
 	}
 }

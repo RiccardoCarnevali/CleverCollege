@@ -4,14 +4,14 @@ var errorShown = false;
 
 $(function() {
 	
-	loadMore(false);
-	
 	$("#searchBar").val("");
 	
 	$("#searchBar").on("input", function() {
 		like = $(this).val();
 		loadMore(false);
 	})
+	
+	loadMore(false);
 })
 
 function loadMore(showMore) {

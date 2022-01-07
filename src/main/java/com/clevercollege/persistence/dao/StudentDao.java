@@ -20,7 +20,7 @@ public interface StudentDao {
 	
 	public List<Student> findBookersForActivity(long activityId, boolean lazy) throws SQLException;
 	
-	public void bookActivityForStudent(long activityId, String studentCf) throws SQLException;
+	public boolean bookActivityForStudent(long activityId, String studentCf) throws SQLException;
 	
 	public void unbookActivityForStudent(long activityId, String studentCf) throws SQLException;
 	

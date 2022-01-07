@@ -5,8 +5,6 @@ var errorShown = false;
 
 $(function() {
 	
-	loadMore(false);
-	
 	$("#searchBar").val("");
 	
 	("#typeInput").val("locations");
@@ -22,6 +20,8 @@ $(function() {
 		$("#locations").empty();
 		loadMore(false);
 	})
+	
+	loadMore(false);
 })
 
 function loadMore(showMore) {

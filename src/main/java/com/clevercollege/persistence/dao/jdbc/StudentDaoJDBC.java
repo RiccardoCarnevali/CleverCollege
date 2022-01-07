@@ -192,16 +192,46 @@ public class StudentDaoJDBC implements StudentDao {
 	}
 
 	@Override
-	public void bookActivityForStudent(long activityId, String studentCf) throws SQLException {
+	public boolean bookActivityForStudent(long activityId, String studentCf) throws SQLException {
 		
-		String query = "insert into books values(?,?)";
+		String query = "select capacity from activities A, locations L where A.classroom = L.id and A.id = ?";
 		
 		PreparedStatement st = conn.prepareStatement(query);
 		
-		st.setString(1, studentCf);
-		st.setLong(2, activityId);
+		st.setLong(1, activityId);
 		
-		st.executeUpdate();
+		ResultSet rs = st.executeQuery();
+		
+		if(rs.next()) {
+			
+			int capacity = rs.getInt("capacity");
+			
+			query = "select count(*) as bookings from books where activity = ?";
+			
+			st = conn.prepareStatement(query);
+			
+			st.setLong(1, activityId);
+			
+			rs = st.executeQuery();
+			
+			if(rs.next()) {
+
+				if(rs.getInt("bookings") < capacity) {
+					
+					query = "insert into books values(?,?)";
+					
+					st = conn.prepareStatement(query);
+					
+					st.setString(1, studentCf);
+					st.setLong(2, activityId);
+					
+					st.executeUpdate();
+					
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override

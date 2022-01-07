@@ -30,6 +30,10 @@
 	border-radius: 1em;
 }
 
+.course {
+	border-radius: 10px !important	;
+}
+
 .course-body {
 	display: flex;
 }
@@ -58,17 +62,35 @@
 	color:#7e57c2;
 }
 
-.book-button-wrapper, .unbook-button-wrapper {
+.card {
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	margin-top: 15px;
+}
+
+.book-button-wrapper, .unbook-button-wrapper, .expired-wrapper {
 	margin-right: 10px;
 	margin-left: auto;
 }
 
-.book-button-text, .unbook-button-text {
+.book-button, .unbook-button, .expired-button {
+	border: none;
+}
+
+.expired-button {
+	cursor: default !important;
+}
+
+.expired-button:active, .expired-button:focus, .expired-button:active:focus {
+	box-shadow: none !important;
+}
+
+.book-button-text, .unbook-button-text, .expired-text {
 	margin-right: 5px;
 	font-weight: bold;
 }
 
-.lesson-time, .lesson-length, .lesson-classroom {
+.activity-time, .activity-length, .activity-classroom {
 	display: block;
 	margin-bottom: 10px;
 }
@@ -77,16 +99,16 @@
 	display:flex;
 }
 
-@media only screen and (max-width: 430px) {
-	.book-button-text {
+@media only screen and (max-width: 536px) {
+	.book-button-text, .unbook-button-text, .expired-text {
 		display: none;
 	}
 }
 
-.btn-outline-primary {
-	border: 0px;
-}
-
 .hidden {
 	display: none;
+}
+
+.activity-info i {
+	margin-right: 5px;
 }

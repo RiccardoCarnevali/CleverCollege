@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -154,7 +155,7 @@ public class SeminarDaoJDBC implements SeminarDao {
 	
 	@Override
 	public List<Seminar> findByProfessor(String cf, boolean lazy) throws SQLException {
-		List<Seminar> activities = new ArrayList<>();
+		List<Seminar> seminars = new ArrayList<>();
 
 		String query = "select * from seminars as x, activities as y where x.id = y.id and professor = ?";
 
@@ -183,10 +184,176 @@ public class SeminarDaoJDBC implements SeminarDao {
 			seminar.setClassroom(
 					DatabaseManager.getInstance().getClassroomDao().findByPrimaryKey(rs.getLong("classroom")));
 
-			activities.add(seminar);
+			seminars.add(seminar);
 		}
 
-		return activities;
+		return seminars;
 	}
+	
+	@Override
+	public List<Seminar> findByCollidingTimeForStudent(String date, String time, int length, String studentCf, boolean lazy) throws SQLException {
 
+		List<Seminar> seminars = new ArrayList<>();
+		
+		String query = "select * from books B, seminars S, activities A where B.activity = S.id and S.id = A.id and B.student = ? and " +
+						"seminar_date = ? and ((activity_time <= ? and ? < activity_time + interval '1 min' * activity_length) or "
+						+ "(? <= activity_time and activity_time < ?))";
+		
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setString(1, studentCf);
+		st.setDate(2, Date.valueOf(date));
+		st.setTime(3, Time.valueOf(time));
+		st.setTime(4, Time.valueOf(time));
+		st.setTime(5, Time.valueOf(time));
+		st.setTime(6, Time.valueOf(Time.valueOf(time).toLocalTime().plusMinutes(length)));
+		
+		ResultSet rs = st.executeQuery();
+		
+		while (rs.next()) {
+
+			Activity activity = DatabaseManager.getInstance().getActivityDao().findByPrimaryKey(rs.getLong("id"), lazy);
+			
+			Seminar seminar;
+			
+			if(lazy) {
+				seminar = new SeminarProxy();
+			}
+			else {
+				seminar = new Seminar();
+				seminar.setBookers(activity.getBookers());
+			}
+			
+			seminar.setId(activity.getId());
+			seminar.setTime(activity.getTime());
+			seminar.setLength(activity.getLength());
+			seminar.setDescription(activity.getDescription());
+			seminar.setManager(activity.getManager());
+			seminar.setClassroom(activity.getClassroom());
+			seminar.setDate(rs.getDate("seminar_date").toString());
+
+			seminars.add(seminar);
+		}
+		return seminars;
+	}
+	
+	@Override
+	public List<Seminar> findNotExpired(boolean lazy) throws SQLException {
+
+		List<Seminar> seminars = new ArrayList<>();
+
+		String query = "select * from seminars S, activities A where S.id = A.id and (seminar_date > current_date or (seminar_date = current_date and activity_time > current_time))";
+
+		Statement st = conn.createStatement();
+
+		ResultSet rs = st.executeQuery(query);
+		
+		while (rs.next()) {
+
+			Activity activity = DatabaseManager.getInstance().getActivityDao().findByPrimaryKey(rs.getLong("id"), lazy);
+			
+			Seminar seminar;
+			
+			if(lazy) {
+				seminar = new SeminarProxy();
+			}
+			else {
+				seminar = new Seminar();
+				seminar.setBookers(activity.getBookers());
+			}
+			
+			seminar.setId(activity.getId());
+			seminar.setTime(activity.getTime());
+			seminar.setLength(activity.getLength());
+			seminar.setDescription(activity.getDescription());
+			seminar.setManager(activity.getManager());
+			seminar.setClassroom(activity.getClassroom());
+			seminar.setDate(rs.getDate("seminar_date").toString());
+
+			seminars.add(seminar);
+		}
+		return seminars;
+	}
+	
+	@Override
+	public List<Seminar> findBookedByStudent(String studentCf, boolean lazy, int amount, int offset) throws SQLException {
+
+		List<Seminar> seminars = new ArrayList<>();
+
+		String query = "select * from seminars S, books B where S.id = B.activity and B.student = ? order by seminar_date desc limit ? offset ?";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, studentCf);
+		st.setInt(2, amount);
+		st.setInt(3, offset);
+
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			Activity activity = DatabaseManager.getInstance().getActivityDao().findByPrimaryKey(rs.getLong("id"), lazy);
+			
+			Seminar seminar;
+			
+			if(lazy) {
+				seminar = new SeminarProxy();
+			}
+			else {
+				seminar = new Seminar();
+				seminar.setBookers(activity.getBookers());
+			}
+			
+			seminar.setId(activity.getId());
+			seminar.setTime(activity.getTime());
+			seminar.setLength(activity.getLength());
+			seminar.setDescription(activity.getDescription());
+			seminar.setManager(activity.getManager());
+			seminar.setClassroom(activity.getClassroom());
+			seminar.setDate(rs.getDate("seminar_date").toString());
+
+			seminars.add(seminar);
+		}
+		return seminars;
+	}
+	
+	@Override
+	public List<Seminar> findBookedByStudentNotExpired(String studentCf, boolean lazy) throws SQLException {
+
+		List<Seminar> seminars = new ArrayList<>();
+
+		String query = "select * from activities A, seminars S, books B where S.id = A.id and A.id = B.activity and B.student = ? and (seminar_date > current_date or (seminar_date = current_date and activity_time > current_time))";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, studentCf);
+
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			Activity activity = DatabaseManager.getInstance().getActivityDao().findByPrimaryKey(rs.getLong("id"), lazy);
+			
+			Seminar seminar;
+			
+			if(lazy) {
+				seminar = new SeminarProxy();
+			}
+			else {
+				seminar = new Seminar();
+				seminar.setBookers(activity.getBookers());
+			}
+			
+			seminar.setId(activity.getId());
+			seminar.setTime(activity.getTime());
+			seminar.setLength(activity.getLength());
+			seminar.setDescription(activity.getDescription());
+			seminar.setManager(activity.getManager());
+			seminar.setClassroom(activity.getClassroom());
+			seminar.setDate(rs.getDate("seminar_date").toString());
+
+			seminars.add(seminar);
+		}
+		return seminars;
+	}
 }

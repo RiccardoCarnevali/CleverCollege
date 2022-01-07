@@ -92,6 +92,13 @@ body {
 	color: #333333;
 }
 
+.dropdown-item:active {
+	background-color: #7e57c2;
+}
+
+.dropdown-menu {
+	border-radius: 10px;
+}
 
 .btn-outline-primary {
 	color: #7e57c2;

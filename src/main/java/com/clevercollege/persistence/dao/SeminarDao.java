@@ -16,5 +16,12 @@ public interface SeminarDao {
 	public void delete(long id) throws SQLException;
 
 	public List<Seminar> findByProfessor(String cf, boolean lazy) throws SQLException;
+	
+	public List<Seminar> findByCollidingTimeForStudent(String date, String time, int length, String studentCf, boolean lazy) throws SQLException;
 
+	public List<Seminar> findNotExpired(boolean lazy) throws SQLException;
+	
+	public List<Seminar> findBookedByStudent(String studentCf, boolean lazy, int amount, int offset) throws SQLException;
+	
+	public List<Seminar> findBookedByStudentNotExpired(String studentCf, boolean lazy) throws SQLException;
 }

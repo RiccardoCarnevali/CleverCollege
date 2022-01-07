@@ -17,26 +17,25 @@
 		<link rel="stylesheet" href="/css/book_activities.css">
 		
 		<script src="/js/common.js"></script>
-		<script src="/js/load_activities.js" charset="UTF-8"></script>
+		<script src="/js/load_bookings.js" charset="UTF-8"></script>
 				
-		<title>Prenota attività</title>
+		<title>Le mie prenotazioni</title>
 	</head>
 	
 	<body>
 	
 		<div class="header"></div>
 		
-		<div class="container-fluid" id="coursesContainer">
+		<div class="container-fluid" id="bookingsContainer">
 		
-			<span id="label">Corsi</span>
-			<input class="form-control col-lg-4 col-md-6 col-sm-11 col-11" type="search" id="searchBar" placeholder="Cerca"><i class="fas fa-search" id="search-icon"></i>
-				
-				<select class="form-control col-lg-2 col-md-6 col-sm-12" id="typeInput">
-			      <option selected value="all">Tutti</option>
-			      <option value="followed">I miei corsi</option>
-			    </select>
-			    
-			<ul class="list-group" id="courses">	  
+			<span id="label">Prenotazioni</span>
+						    
+			<select class="form-control col-lg-2 col-md-6 col-sm-12" id="typeInput">
+			      <option selected value="lessons">Lezioni</option>
+			      <option value="seminars">Seminari</option>
+		    </select>
+						    
+			<ul class="list-group" id="bookings">  
 			</ul>
 					
 		</div>

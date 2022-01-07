@@ -41,6 +41,7 @@ public class LoginController {
                 request.getSession().setAttribute("user_cf", u.getCf());
                 String type = null;
                 Student student = DatabaseManager.getInstance().getStudentDao().findByPrimaryKey(cf, true);
+                
                 if(student != null) {
                 	type = "student";
                 	request.getSession().setAttribute("user", student);

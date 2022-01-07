@@ -71,15 +71,15 @@ public class ViewDataController {
 		return "view_locations";
 	}
 	
-	@GetMapping("/activities/book_activities")
-	public String viewBookActivityPage(HttpServletRequest req) {
+	@GetMapping("/activities/book-lessons")
+	public String viewBookLessonsPage(HttpServletRequest req) {
 
 		HttpSession session = req.getSession();
 		
 		User u = (User) session.getAttribute("user");
 		
 		if(u == null) {
-			session.setAttribute("after-login", "/activities/book_activities");
+			session.setAttribute("after-login", "/activities/book-lessons");
 			return "redirect:/login";
 		}
 		else {
@@ -87,6 +87,44 @@ public class ViewDataController {
 				return "not_authorized";
 		}
 		
-		return "book_activity";
+		return "book_lessons";
+	}
+	
+	@GetMapping("/activities/book-seminars")
+	public String viewBookSeminarsPage(HttpServletRequest req) {
+
+		HttpSession session = req.getSession();
+		
+		User u = (User) session.getAttribute("user");
+		
+		if(u == null) {
+			session.setAttribute("after-login", "/activities/book-seminars");
+			return "redirect:/login";
+		}
+		else {
+			if(!session.getAttribute("user_type").equals("student"))
+				return "not_authorized";
+		}
+		
+		return "book_seminars";
+	}
+	
+	@GetMapping("/activities/my-bookings")
+	public String viewMyBookingsPage(HttpServletRequest req) {
+
+		HttpSession session = req.getSession();
+		
+		User u = (User) session.getAttribute("user");
+		
+		if(u == null) {
+			session.setAttribute("after-login", "/activities/my-bookings");
+			return "redirect:/login";
+		}
+		else {
+			if(!session.getAttribute("user_type").equals("student"))
+				return "not_authorized";
+		}
+		
+		return "my_bookings";
 	}
 }
