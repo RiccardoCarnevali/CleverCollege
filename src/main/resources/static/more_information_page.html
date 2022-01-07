@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="ISO-8859-1">
+    <meta charset="UTF-8">
     <meta content="maximum-scale=1.0, initial-scale=1.0, width=device-width" name="viewport">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -13,8 +13,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type='text/javascript' src='http://www.bing.com/api/maps/mapcontrol?callback=GetMap' async defer></script>
 
     <script src="/js/common.js"></script>
+    <script src="/js/config.js"></script>
+    <script src="/js/createMap.js"></script>
 
     <title>About us</title>
 </head>
@@ -26,8 +29,8 @@
                     <h3>Chi siamo?</h3>
                 </div>
                 <div>
-                    <p>Siamo quattro studenti del terzo anno della facoltà di informatica dell'Università della Calabria
-                        (UNICAL). Il nostro gruppo è formato da tre ragazzi, Riccardo, Matteo e Giacomo, e una ragazza,
+                    <p>Siamo quattro studenti del terzo anno della facoltÃ  di informatica dell'UniversitÃ  della Calabria
+                        (UNICAL). Il nostro gruppo Ã¨ formato da tre ragazzi, Riccardo, Matteo e Giacomo, e una ragazza,
                         Alessia Donata, tutti e quattro impegnati equamente nella realizzazione di questo progetto,
                         creato e implementato come requisito per gli esami di Web Computing e Ingegneria del Software.
                     </p>
@@ -37,30 +40,19 @@
                 <div>
                     <h3>Dove trovarci?</h3>
                 </div>
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-4"></div>
-                    <div class="col-lg-4 col-md-4 col-sm-4">
-                    <iframe scrolling="no" src="https://www.bing.com/maps/embed?h=400&w=400&cp=39.35626796890212~16.22079849243164&lvl=16&typ=d&sty=r&src=SHELL&FORM=MBEDV8">
-                    </iframe>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-4"></div>
-                    <div style="text-align: center; width: 100%; padding: 6px 0;">
-                        <a id="largeMapLink" target="_blank" href="https://www.bing.com/maps?cp=39.35626796890212~16.22079849243164&amp;sty=r&amp;lvl=16&amp;FORM=MBEDLD">Visualizza mappa più grande</a> &nbsp; | &nbsp;
-                        <a id="dirMapLink" target="_blank" href="https://www.bing.com/maps/directions?cp=39.35626796890212~16.22079849243164&amp;sty=r&amp;lvl=16&amp;rtp=~pos.39.35626796890212_16.22079849243164____&amp;FORM=MBEDLD">Ottieni indicazioni stradali</a>
-                    </div>
-                </div>
+                <div id="myMap"></div>
             </div>
             <div class="container">
                 <div>
                     <h3>Da dove nasce l'idea?</h3>
                 </div>
                 <div>
-                    <p>Per monitorare i contagi e i possibili focolai all'interno del Campus, la nostra Università ha messo
+                    <p>Per monitorare i contagi e i possibili focolai all'interno del Campus, la nostra UniversitÃ  ha messo
                         a nostra disposizione un'applicazione di nome Smart Campus, utile per tracciare gli spostamenti
-                        degli studenti all'interno dei luoghi universitari. Tale applicazione, però, non piace a tutti
-                        gli studenti della nostra università, così abbiamo deciso di provare a realizzare un sito web simile
-                        a tale progetto ma che si differenziasse in ciò che gli studenti credono una "lacuna". Quel che è
-                        venuto fuori è Clever College.
+                        degli studenti all'interno dei luoghi universitari. Tale applicazione, perÃ², non piace a tutti
+                        gli studenti della nostra universitÃ , cosÃ¬ abbiamo deciso di provare a realizzare un sito web simile
+                        a tale progetto ma che si differenziasse in ciÃ² che gli studenti credono una "lacuna". Quel che Ã¨
+                        venuto fuori Ã¨ Clever College.
                     </p>
                 </div>
             </div>

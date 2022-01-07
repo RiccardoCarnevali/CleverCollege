@@ -15,13 +15,15 @@ a:hover, a:focus-visible, a:active{
     font-weight: bold;
 }
 
-#mailTo:hover, #largeMapLink:hover, #dirMapLink:hover {
+#mailTo:hover {
     color: #7e57c2;
     font-weight: bold;
 }
 
-iframe {
-    min-height: 300px;
-    width: 100%;
-    border: none;
+#myMap {
+    margin: 30px;
+    position: relative;
+    min-width: 400px;
+    min-height: 400px;
+    z-index: 1;
 }
