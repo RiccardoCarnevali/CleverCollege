@@ -17,6 +17,7 @@
 		<link rel="stylesheet" href="/css/book_activities.css">
 		
 		<script src="/js/common.js"></script>
+		<script src="/js/generic_error.js" charset="UTF-8"></script>
 		<script src="/js/load_bookings.js" charset="UTF-8"></script>
 				
 		<title>Le mie prenotazioni</title>

@@ -2,7 +2,6 @@ var like = "";
 var type = "all";
 var courses = new Array();
 var followed = new Array();
-var errorShown = false;
 
 const weekday = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
 const months = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
@@ -199,21 +198,6 @@ function displayCourses() {
 		}
 	})
 }
-
-	function errorMessage() {
-		if(!errorShown) {
-			errorShown = true;
-			Swal.fire({
-				title: "Oops...",
-				text: "Qualcosa è andato storto.",
-				icon: "error"
-			}).then((result) =>  {
-				if(result.isConfirmed) {
-					location.reload();
-				}
-			})
-		}
-	}
 
 function areEquals(courses1, courses2) {
 	if(courses1.length != courses2.length)

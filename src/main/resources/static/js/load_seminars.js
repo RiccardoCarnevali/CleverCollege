@@ -1,6 +1,5 @@
 const weekday = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
 const months = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
-var errorShown = false;
 
 $(function() {
 	$.ajax({
@@ -185,19 +184,4 @@ function toHHMM(timeLength) {
 		minutes = "0" + minutes;
 
 	return hours + ":" + minutes;
-}
-
-function errorMessage() {
-	if (!errorShown) {
-		errorShown = true;
-		Swal.fire({
-			title: "Oops...",
-			text: "Qualcosa è andato storto.",
-			icon: "error"
-		}).then((result) => {
-			if (result.isConfirmed) {
-				location.reload();
-			}
-		})
-	}
 }

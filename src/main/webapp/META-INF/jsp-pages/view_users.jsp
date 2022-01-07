@@ -18,6 +18,7 @@
 		
 		<script src="/js/common.js"></script>
 		<script src="/js/load_users.js" charset="UTF-8"></script>
+		<script src="/js/generic_error.js" charset="UTF-8"></script>
 		
 		<title>Utenti</title>
 	</head>
@@ -28,7 +29,7 @@
 		
 		<div class="container-fluid content-row" id="usersContainer">
 			<div class="row justify-content-md-right">
-				<a href="#0" class="btn btn-outline-primary col-lg-2 col-md-2 col-sm-4 col-6" id="addButton">Aggiungi</a>
+				<a href="/users/insert" class="btn btn-outline-primary col-lg-2 col-md-2 col-sm-4 col-6" id="addButton">Aggiungi</a>
 			</div>
 			
 			<span id="label">Utenti</span>

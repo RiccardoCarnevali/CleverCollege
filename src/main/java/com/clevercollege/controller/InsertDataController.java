@@ -32,12 +32,16 @@ public class InsertDataController {
         HttpSession session = request.getSession();
         User u = (User) session.getAttribute("user");
         if(u == null) {
-            session.setAttribute("after-login", "/insertOtherData");
             return "no logged user";
         }
+        
+        String user_type = (String) session.getAttribute("user_type");
+        
+        if(user_type == null || !user_type.equals("admin"))
+        	return "server error";
 
         if(dataFromForm == null || kindOfData == null)
-        return "server error";
+        	return "server error";
 
         ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
@@ -82,15 +86,19 @@ public class InsertDataController {
     }
 
     @PostMapping("/insertUser")
-    public String insertUser(HttpServletRequest request, String userFromForm, String kindOfUser) {
+    public String insertUser(HttpServletRequest request, String userFromForm, String kindOfUser, Boolean update) {
         HttpSession session = request.getSession();
         User userFromSession = (User) session.getAttribute("user");
         if(userFromSession == null) {
-            session.setAttribute("after-login", "/insertNewUser");
             return "no logged user";
         }
+                
+        String user_type = (String) session.getAttribute("user_type");
+        
+        if(user_type == null || !user_type.equals("admin"))
+        	return "server error";
 
-        if(userFromForm == null || kindOfUser == null)
+        if(userFromForm == null || kindOfUser == null || update == null)
             return "server error";
 
         ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -100,6 +108,9 @@ public class InsertDataController {
         } catch (JsonProcessingException e) {
             return "server error";
         }
+        
+        if(u.getCf() == null || u.getFirstName() == null || u.getLastName() == null || u.getEmail() == null)
+        	return "server error";
 
         String token = UUID.randomUUID().toString();
         String tmpPassword = BCrypt.hashpw(token, BCrypt.gensalt(12));
@@ -108,9 +119,9 @@ public class InsertDataController {
             return "cf not valid";
 
             try {
-                if(DatabaseManager.getInstance().getUserDao().findByEmail(u.getEmail()) != null)
+                if(!update && DatabaseManager.getInstance().getUserDao().findByEmail(u.getEmail()) != null)
                     return "email already exists";
-                if(DatabaseManager.getInstance().getUserDao().findByPrimaryKey(u.getCf()) != null)
+                if(!update && DatabaseManager.getInstance().getUserDao().findByPrimaryKey(u.getCf()) != null)
                     return "user already exists";
 
                 if(kindOfUser.equals("student")) {
@@ -120,7 +131,10 @@ public class InsertDataController {
                     } catch (JsonProcessingException e) {
                         return "server error";
                     }
-                    if(DatabaseManager.getInstance().getStudentDao().findByIdStudent(s.getStudentNumber()) != null)
+                    if(s.getStudentNumber() == null)
+                    	return "server error";
+                    
+                    if(!update && DatabaseManager.getInstance().getStudentDao().findByIdStudent(s.getStudentNumber()) != null)
                         return "idStudent already exists";
                     else {
                         s.setPassword(tmpPassword);
@@ -189,15 +203,6 @@ public class InsertDataController {
             }
         }
         return valid3.equals(char3);
-    }
-
-    @PostMapping("/searchProfessor")
-    public List<User> searchProfessorFromSubstring(String substring) {
-        try {
-            return DatabaseManager.getInstance().getProfessorDao().professorWithSubstring(substring);
-        } catch (SQLException e) {
-            return null;
-        }
     }
     
 	@PostMapping("/setFollowedCourse")

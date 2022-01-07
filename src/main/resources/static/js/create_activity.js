@@ -93,7 +93,8 @@ function loadClassrooms(showMore) {
 					loadClassrooms(true);
 				});
 			}
-		}
+		},
+		error: errorMessage
 	});
 
 
@@ -108,7 +109,8 @@ function loadCourses() {
 			for (let i = 0; i < courses.length; ++i) {
 				$('#courseSelect').append('<option value="' + i + '">' + courses[i].name + '</option>');
 			}
-		}
+		},
+		error: errorMessage
 	});
 }
 
@@ -137,7 +139,8 @@ function createActivity() {
 				} else {
 					generateConflictDiv(JSON.parse(data));
 				}
-			}
+			},
+			error: errorMessage
 		});
 	} else {
 		let inputs = $('.activityInfoInput input:not(.hide)');
@@ -177,7 +180,8 @@ function editActivity() {
 				} else {
 					generateConflictDiv(JSON.parse(data));
 				}
-			}
+			},
+			error: errorMessage
 		});
 	} else {
 		let inputs = $('.activityInfoInput input:not(.hide)');

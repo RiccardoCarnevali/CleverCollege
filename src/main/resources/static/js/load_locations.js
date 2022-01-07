@@ -1,13 +1,12 @@
 var like = "";
 var type = "locations";
 var locations = new Array();
-var errorShown = false;
 
 $(function() {
 	
 	$("#searchBar").val("");
 	
-	("#typeInput").val("locations");
+	$("#typeInput").val("locations");
 	
 	$("#searchBar").on("input", function() {
 		like = $(this).val();
@@ -155,21 +154,6 @@ function removeLocation(id) {
 		},
 		error: errorMessage
 	})
-}
-
-function errorMessage() {
-	if(!errorShown) {
-		errorShown = true;
-		Swal.fire({
-			title: "Oops...",
-			text: "Qualcosa è andato storto.",
-			icon: "error"
-		}).then((result) =>  {
-			if(result.isConfirmed) {
-				location.reload();
-			}
-		})
-	}
 }
 
 function areEquals(locations1, locations2) {

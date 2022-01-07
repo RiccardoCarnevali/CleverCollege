@@ -1,6 +1,5 @@
 var like = "";
 var courses = new Array();
-var errorShown = false;
 
 $(function() {
 	
@@ -119,21 +118,6 @@ function removeCourse(id) {
 		},
 		error: errorMessage
 	})
-}
-
-function errorMessage() {
-	if(!errorShown) {
-		errorShown = true;
-		Swal.fire({
-			title: "Oops...",
-			text: "Qualcosa è andato storto.",
-			icon: "error"
-		}).then((result) =>  {
-			if(result.isConfirmed) {
-				location.reload();
-			}
-		})
-	}
 }
 
 function areEquals(courses1, courses2) {

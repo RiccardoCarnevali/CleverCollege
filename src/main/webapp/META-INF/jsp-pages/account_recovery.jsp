@@ -21,6 +21,7 @@
 
 <script src="/js/account_recovery.js"></script>
 <script src="/js/common.js"></script>
+<script src="/js/generic_error.js" charset="UTF-8"></script>
 
 </head>
 <body>

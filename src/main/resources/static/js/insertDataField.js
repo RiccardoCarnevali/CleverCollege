@@ -45,19 +45,9 @@ $(document).ready(function () {
             dataFromForm = new Location(null, $('#dataName').val(), null);
         insertData(JSON.stringify(dataFromForm), $('input[name="kindOfData"]:checked').val(), $('input[name="kindOfPlace"]:checked').val(), selectedProfessor);
     });
-
-    $("#cancel-insertion").on("click", function () {
-        if(document.getElementById("place").checked)
-            window.location = '/locations';
-        else
-            window.location = '/courses';
-    })
-
 });
 
 var checkField = function () {
-    console.log("ci sono");
-    console.log($("#professor").val().length);
     if($("#dataName").val().length === 0 && document.getElementById("place").checked)
         $("#insert-other-data-button").prop('disabled', true);
     else if(!document.getElementById("place").checked && ($("#professor").val().length === 0 || $("#dataName").val().length === 0))
@@ -67,24 +57,15 @@ var checkField = function () {
     }
 }
 
-function Course(id, name, lecturer) {
-    this.id = id;
-    this.name = name;
-    this.lecturer = lecturer;
-}
-
-function Location(id, name, capacity) {
-    this.id = id;
-    this.name = name;
-    this.capacity = capacity;
-}
-
 var searchProfessorFromSubstring = function (substring) {
     $.ajax({
-        url: "searchProfessor",
+        url: "/loadUsers",
         method: "POST",
         data: {
-            substring : substring
+			type: "professors",
+			sortBy: "first_name",
+			like: substring,
+			offset: 0
         },
         success: function (responseData) {
             document.getElementsByClassName("professor-list")[0].innerHTML = "";
@@ -109,13 +90,7 @@ var searchProfessorFromSubstring = function (substring) {
                 }
             }
         },
-        fail: function () {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Qualcosa è andato storto!'
-            });
-        }
+        error: errorMessage
     });
 }
 
@@ -174,13 +149,9 @@ var insertData = function (dataFromForm, kindOfData, kindOfPlace, cfProfessor) {
                 $("#insert-other-data-button").prop('disabled', true);
             }
         },
-        fail: function () {
+        error: function () {
             $('.loader').css('display', 'none');
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Qualcosa è andato storto!'
-            });
+            errorMessage();
         }
     });
 }

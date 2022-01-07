@@ -18,6 +18,7 @@
 		
 		<script src="/js/common.js"></script>
 		<script src="/js/load_lessons.js" charset="UTF-8"></script>
+		<script src="/js/generic_error.js" charset="UTF-8"></script>
 				
 		<title>Prenota lezioni</title>
 	</head>
