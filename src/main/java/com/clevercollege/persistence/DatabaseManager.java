@@ -22,7 +22,7 @@ import com.clevercollege.persistence.dao.jdbc.ActivityDaoJDBC;
 import com.clevercollege.persistence.dao.jdbc.AdministratorDaoJDBC;
 import com.clevercollege.persistence.dao.jdbc.CheckInCheckOutDaoJDBC;
 import com.clevercollege.persistence.dao.jdbc.ClassroomDaoJDBC;
-import com.clevercollege.persistence.dao.jdbc.CourseDaoJDCBC;
+import com.clevercollege.persistence.dao.jdbc.CourseDaoJDBC;
 import com.clevercollege.persistence.dao.jdbc.LessonDaoJDBC;
 import com.clevercollege.persistence.dao.jdbc.LocationDaoJDBC;
 import com.clevercollege.persistence.dao.jdbc.ProfessorDaoJDBC;
@@ -97,7 +97,7 @@ public class DatabaseManager {
 	
 	public CourseDao getCourseDao() {
 		if(courseDao == null)
-			courseDao = new CourseDaoJDCBC(conn);
+			courseDao = new CourseDaoJDBC(conn);
 		return courseDao;
 	}
 	

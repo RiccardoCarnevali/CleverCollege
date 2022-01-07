@@ -12,11 +12,11 @@ import com.clevercollege.model.Course;
 import com.clevercollege.persistence.DatabaseManager;
 import com.clevercollege.persistence.dao.CourseDao;
 
-public class CourseDaoJDCBC implements CourseDao {
+public class CourseDaoJDBC implements CourseDao {
 
 	private Connection conn;
 
-	public CourseDaoJDCBC(Connection conn) {
+	public CourseDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
 
@@ -46,6 +46,7 @@ public class CourseDaoJDCBC implements CourseDao {
 		return courses;
 	}
 	
+	@Override
 	public List<Course> findByLike(String like, int amount, int offset) throws SQLException {
 
 		List<Course> courses = new ArrayList<>();
@@ -101,6 +102,26 @@ public class CourseDaoJDCBC implements CourseDao {
 			courses.add(course);
 		}
 
+		return courses;
+	}
+	
+	@Override
+	public List<Course> findCoursesFollowedBy(String student) throws SQLException {
+
+		List<Course> courses = new ArrayList<>();
+		
+		String query = "select * from follows where student = ?";
+		
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setString(1, student);
+		
+		ResultSet rs = st.executeQuery();
+		
+		while(rs.next()) {
+			courses.add(findByPrimaryKey(rs.getLong("course")));
+		}
+		
 		return courses;
 	}
 

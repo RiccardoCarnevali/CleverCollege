@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -169,7 +170,7 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 			} else {
 				lesson = new SingleLesson();
 				lesson.setBookers(
-						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id")));
+						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id"), true));
 			}
 			lesson.setId(rs.getLong("id"));
 			lesson.setDate(rs.getDate("lesson_date").toString());
@@ -187,4 +188,177 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 		return singleLessons;
 	}
 
+	@Override
+	public List<SingleLesson> findByCourseNotExpired(long courseId, boolean lazy) throws SQLException {
+
+		List<SingleLesson> singleLessons = new ArrayList<>();
+
+		String query = "select * from single_lessons SL, lessons L, activities A where SL.id = L.id and L.id = A.id and L.course = ? and (lesson_date > current_date or (lesson_date = current_date and activity_time > current_time))";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setLong(1, courseId);
+
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			Lesson lesson = DatabaseManager.getInstance().getLessonDao().findByPrimaryKey(rs.getLong("id"), lazy);
+
+			SingleLesson singleLesson;
+
+			if (lazy) {
+				singleLesson = new SingleLessonProxy();
+			} else {
+				singleLesson = new SingleLesson();
+				singleLesson.setBookers(lesson.getBookers());
+			}
+
+			singleLesson.setId(lesson.getId());
+			singleLesson.setTime(lesson.getTime());
+			singleLesson.setLength(lesson.getLength());
+			singleLesson.setDescription(lesson.getDescription());
+			singleLesson.setManager(lesson.getManager());
+			singleLesson.setClassroom(lesson.getClassroom());
+			singleLesson.setCourse(lesson.getCourse());
+			singleLesson.setDate(rs.getDate("lesson_date").toString());
+
+			singleLessons.add(singleLesson);
+		}
+
+		return singleLessons;
+	}
+	
+	@Override
+	public List<SingleLesson> findBookedByStudent(String studentCf, boolean lazy, int amount, int offset)
+			throws SQLException {
+
+		List<SingleLesson> singleLessons = new ArrayList<>();
+
+		String query = "select * from single_lessons SL, books B where SL.id = B.activity and B.student = ? order by lesson_date desc limit ? offset ?";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, studentCf);
+		st.setInt(2, amount);
+		st.setInt(3, offset);
+		
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			Lesson lesson = DatabaseManager.getInstance().getLessonDao().findByPrimaryKey(rs.getLong("id"), lazy);
+
+			SingleLesson singleLesson;
+
+			if (lazy) {
+				singleLesson = new SingleLessonProxy();
+			} else {
+				singleLesson = new SingleLesson();
+				singleLesson.setBookers(lesson.getBookers());
+			}
+
+			singleLesson.setId(lesson.getId());
+			singleLesson.setTime(lesson.getTime());
+			singleLesson.setLength(lesson.getLength());
+			singleLesson.setDescription(lesson.getDescription());
+			singleLesson.setManager(lesson.getManager());
+			singleLesson.setClassroom(lesson.getClassroom());
+			singleLesson.setCourse(lesson.getCourse());
+			singleLesson.setDate(rs.getDate("lesson_date").toString());
+
+			singleLessons.add(singleLesson);
+		}
+		return singleLessons;
+	}
+
+	@Override
+	public List<SingleLesson> findBookedByStudentNotExpired(String studentCf, boolean lazy) throws SQLException {
+
+		List<SingleLesson> singleLessons = new ArrayList<>();
+
+		String query = "select * from activities A, single_lessons SL, books B where SL.id = A.id and A.id = B.activity and B.student = ? and (lesson_date > current_date or (lesson_date = current_date and activity_time > current_time))";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, studentCf);
+
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			Lesson lesson = DatabaseManager.getInstance().getLessonDao().findByPrimaryKey(rs.getLong("id"), lazy);
+
+			SingleLesson singleLesson;
+
+			if (lazy) {
+				singleLesson = new SingleLessonProxy();
+			} else {
+				singleLesson = new SingleLesson();
+				singleLesson.setBookers(lesson.getBookers());
+			}
+
+			singleLesson.setId(lesson.getId());
+			singleLesson.setTime(lesson.getTime());
+			singleLesson.setLength(lesson.getLength());
+			singleLesson.setDescription(lesson.getDescription());
+			singleLesson.setManager(lesson.getManager());
+			singleLesson.setClassroom(lesson.getClassroom());
+			singleLesson.setCourse(lesson.getCourse());
+			singleLesson.setDate(rs.getDate("lesson_date").toString());
+
+			singleLessons.add(singleLesson);
+		}
+
+		return singleLessons;
+	}
+
+	@Override
+	public List<SingleLesson> findByCollidingTimeForStudent(String date, String time, int length, String studentCf,
+			boolean lazy) throws SQLException {
+
+		List<SingleLesson> singleLessons = new ArrayList<>();
+
+		String query = "select * from books B, single_lessons SL, activities A where B.activity = SL.id and SL.id = A.id and B.student = ? and "
+				+ "lesson_date = ? and ((activity_time <= ? and ? < activity_time + interval '1 min' * activity_length) or "
+				+ "(? <= activity_time and activity_time < ?))";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, studentCf);
+		st.setDate(2, Date.valueOf(date));
+		st.setTime(3, Time.valueOf(time));
+		st.setTime(4, Time.valueOf(time));
+		st.setTime(5, Time.valueOf(time));
+		st.setTime(6, Time.valueOf(Time.valueOf(time).toLocalTime().plusMinutes(length)));
+
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			Lesson lesson = DatabaseManager.getInstance().getLessonDao().findByPrimaryKey(rs.getLong("id"), lazy);
+
+			SingleLesson singleLesson;
+
+			if (lazy) {
+				singleLesson = new SingleLessonProxy();
+			} else {
+				singleLesson = new SingleLesson();
+				singleLesson.setBookers(lesson.getBookers());
+			}
+
+			singleLesson.setId(lesson.getId());
+			singleLesson.setTime(lesson.getTime());
+			singleLesson.setLength(lesson.getLength());
+			singleLesson.setDescription(lesson.getDescription());
+			singleLesson.setManager(lesson.getManager());
+			singleLesson.setClassroom(lesson.getClassroom());
+			singleLesson.setCourse(lesson.getCourse());
+			singleLesson.setDate(rs.getDate("lesson_date").toString());
+
+			singleLessons.add(singleLesson);
+		}
+
+		return singleLessons;
+	}
 }

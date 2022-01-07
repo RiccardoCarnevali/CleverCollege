@@ -20,13 +20,13 @@ public class StudentDaoJDBCTest {
 		List<Student> studentsFromDb = null;
 		
 		try {
-			studentsFromDb = DatabaseManager.getInstance().getStudentDao().findAll();
+			studentsFromDb = DatabaseManager.getInstance().getStudentDao().findAll(true);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
 		List<Student> students = new ArrayList<>();
-		students.add(new Student("aaaaaaaaaaaaaaab", null, null, null, null, null, null, null));
+		students.add(new Student("aaaaaaaaaaaaaaab", null, null, null, null, null, null, null, null));
 		
 		assertArrayEquals(students.toArray(), studentsFromDb.toArray());
 	}
@@ -36,13 +36,13 @@ public class StudentDaoJDBCTest {
 		Student studentFromDb1 = null;
 		Student studentFromDb2 = null;
 		try {
-			studentFromDb1 = DatabaseManager.getInstance().getStudentDao().findByPrimaryKey("aaaaaaaaaaaaaaab");
-			studentFromDb2 = DatabaseManager.getInstance().getStudentDao().findByPrimaryKey("aaaaaaaaaaaaaaaa");
+			studentFromDb1 = DatabaseManager.getInstance().getStudentDao().findByPrimaryKey("aaaaaaaaaaaaaaab", true);
+			studentFromDb2 = DatabaseManager.getInstance().getStudentDao().findByPrimaryKey("aaaaaaaaaaaaaaaa", true);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		Student student = new Student("aaaaaaaaaaaaaaab", null, null, null, null, null, null, null);
+		Student student = new Student("aaaaaaaaaaaaaaab", null, null, null, null, null, null, null, null);
 				
 		assertEquals(student, studentFromDb1);
 		assertNull(studentFromDb2);
@@ -53,13 +53,13 @@ public class StudentDaoJDBCTest {
 		List<Student> bookersFromDb = null;
 		 
 		try {
-			bookersFromDb = DatabaseManager.getInstance().getStudentDao().findBookersForActivity(5);
+			bookersFromDb = DatabaseManager.getInstance().getStudentDao().findBookersForActivity(5, true);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
 		List<Student> bookers = new ArrayList<>();
-		bookers.add(new Student("aaaaaaaaaaaaaaab", null, null, null, null, null, null, null));
+		bookers.add(new Student("aaaaaaaaaaaaaaab", null, null, null, null, null, null, null, null));
 		
 		assertArrayEquals(bookers.toArray(), bookersFromDb.toArray());
 	}
