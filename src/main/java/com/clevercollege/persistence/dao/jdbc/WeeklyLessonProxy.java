@@ -17,7 +17,7 @@ public class WeeklyLessonProxy extends WeeklyLesson {
 	public List<Student> getBookers() {
 		if (super.getBookers() == null)
 			try {
-				setBookers(DatabaseManager.getInstance().getStudentDao().findBookersForActivity(getId()));
+				setBookers(DatabaseManager.getInstance().getStudentDao().findBookersForActivity(getId(), true));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

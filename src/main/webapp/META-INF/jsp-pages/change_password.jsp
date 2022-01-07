@@ -27,7 +27,7 @@
 
 		<h5>Un codice di recupero è stato inviato alla mail inserita</h5>
 		<p>Inserisci il codice e la tua nuova password.</p>
-		<form method="post" action="resetPassword">
+		<form method="post" action="reset-password">
 	
 			<div class="mb-3" id="email">
 				<label for="emailInput" class="form-label"><strong>Email:</strong></label>

@@ -17,5 +17,6 @@ public interface LocationDao {
 	
 	public void delete(long id) throws SQLException;
 
+
 	public Location findByName(String name) throws SQLException;
 }

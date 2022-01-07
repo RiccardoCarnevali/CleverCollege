@@ -12,7 +12,6 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="/css/common.css">
 <link rel="stylesheet" href="/css/login.css">
-<meta content='maximum-scale=1.0, initial-scale=1.0, width=device-width' name='viewport'>
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -29,7 +28,7 @@
 	<div class="header"></div>
 	<div
 		class="container<c:if test="${email_sent != null || password_reset != null}"> hide</c:if>">
-		<form method="post" action="recoverPassword">
+		<form method="post" action="recover-password">
 			<div class="mb-3" id="insertEmail">
 				<p>Hai dimenticato la tua password? Inserisci la tua email e
 					ricevererai un codice per recuperarla.</p>

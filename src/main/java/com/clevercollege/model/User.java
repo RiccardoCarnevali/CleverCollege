@@ -100,4 +100,13 @@ public class User {
 		User other = (User) obj;
 		return Objects.equals(cf, other.cf);
 	}
+
+	@Override
+	public String toString() {
+		return "User [cf=" + cf + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", password=" + password + ", description=" + description + ", profilePicture=" + profilePicture
+				+ "]";
+	}
+	
+	
 }

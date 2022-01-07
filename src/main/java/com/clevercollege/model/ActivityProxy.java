@@ -1,7 +1,6 @@
 package com.clevercollege.model;
 
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.List;
 
 import com.clevercollege.persistence.DatabaseManager;
@@ -12,7 +11,7 @@ public class ActivityProxy extends Activity {
 		super();
 	}
 	
-	public ActivityProxy(long id, Time time, int length, String description, User manager, Location classroom) {
+	public ActivityProxy(long id, String time, int length, String description, User manager, Location classroom) {
 		super(id, time, length, description, manager, null, classroom);
 	}
 
@@ -20,7 +19,7 @@ public class ActivityProxy extends Activity {
 	public List<Student> getBookers() {
 		if(super.getBookers() == null)
 			try {
-				setBookers(DatabaseManager.getInstance().getStudentDao().findBookersForActivity(getId()));
+				setBookers(DatabaseManager.getInstance().getStudentDao().findBookersForActivity(getId(), true));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
