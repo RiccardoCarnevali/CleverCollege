@@ -28,7 +28,7 @@
 	<div class="header"></div>
 	<div
 		class="container<c:if test="${email_sent != null || password_reset != null}"> hide</c:if>">
-		<form method="post" action="recoverPassword">
+		<form method="post" action="recover-password">
 			<div class="mb-3" id="insertEmail">
 				<p>Hai dimenticato la tua password? Inserisci la tua email e
 					ricevererai un codice per recuperarla.</p>

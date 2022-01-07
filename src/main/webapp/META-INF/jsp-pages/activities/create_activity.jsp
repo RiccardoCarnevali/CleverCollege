@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="/css/insert.css">
 <link rel="stylesheet" href="/css/activities.css">
 
-<script src="https://kit.fontawesome.com/a91a27e46f.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script

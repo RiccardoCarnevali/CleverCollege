@@ -112,7 +112,7 @@ public class HandleActivitiesController {
 	}
 
 	@PostMapping("/enableWeeklyLesson")
-	public void enableWeeklyLesson(HttpServletRequest request, Long id, boolean disable, boolean indefinite) {
+	public void enableWeeklyLesson(HttpServletRequest request, Long id, Boolean disable, Boolean indefinite) {
 		HttpSession session = request.getSession();
 		if (session.getAttribute("user_type") == null || !("professor").equals(session.getAttribute("user_type"))) {
 			return;
@@ -129,7 +129,7 @@ public class HandleActivitiesController {
 	}
 
 	@PostMapping("/createActivity")
-	public String createActivity(HttpServletRequest request, String jsonString, String type, boolean edit) {
+	public String createActivity(HttpServletRequest request, String jsonString, String type, Boolean edit) {
 		if (jsonString == null || type == null) {
 			return null;
 		}

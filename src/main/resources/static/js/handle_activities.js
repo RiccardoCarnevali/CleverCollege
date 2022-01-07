@@ -5,7 +5,8 @@ $(function() {
 
 	loadActivities();
 	$(document).on('change', '.custom-control', function(event) {
-		disableOrEnableActivityConfirm(event.target.id.slice(-1), !event.target.checked);
+		console.log(event.target.id);
+		disableOrEnableActivityConfirm(event.target.id.slice(9), !event.target.checked);
 	});
 });
 
@@ -102,14 +103,14 @@ function loadWeeklyCard(activity) {
 
 	activityBody.innerHTML =
 		'<div class="activity-info">' +
-		'<div><strong>Orario: </strong>' + activity.time.slice(0, 5) + 
-		' <i class="far fa-clock"></i></div>' +
-		'<div><strong>Durata: </strong>' + toHHMM(activity.length) + 
-		' <i class="far fa-hourglass"></i></div>' +
-		'<div><strong>Luogo: </strong>' + activity.classroom.name +
-		' <i class="far fa-map-marker"></i></div>'+
-		'<div><strong>Corso: </strong>' + activity.course.name +
-		' <i class="far fa-book"></i></div>' +
+		'<div><i class="far fa-clock"></i><strong>Orario: </strong>' + activity.time.slice(0, 5) + 
+		' </div>' +
+		'<div><i class="far fa-hourglass"></i><strong>Durata: </strong>' + toHHMM(activity.length) + 
+		' </div>' +
+		'<div><i class="far fa-map"></i><strong>Aula: </strong>' + activity.classroom.name +
+		' </div>'+
+		'<div><i class="fas fa-book"></i><strong>Corso: </strong>' + activity.course.name +
+		' </div>' +
 		'</div>' + 
 		activity.description +
 		'<div class="bottom-activity-body">' +
@@ -121,8 +122,8 @@ function loadWeeklyCard(activity) {
 		'La lezione è attivata</p>' +
 		'<form method="post" action="/activities/edit_activity">' + 
 		'<input name="type" type="hidden" value="weekly"><input name="id" type="hidden" value="' + activity.id + '">' +
-		'<button type="submit" class="fa fa-pencil"></button>' +
-		'<a onclick="deleteActivity(' + activity.id + ')" class="fa fa-trash"></a></div></form>';
+		'<button type="submit" class="fas fa-pen"></button>' +
+		'<span onclick="deleteActivity(' + activity.id + ')" class="fas fa-trash clickable"></span></div></form>';
 
 	checkboxDiv.append(checkboxInput);
 	checkboxDiv.append(checkboxLabel);
@@ -170,21 +171,21 @@ function loadSingleCard(activity) {
 
 	activityBody.innerHTML =
 		'<div class="activity-info">' +
-		'<div><strong>Orario: </strong>' + activity.time.slice(0, 5) + 
-		' <i class="far fa-clock"></i></div>' +
-		'<div><strong>Durata: </strong>' + toHHMM(activity.length) + 
-		' <i class="far fa-hourglass"></i></div>' +
-		'<div><strong>Luogo: </strong>' + activity.classroom.name +
-		' <i class="far fa-map-marker"></i></div>'+
-		'<div><strong>Corso: </strong>' + activity.course.name +
-		' <i class="far fa-book"></i></div>' +
+		'<div><i class="far fa-clock"></i><strong>Orario: </strong>' + activity.time.slice(0, 5) + 
+		' </div>' +
+		'<div><i class="far fa-hourglass"></i><strong>Durata: </strong>' + toHHMM(activity.length) + 
+		' </div>' +
+		'<div><i class="far fa-map"></i><strong>Aula: </strong>' + activity.classroom.name +
+		' </div>'+
+		'<div><i class="fas fa-book"></i><strong>Corso: </strong>' + activity.course.name +
+		' </div>' +
 		'</div>' + 
 		activity.description +
 		'<div class="bottom-activity-body">' +
 		'<form method="post" action="/activities/edit_activity">' + 
 		'<input name="type" type="hidden" value="single"><input name="id" type="hidden" value="' + activity.id + '">' +
-		'<button type="submit" class="fa fa-pencil"></button>' +
-		'<a onclick="deleteActivity(' + activity.id + ')" class="fa fa-trash"></a></div></form>';
+		'<button type="submit" class="fas fa-pen"></button>' +
+		'<span onclick="deleteActivity(' + activity.id + ')" class="fas fa-trash clickable"></span></div></form>';
 
 	iconDiv.append(icon);
 
@@ -228,19 +229,19 @@ function loadSeminarCard(activity) {
 
 	activityBody.innerHTML =
 		'<div class="activity-info">' +
-		'<div><strong>Orario: </strong>' + activity.time.slice(0, 5) + 
-		' <i class="far fa-clock"></i></div>' +
-		'<div><strong>Durata: </strong>' + toHHMM(activity.length) + 
-		' <i class="far fa-hourglass"></i></div>' +
-		'<div><strong>Luogo: </strong>' + activity.classroom.name +
-		' <i class="far fa-map-marker"></i></div>'+
+		'<div><i class="far fa-clock"></i><strong>Orario: </strong>' + activity.time.slice(0, 5) + 
+		' </div>' +
+		'<div><i class="far fa-hourglass"></i><strong>Durata: </strong>' + toHHMM(activity.length) + 
+		' </div>' +
+		'<div><i class="far fa-map"></i><strong>Aula: </strong>' + activity.classroom.name +
+		' </div>'+
 		'</div>' + 
 		activity.description +
 		'<div class="bottom-activity-body">' +
 		'<form method="post" action="/activities/edit_activity">' + 
 		'<input name="type" type="hidden" value="seminar"><input name = "id" type="hidden" value="' + activity.id + '">' +
-		'<button type="submit" class="fa fa-pencil"></button>' +
-		'<a onclick="deleteActivity(' + activity.id + ')" class="fa fa-trash"></a></div></form>';
+		'<button type="submit" class="fas fa-pen"></button>' +
+		'<span onclick="deleteActivity(' + activity.id + ')" class="fas fa-trash clickable"></span></div></form>';
 
 	iconDiv.append(icon);
 
