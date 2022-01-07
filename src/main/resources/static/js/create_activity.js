@@ -6,7 +6,7 @@ $(function() {
 	})
 	hideUnusedInputs($('input[name="activity-type"]:checked').val());
 
-	like = '';
+	
 	loadedClassrooms = [];
 
 	//check if there is a loaded activity already
@@ -15,6 +15,8 @@ $(function() {
 		like = $('.classroom-name').html();
 		$("#classroomSearchBar").val(like);
 	}
+	if(like == null)
+		like = '';
 	loadClassrooms(false);
 
 	$("#classroomSearchBar").on("input", function() {

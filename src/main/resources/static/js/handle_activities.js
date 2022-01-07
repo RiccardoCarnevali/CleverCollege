@@ -112,7 +112,7 @@ function loadWeeklyCard(activity) {
 		'<div><i class="fas fa-book"></i><strong>Corso: </strong>' + activity.course.name +
 		' </div>' +
 		'</div>' + 
-		activity.description +
+		'<p class="activity-body-description">' + activity.description + '</p>' +
 		'<div class="bottom-activity-body">' +
 		'<p class="disabled-activity-info ' + (activity.disabled ? '' : 'hide') +
 		'" id="disabledActivity' + activity.id + '">' +
@@ -180,7 +180,7 @@ function loadSingleCard(activity) {
 		'<div><i class="fas fa-book"></i><strong>Corso: </strong>' + activity.course.name +
 		' </div>' +
 		'</div>' + 
-		activity.description +
+		'<p class="activity-body-description">' + activity.description + '</p>' +		
 		'<div class="bottom-activity-body">' +
 		'<form method="post" action="/activities/edit_activity">' + 
 		'<input name="type" type="hidden" value="single"><input name="id" type="hidden" value="' + activity.id + '">' +
@@ -236,7 +236,7 @@ function loadSeminarCard(activity) {
 		'<div><i class="far fa-map"></i><strong>Aula: </strong>' + activity.classroom.name +
 		' </div>'+
 		'</div>' + 
-		activity.description +
+		'<p class="activity-body-description">' + activity.description + '</p>' +
 		'<div class="bottom-activity-body">' +
 		'<form method="post" action="/activities/edit_activity">' + 
 		'<input name="type" type="hidden" value="seminar"><input name = "id" type="hidden" value="' + activity.id + '">' +
