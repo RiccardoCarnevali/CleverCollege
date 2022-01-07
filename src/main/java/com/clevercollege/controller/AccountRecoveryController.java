@@ -26,7 +26,7 @@ public class AccountRecoveryController {
 		return "account_recovery";
 	}
 	
-	@PostMapping("/recoverPassword")
+	@PostMapping("/recover-password")
 	public String recoverPassword(Model model, String email, HttpServletRequest req) {
 		try {
 			
@@ -61,7 +61,7 @@ public class AccountRecoveryController {
 	}
 	
 	
-	@PostMapping("/resetPassword")
+	@PostMapping("/reset-password")
 	public String checkToken(Model model, String token, String newPassword, String email, HttpServletRequest req) {
 		try {
 			if(email == null)

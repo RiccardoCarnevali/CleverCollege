@@ -137,21 +137,41 @@ public class InsertDataController {
                     if(!update && DatabaseManager.getInstance().getStudentDao().findByIdStudent(s.getStudentNumber()) != null)
                         return "idStudent already exists";
                     else {
-                        s.setPassword(tmpPassword);
+                    	if(!update) {
+	                        s.setPassword(tmpPassword);
+	                        EmailService.getInstance().sendFirstPassword(s.getEmail(), token);
+                    	}
+                    	else {
+                    		User oldUser = DatabaseManager.getInstance().getUserDao().findByPrimaryKey(u.getCf());
+                    		if(oldUser == null)
+                    			return "server error";
+                    		s.setPassword(oldUser.getPassword());
+                    		s.setDescription(oldUser.getDescription());
+                    		s	.setProfilePicture(oldUser.getProfilePicture());
+                    	}
                         DatabaseManager.getInstance().getStudentDao().saveOrUpdate(s);
                         DatabaseManager.getInstance().commit();
-                        EmailService.getInstance().sendFirstPassword(s.getEmail(), token);
                         return "user inserted";
                     }
                 }
                 else {
-                    u.setPassword(tmpPassword);
+                	if(!update) {
+	                    u.setPassword(tmpPassword);
+	                    EmailService.getInstance().sendFirstPassword(u.getEmail(), token);
+                	}
+                	else {
+                		User oldUser = DatabaseManager.getInstance().getUserDao().findByPrimaryKey(u.getCf());
+                		if(oldUser == null)
+                			return "server error";
+                		u.setPassword(oldUser.getPassword());
+                		u.setDescription(oldUser.getDescription());
+                		u.setProfilePicture(oldUser.getProfilePicture());
+                	}
                     if(kindOfUser.equals("professor"))
                         DatabaseManager.getInstance().getProfessorDao().saveOrUpdate(u);
                     else
                        DatabaseManager.getInstance().getAdministratorDao().saveOrUpdate(u);
                     DatabaseManager.getInstance().commit();
-                    EmailService.getInstance().sendFirstPassword(u.getEmail(), token);
                     return "user inserted";
                 }
             } catch (SQLException e) {

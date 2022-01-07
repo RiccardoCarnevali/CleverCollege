@@ -1,8 +1,26 @@
 @charset "ISO-8859-1";
 
+@media screen and (max-width: 600px) {
+	.activity-body-description {
+		margin-top: 100px;
+	}
+}
+
+@media screen and (max-width: 750px) {
+	#pickActivityType {
+		top: 50px !important;
+		left: 15px !important;
+		width: 100% !important;
+	}
+	
+	#infoContainerRight {
+		width: 100% !important;
+		margin: 100px 0 0 0 !important;
+	}
+}
+
 .container {
 	width: 80%;
-	min-width: 700px;
 	box-shadow: 0 10px 25px rgb(0 0 0/ 5%), 0 20px 48px rgb(0 0 0/ 5%), 0
 		1px 4px rgb(0 0 0/ 10%);
 	margin-bottom: 100px;
@@ -126,8 +144,9 @@ form {
 }
 
 #createActivityContainer {
+	position: relative;
 	display: block;
-	width: 60vw;
+	min-width: 60vw;
 }
 
 #createActivityContainer h3 {
@@ -145,7 +164,7 @@ form {
 }
 
 #infoContainerRight, #descriptionInput {
-	width: 30%;
+	width: 30vw;
 	margin-left: auto;
 }
 

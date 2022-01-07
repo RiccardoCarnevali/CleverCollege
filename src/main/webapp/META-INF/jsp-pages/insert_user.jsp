@@ -2,8 +2,12 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <head>
-    <title>Insert user</title>
+    <title>
+	    <c:if test="${type_to_edit == null}">Inserisci utente</c:if>
+	    <c:if test="${type_to_edit != null}">Modifica utente</c:if>
+	</title>
     <meta charset="UTF-8">
+    <meta content="maximum-scale=1.0, initial-scale=1.0, width=device-width" name="viewport">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/common.css">
@@ -59,9 +63,7 @@
                 </div>
            	</form> 
        	</div>
-        <div class="
-        			<c:if test="${user_to_edit == null}">second-column</c:if>
-        			<c:if test="${user_to_edit != null}">only-column</c:if>   ">
+        <div class="second-column">
             <form>
                 <div class="mb-3 mt-3">
                     <label for="fiscalCodeUser" class="form-label">Codice fiscale:</label>
@@ -83,11 +85,13 @@
                     <input type="email" class="form-control insert-user-element" id="email" placeholder="Inserisci l'email..." name="email"
                      <c:if test="${user_to_edit != null}">value="${user_to_edit.email}"</c:if>>
                 </div>
-                <div class="mb-3">
-                    <label id="label-for-Student" for="idStudent" class="form-label" style="display: block">Matricola:</label>
-                    <input type="text" class="form-control insert-user-element" id="idStudent" placeholder="Inserisci la matricola..." name="idStudent" style="display: block"
-                     <c:if test="${user_to_edit != null && type_to_edit != null && type_to_edit == 'student'}">value="${user_to_edit.studentNumber}"</c:if>>
-                </div>
+                <c:if test="${user_to_edit != null && type_to_edit != null && type_to_edit == 'student'}">
+	                <div class="mb-3">
+	                    <label id="label-for-Student" for="idStudent" class="form-label" style="display: block">Matricola:</label>
+	                    <input type="text" class="form-control insert-user-element" id="idStudent" placeholder="Inserisci la matricola..." name="idStudent" style="display: block"
+	                     <c:if test="${user_to_edit != null && type_to_edit != null && type_to_edit == 'student'}">value="${user_to_edit.studentNumber}"</c:if>>
+	                </div>
+                </c:if>
                 <div class="button-container">
                 	<c:if test="${user_to_edit == null}">
                     	<button type="button" id="insert-user-button" class="btn btn-outline-primary" disabled>Inserisci utente</button>

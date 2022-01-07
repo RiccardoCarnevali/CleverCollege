@@ -149,8 +149,14 @@ public class HandleActivitiesController {
 
 			if (type.equals("single")) {
 				SingleLesson single = mapper.readValue(jsonString, SingleLesson.class);
-				if (!edit)
+				if (!edit) {
 					single.setId(id);
+				}
+				else {
+					DatabaseManager.getInstance().getSingleLessonDao().delete(single.getId());
+					DatabaseManager.getInstance().getSeminarDao().delete(single.getId());
+					DatabaseManager.getInstance().getWeeklyLessonDao().delete(single.getId());
+				}
 				single.setManager(user);
 				if (!single.checkValid()) {
 					return null;
@@ -165,8 +171,14 @@ public class HandleActivitiesController {
 				}
 			} else if (type.equals("weekly")) {
 				WeeklyLesson weekly = mapper.readValue(jsonString, WeeklyLesson.class);
-				if (!edit)
+				if (!edit) {
 					weekly.setId(id);
+				}
+				else {
+					DatabaseManager.getInstance().getSingleLessonDao().delete(weekly.getId());
+					DatabaseManager.getInstance().getSeminarDao().delete(weekly.getId());
+					DatabaseManager.getInstance().getWeeklyLessonDao().delete(weekly.getId());
+				}
 				weekly.setManager(user);
 				if (!weekly.checkValid())
 					return null;
@@ -180,8 +192,13 @@ public class HandleActivitiesController {
 				}
 			} else if (type.equals("seminar")) {
 				Seminar seminar = mapper.readValue(jsonString, Seminar.class);
-				if (!edit)
+				if (!edit) {
 					seminar.setId(id);
+				} else {
+					DatabaseManager.getInstance().getSingleLessonDao().delete(seminar.getId());
+					DatabaseManager.getInstance().getSeminarDao().delete(seminar.getId());
+					DatabaseManager.getInstance().getWeeklyLessonDao().delete(seminar.getId());
+				}
 				seminar.setManager(user);
 				if (!seminar.checkValid()) {
 					return null;
@@ -256,8 +273,6 @@ public class HandleActivitiesController {
 				}
 			}
 		}
-
-		System.out.println("no conflicts");
 		return null;
 	}
 
@@ -305,7 +320,6 @@ public class HandleActivitiesController {
 			}
 		}
 
-		System.out.println("no conflicts");
 		return null;
 	}
 
