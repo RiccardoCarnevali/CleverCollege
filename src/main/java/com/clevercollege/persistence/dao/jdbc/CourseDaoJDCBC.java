@@ -46,7 +46,6 @@ public class CourseDaoJDCBC implements CourseDao {
 		return courses;
 	}
 	
-	@Override
 	public List<Course> findByLike(String like, int amount, int offset) throws SQLException {
 
 		List<Course> courses = new ArrayList<>();

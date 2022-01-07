@@ -1,6 +1,5 @@
 package com.clevercollege.model;
 
-import java.sql.Time;
 import java.util.List;
 
 public class Lesson extends Activity {
@@ -11,7 +10,7 @@ public class Lesson extends Activity {
 		super();
 	}
 	
-	public Lesson(long id, Time time, int length, String description, User manager, List<Student> bookers,
+	public Lesson(long id, String time, int length, String description, User manager, List<Student> bookers,
 			Location classroom, Course course) {
 		super(id, time, length, description, manager, bookers, classroom);
 		this.course = course;
@@ -23,5 +22,10 @@ public class Lesson extends Activity {
 	
 	public void setCourse(Course course) {
 		this.course = course;
+	}
+	
+	@Override
+	public boolean checkValid() {
+		return (super.checkValid() && course != null);
 	}
 }

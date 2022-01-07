@@ -1,6 +1,7 @@
 package com.clevercollege.persistence.dao.jdbc;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,7 +54,7 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 			singleLesson.setManager(lesson.getManager());
 			singleLesson.setClassroom(lesson.getClassroom());
 			singleLesson.setCourse(lesson.getCourse());
-			singleLesson.setDate(rs.getDate("lesson_date"));
+			singleLesson.setDate(rs.getDate("lesson_date").toString());
 
 			singleLessons.add(singleLesson);
 		}
@@ -92,7 +93,7 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 			singleLesson.setManager(lesson.getManager());
 			singleLesson.setClassroom(lesson.getClassroom());
 			singleLesson.setCourse(lesson.getCourse());
-			singleLesson.setDate(rs.getDate("lesson_date"));
+			singleLesson.setDate(rs.getDate("lesson_date").toString());
 		}
 
 		return singleLesson;
@@ -117,7 +118,7 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 
 			PreparedStatement updateSt = conn.prepareStatement(query);
 
-			updateSt.setDate(1, singleLesson.getDate());
+			updateSt.setDate(1, Date.valueOf(singleLesson.getDate()));
 			updateSt.setLong(2, singleLesson.getId());
 
 			updateSt.executeUpdate();
@@ -128,7 +129,7 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 			PreparedStatement insertSt = conn.prepareStatement(query);
 
 			insertSt.setLong(1, singleLesson.getId());
-			insertSt.setDate(2, singleLesson.getDate());
+			insertSt.setDate(2, Date.valueOf(singleLesson.getDate()));
 
 			insertSt.executeUpdate();
 		}
@@ -171,7 +172,8 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id")));
 			}
 			lesson.setId(rs.getLong("id"));
-			lesson.setTime(rs.getTime("activity_time"));
+			lesson.setDate(rs.getDate("lesson_date").toString());
+			lesson.setTime(rs.getTime("activity_time").toString());
 			lesson.setLength(rs.getInt("activity_length"));
 			lesson.setDescription(rs.getString("description"));
 			lesson.setManager(DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(cf));

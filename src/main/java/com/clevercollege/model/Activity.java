@@ -1,13 +1,12 @@
 package com.clevercollege.model;
 
-import java.sql.Time;
 import java.util.List;
 import java.util.Objects;
 
 public class Activity {
 
 	private long id;
-	private Time time;
+	private String time;
 	private int length;
 	private String description;
 	private User manager; // must be a professor
@@ -18,7 +17,7 @@ public class Activity {
 
 	}
 
-	public Activity(long id, Time time, int length, String description, User manager, List<Student> bookers,
+	public Activity(long id, String time, int length, String description, User manager, List<Student> bookers,
 			Location classroom) {
 		super();
 		this.id = id;
@@ -38,11 +37,11 @@ public class Activity {
 		this.id = id;
 	}
 
-	public Time getTime() {
+	public String getTime() {
 		return time;
 	}
 
-	public void setTime(Time time) {
+	public void setTime(String time) {
 		this.time = time;
 	}
 
@@ -101,6 +100,12 @@ public class Activity {
 			return false;
 		Activity other = (Activity) obj;
 		return id == other.id;
+	}
+
+	public boolean checkValid() {
+		if(time != null && description != null && manager != null && classroom != null)
+			return true;
+		return false;
 	}
 
 }
