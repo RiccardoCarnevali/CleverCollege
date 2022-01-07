@@ -16,10 +16,26 @@
 	<div class="collapse navbar-collapse" id="navbarMain">
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-			<li class="nav-item"><a class="nav-link<c:if test="${user_type == 'admin' || user_type == null}"> hide</c:if>" 
-				href=<c:if test="${user == null}">"/login"</c:if>
-					<c:if test="${user != null && user_type == 'professor'}">"/activities/handle_activities"</c:if>>Attività</a></li>
-			<li class="nav-item dropdown"><a
+			
+			<c:if test="${user_type != null && user_type == 'professor'}">
+				<li class="nav-item">
+					<a class="nav-link" href="/activities/handle_activities">Attività</a>
+				</li>
+			</c:if>
+			
+			<c:if test="${user_type != null && user_type == 'student'}">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle clickable" id="navbarDropdown" 
+					role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Attività</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/activities/my-bookings">Le mie prenotazioni</a>
+						<a class="dropdown-item" href="/activities/book-lessons">Lezioni</a>
+						<a class="dropdown-item" href="/activities/book-seminars">Seminari</a>
+					</div>
+				</li>
+			</c:if>
+			
+			<!-- <li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
 				role="button" data-toggle="dropdown" aria-haspopup="true"
 				aria-expanded="false"> Dropdown </a>
@@ -27,7 +43,7 @@
 					<a class="dropdown-item" href="#">Action 1</a> <a
 						class="dropdown-item" href="#">Action 2</a>
 				</div>
-			</li>
+			</li> -->
 			<li class="nav-item">
 				<a <c:if test="${user != null}">href="/doLogout"</c:if> <c:if test="${user == null}">href="/login"</c:if>
 					 class="btn btn-outline-primary" id="loginButton">

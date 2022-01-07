@@ -101,56 +101,52 @@ public class LocationDaoJDBC implements LocationDao {
 
 	@Override
 	public void saveOrUpdate(Location location) throws SQLException {
-	
+
 		String query = "select * from locations where id = ?";
-		
+
 		PreparedStatement st = conn.prepareStatement(query);
 
 		st.setLong(1, location.getId());
-		
+
 		ResultSet rs = st.executeQuery();
-		
-		if(rs.next()) {
-			
-			query = "update locations set "
-					+ "location_name = ?,"
-					+ "capacity = ?"
-					+ "where id = ?";
-			
+
+		if (rs.next()) {
+
+			query = "update locations set " + "location_name = ?," + "capacity = ?" + "where id = ?";
+
 			PreparedStatement updateSt = conn.prepareStatement(query);
-			
+
 			updateSt.setString(1, location.getName());
 			updateSt.setInt(2, location.getCapacity());
 			updateSt.setLong(3, location.getId());
-			
+
 			updateSt.executeUpdate();
-		}
-		else {
-			
+		} else {
+
 			query = "insert into locations values(?,?,?)";
-			
+
 			PreparedStatement insertSt = conn.prepareStatement(query);
-			
+
 			insertSt.setLong(1, location.getId());
 			insertSt.setString(2, location.getName());
 			insertSt.setInt(3, location.getCapacity());
-			
+
 			insertSt.executeUpdate();
 		}
-		
+
 	}
 
 	@Override
 	public void delete(long id) throws SQLException {
-		
+
 		String query = "delete from locations where id = ?";
-		
+
 		PreparedStatement st = conn.prepareStatement(query);
-		
+
 		st.setLong(1, id);
-		
+
 		st.executeUpdate();
-		
+
 	}
 
 	@Override

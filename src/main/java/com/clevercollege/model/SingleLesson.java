@@ -1,28 +1,31 @@
 package com.clevercollege.model;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.List;
 
 public class SingleLesson extends Lesson {
 
-	private Date date;
+	private String date;
 
 	public SingleLesson() {
 		super();
 	}
 
-	public SingleLesson(long id, Time time, int length, String description, User manager, List<Student> bookers,
-			Location classroom, Course course, Date date) {
+	public SingleLesson(long id, String time, int length, String description, User manager, List<Student> bookers,
+			Location classroom, Course course, String date) {
 		super(id, time, length, description, manager, bookers, classroom, course);
 		this.date = date;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
+	}
+
+	@Override
+	public boolean checkValid() {
+		return(super.checkValid() && date != null);
 	}
 }

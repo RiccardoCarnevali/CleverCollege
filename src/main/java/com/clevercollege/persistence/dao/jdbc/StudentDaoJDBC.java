@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.clevercollege.model.Student;
+import com.clevercollege.model.StudentProxy;
 import com.clevercollege.model.User;
 import com.clevercollege.persistence.DatabaseManager;
 import com.clevercollege.persistence.dao.StudentDao;
@@ -22,7 +23,7 @@ public class StudentDaoJDBC implements StudentDao {
 	}
 	
 	@Override
-	public List<Student> findAll() throws SQLException {
+	public List<Student> findAll(boolean lazy) throws SQLException {
 
 		List<Student> students = new ArrayList<>();
 		
@@ -35,7 +36,15 @@ public class StudentDaoJDBC implements StudentDao {
 		while(rs.next()) {
 			User user = DatabaseManager.getInstance().getUserDao().findByPrimaryKey(rs.getString("cf"));
 			
-			Student student = new Student();
+			Student student;
+			
+			if(lazy) {
+				student = new StudentProxy();
+			}
+			else {
+				student = new Student();
+				student.setFollowedCourses(DatabaseManager.getInstance().getCourseDao().findCoursesFollowedBy(user.getCf()));
+			}
 			
 			student.setCf(user.getCf());
 			student.setFirstName(user.getFirstName());
@@ -75,7 +84,7 @@ public class StudentDaoJDBC implements StudentDao {
 	}
 	
 	@Override
-	public Student findByPrimaryKey(String cf) throws SQLException {
+	public Student findByPrimaryKey(String cf, boolean lazy) throws SQLException {
 
 		Student student = null;
 		
@@ -88,9 +97,16 @@ public class StudentDaoJDBC implements StudentDao {
 		ResultSet rs = st.executeQuery();
 		
 		if(rs.next()) {
-			student = new Student();
 			
 			User user = DatabaseManager.getInstance().getUserDao().findByPrimaryKey(cf);
+			
+			if(lazy) {
+				student = new StudentProxy();
+			}
+			else {
+				student = new Student();
+				student.setFollowedCourses(DatabaseManager.getInstance().getCourseDao().findCoursesFollowedBy(user.getCf()));
+			}
 			
 			student.setCf(user.getCf());
 			student.setFirstName(user.getFirstName());
@@ -156,13 +172,11 @@ public class StudentDaoJDBC implements StudentDao {
 	}
 
 	@Override
-	public List<Student> findBookersForActivity(long activityId) throws SQLException {
+	public List<Student> findBookersForActivity(long activityId, boolean lazy) throws SQLException {
 
 		List<Student> students = new ArrayList<>();
 		
-		String query = "select S.cf, S.student_number"
-				+ "		from students S, books B"
-				+ "		where S.cf = B.student and B.activity = ?";
+		String query = "select * from books where activity = ?";
 		
 		PreparedStatement st = conn.prepareStatement(query);
 		
@@ -171,36 +185,53 @@ public class StudentDaoJDBC implements StudentDao {
 		ResultSet rs = st.executeQuery();
 		
 		while(rs.next()) {
-			User user = DatabaseManager.getInstance().getUserDao().findByPrimaryKey(rs.getString("cf"));
-			
-			Student student = new Student();
-			
-			student.setCf(user.getCf());
-			student.setFirstName(user.getFirstName());
-			student.setLastName(user.getLastName());
-			student.setEmail(user.getEmail());
-			student.setPassword(user.getPassword());
-			student.setDescription(user.getDescription());
-			student.setProfilePicture(user.getProfilePicture());
-			student.setStudentNumber(rs.getString("student_number"));
-			
-			students.add(student);
+			students.add(findByPrimaryKey(rs.getString("student"), lazy));
 		}
 		
 		return students;
 	}
 
 	@Override
-	public void bookActivityForStudent(long activityId, String studentCf) throws SQLException {
+	public boolean bookActivityForStudent(long activityId, String studentCf) throws SQLException {
 		
-		String query = "insert into books values(?,?)";
+		String query = "select capacity from activities A, locations L where A.classroom = L.id and A.id = ?";
 		
 		PreparedStatement st = conn.prepareStatement(query);
 		
-		st.setString(1, studentCf);
-		st.setLong(2, activityId);
+		st.setLong(1, activityId);
 		
-		st.executeUpdate();
+		ResultSet rs = st.executeQuery();
+		
+		if(rs.next()) {
+			
+			int capacity = rs.getInt("capacity");
+			
+			query = "select count(*) as bookings from books where activity = ?";
+			
+			st = conn.prepareStatement(query);
+			
+			st.setLong(1, activityId);
+			
+			rs = st.executeQuery();
+			
+			if(rs.next()) {
+
+				if(rs.getInt("bookings") < capacity) {
+					
+					query = "insert into books values(?,?)";
+					
+					st = conn.prepareStatement(query);
+					
+					st.setString(1, studentCf);
+					st.setLong(2, activityId);
+					
+					st.executeUpdate();
+					
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -215,7 +246,7 @@ public class StudentDaoJDBC implements StudentDao {
 		
 		st.executeUpdate();
 	}
-
+	
 	@Override
 	public Student findByIdStudent(String idStudent) throws SQLException {
 		Student student = null;
@@ -244,5 +275,31 @@ public class StudentDaoJDBC implements StudentDao {
 		}
 
 		return student;
+	}
+	
+	@Override
+	public void followCourseForStudent(long courseId, String studentCf) throws SQLException {
+		
+		String query = "insert into follows values(?,?)";
+		
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setString(1, studentCf);
+		st.setLong(2, courseId);
+		
+		st.executeUpdate();
+	}
+	
+	@Override
+	public void unfollowCourseForStudent(long courseId, String studentCf) throws SQLException {
+		
+		String query = "delete from follows where student = ? and course = ?";
+		
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setString(1, studentCf);
+		st.setLong(2, courseId);
+		
+		st.executeUpdate();
 	}
 }

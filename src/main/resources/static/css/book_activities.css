@@ -1,0 +1,114 @@
+@charset "ISO-8859-1";
+
+.rotate-icon {
+	transition: all 0.3s ease-in;
+}
+
+.accicon:not(.collapsed) .rotate-icon {
+	transform: rotate(180deg);
+}
+
+.card-title {
+	font-weight: bold;
+	line-height: 2em;
+}
+
+@media only screen and (min-width: 768px) {
+	.activity-info {
+		float: right;
+	}
+}
+
+.no-activities {
+	text-transform: uppercase;
+	text-align: center;
+	font-weight: bold;
+	width: 100%;
+	box-shadow: 0 10px 25px rgb(0 0 0/ 5%), 0 20px 48px rgb(0 0 0/ 5%), 0
+		1px 4px rgb(0 0 0/ 10%);
+	padding: 20px;
+	border-radius: 1em;
+}
+
+.course {
+	border-radius: 10px !important	;
+}
+
+.course-body {
+	display: flex;
+}
+
+.course-info {
+	display: inline-flex;
+	flex-direction: column;
+}
+
+.icons {
+	margin-left: auto;
+}
+
+.add-favorite-button {
+	color: tomato;
+	font-size: 25px;
+	margin-right: 20px;
+}
+
+.expand-button {
+	color:#7e57c2;
+	font-size: 25px;
+}
+
+.spinner-border {
+	color:#7e57c2;
+}
+
+.card {
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	margin-top: 15px;
+}
+
+.book-button-wrapper, .unbook-button-wrapper, .expired-wrapper {
+	margin-right: 10px;
+	margin-left: auto;
+}
+
+.book-button, .unbook-button, .expired-button {
+	border: none;
+}
+
+.expired-button {
+	cursor: default !important;
+}
+
+.expired-button:active, .expired-button:focus, .expired-button:active:focus {
+	box-shadow: none !important;
+}
+
+.book-button-text, .unbook-button-text, .expired-text {
+	margin-right: 5px;
+	font-weight: bold;
+}
+
+.activity-time, .activity-length, .activity-classroom {
+	display: block;
+	margin-bottom: 10px;
+}
+
+.card-header {
+	display:flex;
+}
+
+@media only screen and (max-width: 536px) {
+	.book-button-text, .unbook-button-text, .expired-text {
+		display: none;
+	}
+}
+
+.hidden {
+	display: none;
+}
+
+.activity-info i {
+	margin-right: 5px;
+}
