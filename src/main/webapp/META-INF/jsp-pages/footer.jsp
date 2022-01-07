@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-6">
-                <a>
+                <a id="information" href="/more_information_page.html">
                     Vuoi maggiori informazioni? Clicca qui!
                 </a>
             </div>

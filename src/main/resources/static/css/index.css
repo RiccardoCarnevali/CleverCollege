@@ -24,3 +24,21 @@ p {
     display: block;
     text-align: center;
 }
+
+.container-fluid {
+    padding-right: 40px;
+    padding-left: 40px;
+}
+
+.container {
+    margin: auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 1em;
+    box-shadow: 0 10px 25px rgb(0 0 0 / 5%), 0 20px 48px rgb(0 0 0 / 5%), 0 1px 4px rgb(0 0 0 / 10%);
+}
+
+a:hover, a:active{
+    color: #fff;
+    font-weight: bold;
+}

@@ -26,21 +26,21 @@
 
 <body>
 <div class="header"></div>
-<div class="container">
+<div class="container-fluid">
 	<div class="row">
 		<div class="col-lg-4 col-md-4 col-sm-6 center-object-img">
 			<img src="assets/images/manyUser.png">
 		</div>
-		<div class="col-lg-8 col-md-8 col-sm-6 center-object-text">
+		<div class="container col-lg-8 col-md-8 col-sm-6 center-object-text">
 			<p> Clever College è una applicazione web nata dall'esigenza di rendere facile e intuitiva la vita all'interno
 				degli spazi universitari. Per rendere ciò realtà, all'interno del sito sono presenti diverse funzioni che
 				permettono a tutti coloro che fanno parte del Campus di gestire le proprie attività. </p>
 		</div>
 	</div>
 </div>
-<div class="container">
+<div class="container-fluid">
 	<div class="row" id="second-container">
-		<div class="col-lg-4 col-md-4 col-sm-6 center-object-text">
+		<div class="container col-lg-4 col-md-4 col-sm-6 center-object-text">
 			<p> Ogni studente può prenotare le lezioni e i seminari alle quali desidera partecipare,
 				personalizzare il proprio profilo e fare check-in (e relativo check-out) nelle aule all'interno
 				del quale si svolgono le attività o si può usufruire del servizio mensa.</p>
@@ -53,13 +53,15 @@
 		</div>
 	</div>
 </div>
-<div class="container center-object-text">
-	<p>
-		Per poter accedere a Clever College è necessario che, precedentemente, il personale della segreteria si sia
-		occupato della registrazione dei dati, in moda tale da effettuare poi direttamente il login sulla piattaforma.
-		Sia studenti che professori possono entrare a far parte del mondo di Clever College, incrementando la sicurezza
-		nel Campus e rispettando così le regole vigenti. Accedi anche tu, ti stiamo aspettando!
-	</p>
+<div class="container-fluid">
+	<div class="container center-object-text">
+		<p>
+			Per poter accedere a Clever College è necessario che, precedentemente, il personale della segreteria si sia
+			occupato della registrazione dei dati, in moda tale da effettuare poi direttamente il login sulla piattaforma.
+			Sia studenti che professori possono entrare a far parte del mondo di Clever College, incrementando la sicurezza
+			nel Campus e rispettando così le regole vigenti. Accedi anche tu, ti stiamo aspettando!
+		</p>
+	</div>
 	<div class="row">
 		<div class="col-lg-4 col-md-4 col-sm-4 center-object-img">
 			<img src="assets/images/user_for_index_1.png">

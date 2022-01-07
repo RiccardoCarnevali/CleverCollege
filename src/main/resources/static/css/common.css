@@ -158,3 +158,8 @@ a, h2, h3 {
 		display: none;
 	}
 }
+
+#information:visited {
+	color: #fff;
+	font-weight: bold;
+}
