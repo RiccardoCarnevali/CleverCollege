@@ -89,10 +89,21 @@ input[type="number"]:focus, input[type="number"]:active, input[type="number"]:fo
     margin-top: 20px;
 }
 
-@media only screen and (max-width: 780px) {
+@media all and (max-width: 780px) {
     .danger-button {
         float: inherit;
         margin: 10px 0px 10px;
+    }
+}
+
+@media all and (max-width: 580px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .second-column, .first-column {
+        width: 100%;
+        display: contents;
     }
 }
 
