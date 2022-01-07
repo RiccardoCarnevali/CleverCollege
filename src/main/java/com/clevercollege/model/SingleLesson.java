@@ -26,6 +26,6 @@ public class SingleLesson extends Lesson {
 
 	@Override
 	public boolean checkValid() {
-		return(super.checkValid() && date == null);
+		return(super.checkValid() && date != null);
 	}
 }

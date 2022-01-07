@@ -342,9 +342,8 @@ function deleteActivity(id) {
 						text: "L'attività è stata cancellata con successo",
 						icon: 'success'
 					});
-					loadActivities();
 				}
-			});
+			}).then(function() {loadActivities();});
 		}
 	});
 }

@@ -101,9 +101,8 @@ public class ClassroomDaoJDBC implements ClassroomDao {
 	public List<Location> findByLike(String like, int amount, int offset) throws SQLException {
 		List<Location> classrooms = new ArrayList<>();
 
-		String query = "select * from classrooms C, locations L where C.id = L.id"
-				+ " (upper(location_name) like upper(?) "
-				+ "order by course_name limit ? offset ?";
+		String query = "select * from classrooms C, locations L where C.id = L.id and (upper(location_name)) like upper(?) "
+				+ "order by location_name limit ? offset ?";
 
 		PreparedStatement st = conn.prepareStatement(query);
 
@@ -114,10 +113,11 @@ public class ClassroomDaoJDBC implements ClassroomDao {
 		ResultSet rs = st.executeQuery();
 
 		while (rs.next()) {
+
 			Location classroom = new Location();
 
 			classroom.setId(rs.getLong("id"));
-			classroom.setName(rs.getString("course_name"));
+			classroom.setName(rs.getString("location_name"));
 			classroom.setCapacity(rs.getInt("capacity"));
 			classrooms.add(classroom);
 		}

@@ -47,6 +47,18 @@ public class LocationController {
 
 		return locations;
 	}
+	
+	@PostMapping("/getLocationById")
+	public Location getLocationById(Long id) {
+		Location location = null;
+		try {
+			location = DatabaseManager.getInstance().getLocationDao().findByPrimaryKey(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return location;
+	}
 
 	@GetMapping("/getClassrooms")
 	public List<Location> getClassrooms() {

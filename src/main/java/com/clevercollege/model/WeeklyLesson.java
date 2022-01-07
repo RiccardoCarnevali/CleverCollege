@@ -12,8 +12,8 @@ public class WeeklyLesson extends Lesson {
 		super();
 	}
 
-	public WeeklyLesson(long id, String time, int length, String description, User manager,
-			Location classroom, Course course, int weekDay, boolean disabled, boolean disabledIndefinitely) {
+	public WeeklyLesson(long id, String time, int length, String description, User manager, Location classroom,
+			Course course, int weekDay, boolean disabled, boolean disabledIndefinitely) {
 		super(id, time, length, description, manager, null, classroom, course);
 		this.weekDay = weekDay;
 		this.disabled = disabled;
@@ -48,7 +48,7 @@ public class WeeklyLesson extends Lesson {
 	public List<Student> getBookers() {
 		return null;
 	}
-	
+
 	@Override
 	public boolean checkValid() {
 		return super.checkValid();

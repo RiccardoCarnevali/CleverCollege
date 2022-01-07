@@ -148,7 +148,7 @@ form {
 	margin-left: auto;
 }
 
-#descriptionInput, #locationsContainer {
+#descriptionInput, #classroomsContainer {
 	width: 90%;
 	margin-left: auto;
 	margin-right: auto;
@@ -159,30 +159,40 @@ form {
 	margin: 15px auto 0 auto;
 }
 
-#locations {
+#classrooms {
 	width: 100%;
 	padding-left: 0;
 }
 
-#locationList {
+#classroomList {
 	width: 100%;
 	display: block;
 	max-height: 300px;
 }
 
 
-#locationsContainer {
+#classroomsContainer {
 	border-style: solid;
 	border-width: thin;
 	border-radius: 1em;
 	border-color: rgba(0,0,0,0.1);
 }
 
-.location {
+.classroom {
 	width: 100%;
 	display: flex;
 }
 
-.location .radio-item {
+.classroom .radio-item {
 	margin-left: auto;
+}
+
+#conflictContainer {
+	display: block;
+}
+
+#conflictContainer h4 {
+	color: red;
+    text-transform: uppercase;
+    font-weight: bolder;
 }

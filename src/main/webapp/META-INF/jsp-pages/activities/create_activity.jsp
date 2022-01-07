@@ -3,6 +3,12 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+
+<%@ page import="com.clevercollege.model.SingleLesson" %>
+<%@ page import="com.clevercollege.model.WeeklyLesson" %>
+<%@ page import="com.clevercollege.model.Seminar" %>
+<%@ page import="com.clevercollege.model.Course" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,7 +34,6 @@
 
 </head>
 <body>
-
 	<fmt:formatNumber type="number" minIntegerDigits="2"
 		groupingUsed="false" maxFractionDigits="0" pattern="#"
 		value="${activity.length / 60}" var="lengthHour" />
@@ -37,6 +42,7 @@
 		value="${activity.length % 60}" var="lengthMinute" />
 
 	<div class="header"></div>
+	
 	<div class="container" id="createActivityContainer">
 		<h3>Inserisci un'attività</h3>
 		<div id="pickActivityType">
@@ -86,31 +92,31 @@
 				<div class="form-group hide" id="weekdayInput">
 					<strong>Giorno Settimanale</strong> <select class="form-control"
 						id="weekdaySelect">
-						<option
+						<option value="0"
 							<c:if test="${activity_type == 'weekly' && activity.weekDay == 0}">selected="selected"</c:if>>Lunedì</option>
-						<option
+						<option value="1"
 							<c:if test="${activity_type == 'weekly' && activity.weekDay == 1}">selected="selected"</c:if>>Martedì</option>
-						<option
+						<option value="2"
 							<c:if test="${activity_type == 'weekly' && activity.weekDay == 2}">selected="selected"</c:if>>Mercoledì</option>
-						<option
+						<option value="3"
 							<c:if test="${activity_type == 'weekly' && activity.weekDay == 3}">selected="selected"</c:if>>Giovedì</option>
-						<option
+						<option value="4"
 							<c:if test="${activity_type == 'weekly' && activity.weekDay == 4}">selected="selected"</c:if>>Venerdì</option>
 					</select>
 				</div>
 			</div>
-			<label for="locationSearchBar" style="margin-left: 32px;"><strong>Location:</strong></label>
-			<div id="locationsContainer">
-				<input type="search" id="locationSearchBar" class="form-control" />
-				<div id="locationList">
-					<ul id="locations">
+			<label for="classroomSearchBar" style="margin-left: 32px;"><strong>classroom:</strong></label>
+			<div id="classroomsContainer">
+				<input type="search" id="classroomSearchBar" class="form-control" />
+				<div id="classroomList">
+					<ul id="classrooms">
 						<c:if test="${activity != null}">
-							<li class="list-group-item location"><div
-									class="location-name">${activity.classroom.name}</div>
+							<li class="list-group-item classroom"><div
+									class="classroom-name">${activity.classroom.name}</div>
 								<div class="radio-item">
-									<input type="radio" name="location-select" value="location0"
-										id="location0" checked="checked"><label
-										for="location0"></label>
+									<input type="radio" name="classroom-select" value="0"
+										id="classroom0" checked="checked"><label
+										for="classroom0"></label>
 								</div></li>
 						</c:if>
 					</ul>
