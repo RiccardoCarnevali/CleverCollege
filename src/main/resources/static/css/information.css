@@ -15,7 +15,7 @@ a:hover, a:focus-visible, a:active{
     font-weight: bold;
 }
 
-#mailTo:hover {
+#mailTo:hover, #largeMapLink:hover, #dirMapLink:hover {
     color: #7e57c2;
     font-weight: bold;
 }
