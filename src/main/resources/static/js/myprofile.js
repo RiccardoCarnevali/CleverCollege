@@ -3,16 +3,17 @@ var dLayoutShow = null;
 var description = "";
 
 $(function() {
+	$("#modPP-icon").on("click", function() {
+		$("#modPP").trigger("click");
+	})
+	$("#modPP").on("input", updateImage);
+
 	$("#modDescription").on("click", editMode);
 	dLayout = $("#descriptionLayout");
 	description = $("#description").text();
 	dLayoutShow = dLayout.contents();
-	
-	$("#modPP-icon").on("click", function() {
-		$("#modPP").trigger("click");
-	})
-	
-	$("#modPP").on("input", updateImage);
+
+	$("#changePassword").on("click", changePasswordEdit);
 	
 	$.ajax({
 		type: 'POST',
@@ -130,3 +131,96 @@ var updateImage = function() {
 		
 	}
 }	
+
+var changePassword = function() {
+	if($("#current-password").val()) {
+		if($("#new-password").val() && $("#new-password").val() == $("#new-password-confirm").val()) {
+			$.ajax({
+				type: 'POST',
+				url: 'updatePassword',
+				data: {
+					oldPwd: $("#current-password").val(),
+					newPwd: $("#new-password").val(),
+					confirmPwd: $("#new-password-confirm").val()
+				},
+				success: function(result) {
+					switch(result) {
+						case "correct":
+							swal_password_out.correct();
+							changePasswordRestore();
+							break;
+						case "wrong password":
+							swal_password_out.passwordError();
+							break;
+						case "new pwd not matching":
+							swal_password_out.confirmError();
+							break;
+						case "pwd missing":
+							swal_password_out.currentMissing();
+							break;
+						case "error":
+							window.alert("error");
+							break;
+					}
+				}
+			});
+		}
+		else {
+			swal_password_out.confirmError();
+		}
+	}
+	else {
+		swal_password_out.currentMissing();
+	}
+}
+
+var changePasswordEdit = function() {
+	$("#passwordChangeLayout").empty();
+	$("#passwordChangeLayout").append("<label for='current-password'>Inserisci la tua password corrente</label>" +
+									 "<input type='text' id='current-password' maxlength='30' class='form'></input>" +
+									 "<label for='new-password'>Inserisci la nuova password</label>" +
+									 "<input type='text' id='new-password' maxlength='30' class='form' style='display: block'></input>" +
+									 "<label for='new-password'>Conferma la nuova password</label>" +
+									 "<input type='text' id='new-password-confirm' maxlength='30' class='form' style='display: block'></input>" +
+									 "<button type='button' id='password-confirmMod' class='btn btn-outline-primary btn-sm'>Conferma Modifica</button>" +
+									 "<button type='button' id='password-abortMod' class='btn btn-outline-secondary btn-sm'>Annulla Modifica</button>");
+	$("#password-confirmMod").on("click", changePassword);
+	$("#password-abortMod").on("click", changePasswordRestore);
+}
+
+var changePasswordRestore = function() {
+	$("#passwordChangeLayout").empty();
+	$("#passwordChangeLayout").append("<button type='button' id='changePassword' class='btn btn-outline-danger card-link'>Cambia password</button>");
+	$("#changePassword").on("click", changePasswordEdit);
+}
+
+var swal_password_out = {
+	currentMissing: function() {
+		Swal.fire({
+			icon: 'error',
+			title: 'Password vecchia mancante',
+			text: 'Inserisci la tua password corrente e riprova'
+		});
+	},
+	confirmError: function() { 
+		Swal.fire({
+			icon: 'error',
+			title: 'Campi nuova password non coincidenti',
+			text: 'Controlla di aver inserito correttamente la nuova password e riprova'
+		});
+	},
+	passwordError: function() {
+		Swal.fire({
+			icon: 'error',
+			title: 'Password errata',
+			text: 'Controlla di aver inserito correttamente la vecchia password e riprova'
+		});		
+	}, 
+	correct: function() {
+		Swal.fire({
+			icon: 'success',
+			title: 'Cambio password riuscito',
+			text: 'La password è stata cambiata correttamente'
+		});
+	}
+}
