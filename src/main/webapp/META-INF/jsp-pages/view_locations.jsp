@@ -19,7 +19,7 @@
 		<script src="/js/load_locations.js" charset="UTF-8"></script>
 		<script src="/js/generic_error.js" charset="UTF-8"></script>
 				
-		<title>Corsi</title>
+		<title>Luoghi</title>
 	</head>
 	
 	<body>

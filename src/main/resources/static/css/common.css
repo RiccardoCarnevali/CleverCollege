@@ -171,6 +171,10 @@ a, h2, h3 {
 	}
 }
 
+#information{
+      color: #fff! important;
+}
+
 #information:visited {
 	color: #fff;
 	font-weight: bold;
