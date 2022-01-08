@@ -15,6 +15,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="/js/common.js"></script>
     <script src="/js/login.js"></script>
+	<script src="/js/generic_error.js" charset="UTF-8"></script>
 </head>
 <body>
 <div class="header"></div>

@@ -1,23 +1,35 @@
 var selectedProfessor = null;
 $(document).ready(function () {
-
-    var radioButton = document.getElementsByName("kindOfData");
-    for(let i = 0, length = radioButton.length; i < length; i++) {
-        radioButton[i].addEventListener("click", function () {
-            if(document.getElementById("place").checked) {
-                $("#kindOfPlace").css('display', 'block');
-                $("#div-for-place").css('display', 'block');
-                $("#div-for-professor").css('display', 'none');
-                checkField();
-            }
-            else {
-                $("#kindOfPlace").css('display', 'none');
-                $("#div-for-professor").css('display', 'block');
-                $("#div-for-place").css('display', 'none');
-                checkField();
-            }
-        });
+	
+	selectedProfessor = $("#lecturer").val();	
+	
+    if($("#place").is(":checked")) {
+        $("#kindOfPlace").css('display', 'block');
+        $("#div-for-place").css('display', 'block');
+        $("#div-for-professor").css('display', 'none');
+        checkField();
     }
+    else {
+        $("#kindOfPlace").css('display', 'none');
+        $("#div-for-professor").css('display', 'block');
+        $("#div-for-place").css('display', 'none');
+        checkField();
+    }
+
+	$("input[name='kindOfData']").on("change", function() {
+        if($("#place").is(":checked")) {
+            $("#kindOfPlace").css('display', 'block');
+            $("#div-for-place").css('display', 'block');
+            $("#div-for-professor").css('display', 'none');
+            checkField();
+        }
+        else {
+            $("#kindOfPlace").css('display', 'none');
+            $("#div-for-professor").css('display', 'block');
+            $("#div-for-place").css('display', 'none');
+            checkField();
+        }
+	})
 
     var inputText = document.getElementsByClassName("form-control");
     for(let i = 0, length = inputText.length; i < length; i++) {
@@ -27,7 +39,7 @@ $(document).ready(function () {
     }
 
     var inputField = document.getElementById("professor");
-    inputField.onkeyup = function () {
+    inputField.oninput = function () {
         selectedProfessor = null;
         if(inputField.value !== "")
             searchProfessorFromSubstring(inputField.value);
@@ -42,22 +54,12 @@ $(document).ready(function () {
         if(document.getElementById("place").checked)
             dataFromForm = new Location(null, $('#dataName').val(), $('#capacity').val());
         else
-            dataFromForm = new Location(null, $('#dataName').val(), null);
-        insertData(JSON.stringify(dataFromForm), $('input[name="kindOfData"]:checked').val(), $('input[name="kindOfPlace"]:checked').val(), selectedProfessor);
+            dataFromForm = new Course(null, $('#dataName').val(), null);
+        insertData(JSON.stringify(dataFromForm), $('input[name="kindOfData"]:checked').val(), $('input[name="kindOfPlace"]:checked').val());
     });
-
-    $("#cancel-insertion").on("click", function () {
-        if(document.getElementById("place").checked)
-            window.location = '/locations';
-        else
-            window.location = '/courses';
-    })
-
 });
 
 var checkField = function () {
-    console.log("ci sono");
-    console.log($("#professor").val().length);
     if($("#dataName").val().length === 0 && document.getElementById("place").checked)
         $("#insert-other-data-button").prop('disabled', true);
     else if(!document.getElementById("place").checked && ($("#professor").val().length === 0 || $("#dataName").val().length === 0))
@@ -67,33 +69,20 @@ var checkField = function () {
     }
 }
 
-function Course(id, name, lecturer) {
-    this.id = id;
-    this.name = name;
-    this.lecturer = lecturer;
-}
-
-function Location(id, name, capacity) {
-    this.id = id;
-    this.name = name;
-    this.capacity = capacity;
-}
-
 var searchProfessorFromSubstring = function (substring) {
     $.ajax({
-        url: "searchProfessor",
+        url: "/loadUsers",
         method: "POST",
         data: {
-            substring : substring
+			type: "professors",
+			sortBy: "first_name",
+			like: substring,
+			offset: 0
         },
         success: function (responseData) {
             document.getElementsByClassName("professor-list")[0].innerHTML = "";
             if(responseData == null) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Qualcosa è andato storto!'
-                });
+                errorMessage();
             }
             else {
                 for (let i in responseData){
@@ -109,25 +98,20 @@ var searchProfessorFromSubstring = function (substring) {
                 }
             }
         },
-        fail: function () {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Qualcosa è andato storto!'
-            });
-        }
+        error: errorMessage
     });
 }
 
-var insertData = function (dataFromForm, kindOfData, kindOfPlace, cfProfessor) {
+var insertData = function (dataFromForm, kindOfData, kindOfPlace) {
     $.ajax({
-        url: "insertData",
+        url: "/insertData",
         method: "POST",
         data:  {
             dataFromForm : dataFromForm,
             kindOfData : kindOfData,
             kindOfPlace : kindOfPlace,
-            cfProfessor : cfProfessor
+			professorCf: selectedProfessor,
+			id: $("#id").val()
         },
         success: function (response) {
             $('.loader').css('display', 'none');
@@ -156,31 +140,26 @@ var insertData = function (dataFromForm, kindOfData, kindOfPlace, cfProfessor) {
                 });
             }
             else if (response === "server error") {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Qualcosa è andato storto!'
-                });
+                errorMessage();
             }
             else {
                 Swal.fire(
                     'Ben fatto!',
-                    'Inserimento avvenuto con successo!',
+                    'L\'operazione è stata portata a termine con successo!',
                     'success'
                 )
-                $("#professor").val('');
-                $("#dataName").val('');
-                document.getElementsByClassName("professor-list")[0].innerHTML = "";
-                $("#insert-other-data-button").prop('disabled', true);
+
+				if($("#id").length == 0) {
+	                $("#professor").val('');
+	                $("#dataName").val('');
+	                document.getElementsByClassName("professor-list")[0].innerHTML = "";
+	                $("#insert-other-data-button").prop('disabled', true);
+				}
             }
         },
-        fail: function () {
+        error: function () {
             $('.loader').css('display', 'none');
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Qualcosa è andato storto!'
-            });
+            errorMessage();
         }
     });
 }

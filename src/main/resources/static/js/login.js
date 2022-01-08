@@ -1,4 +1,3 @@
-
 $(function() {
 	var error = false;
 

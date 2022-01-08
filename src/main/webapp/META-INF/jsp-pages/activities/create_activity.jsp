@@ -31,6 +31,7 @@
 <script src="/js/common.js"></script>
 <script src="/js/data-model.js"></script>
 <script src="/js/create_activity.js"></script>
+<script src="/js/generic_error.js" charset="UTF-8"></script>
 
 </head>
 <body>

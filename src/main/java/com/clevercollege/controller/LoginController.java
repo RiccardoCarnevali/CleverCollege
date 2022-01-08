@@ -38,7 +38,7 @@ public class LoginController {
     		if(cf == null || password == null)
     			return "login";
     		
-            User u = DatabaseManager.getInstance().getUserDao().findByPrimaryKey(cf);
+            User u = DatabaseManager.getInstance().getUserDao().findByPrimaryKey(cf.toLowerCase());
             
             if((u != null) && (BCrypt.checkpw(password, u.getPassword()))) {
                 request.getSession().setAttribute("user", u);

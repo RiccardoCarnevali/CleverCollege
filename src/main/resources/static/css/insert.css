@@ -34,39 +34,6 @@ body {
     padding: 1px 6px;
 }
 
-.radio-item input[type='radio'] {
-    display: none;
-}
-
-.radio-item label {
-    color: #212529;
-    font-weight: normal;
-}
-
-.radio-item label:before {
-    content: " ";
-    display: inline-block;
-    position: relative;
-    top: 5px;
-    margin: 0px 6px 3px 0px;
-    width: 16px;
-    height: 16px;
-    border-radius: 10px;
-    border: 1px solid #7e57c2;
-    background-color: transparent;
-}
-
-.radio-item input[type=radio]:checked + label:after {
-    border-radius: 5px;
-    width: 10px;
-    height: 10px;
-    position: absolute;
-    top: 9px;
-    left: 9px;
-    content: " ";
-    display: block;
-    background: #7e57c2;
-}
 
 .danger-button {
     float: right;
@@ -89,10 +56,21 @@ input[type="number"]:focus, input[type="number"]:active, input[type="number"]:fo
     margin-top: 20px;
 }
 
-@media only screen and (max-width: 780px) {
+@media all and (max-width: 780px) {
     .danger-button {
         float: inherit;
         margin: 10px 0px 10px;
+    }
+}
+
+@media all and (max-width: 580px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .second-column, .first-column {
+        width: 100%;
+        display: contents;
     }
 }
 
@@ -114,6 +92,10 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active  {
     -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+}
+
+.loader {
+	margin-right: 10px;
 }
 
 form {

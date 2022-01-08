@@ -1,0 +1,29 @@
+p {
+    margin: auto;
+}
+
+.container {
+    margin: 30px auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 1em;
+    box-shadow: 0 10px 25px rgb(0 0 0 / 5%), 0 20px 48px rgb(0 0 0 / 5%), 0 1px 4px rgb(0 0 0 / 10%);
+}
+
+a:hover, a:focus-visible, a:active{
+    color: #fff;
+    font-weight: bold;
+}
+
+#mailTo:hover {
+    color: #7e57c2;
+    font-weight: bold;
+}
+
+#myMap {
+    margin: 30px;
+    position: relative;
+    min-width: 400px;
+    min-height: 400px;
+    z-index: 1;
+}

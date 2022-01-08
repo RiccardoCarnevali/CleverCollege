@@ -53,3 +53,22 @@ class Location {
 		this.capacity = capacity;
 	}
 }
+
+class User {
+    constructor(cf, firstName, lastName, email, password, description, profilePicture) {
+        this.cf = cf;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.description = description;
+        this.profilePicture = profilePicture;
+    }
+}
+
+class Student extends User{
+    constructor(cf, firstName, lastName, email, password, description, profilePicture, studentNumber) {
+        super(cf, firstName, lastName, email, password, description, profilePicture);
+        this.studentNumber = studentNumber;
+    }
+}
