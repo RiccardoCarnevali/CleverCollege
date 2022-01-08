@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.clevercollege.model.Course;
+import com.clevercollege.model.Location;
 import com.clevercollege.model.Student;
 import com.clevercollege.model.User;
 import com.clevercollege.persistence.DatabaseManager;
@@ -239,5 +241,65 @@ public class ViewDataController {
 		}
         
         return "insert_user";
+    }
+    
+    @PostMapping("/courses/edit")
+    public String editCoursePage(HttpServletRequest req, Long courseId) {
+        HttpSession session = req.getSession();
+        User u = (User) session.getAttribute("user");
+        if(u == null) {
+            session.setAttribute("after-login", "/courses/insert");
+            return "redirect:/login";
+        }
+        else {
+        	String user_type = (String) session.getAttribute("user_type");
+			if(user_type == null || !user_type.equals("admin"))
+				return "not_authorized";
+        }
+        if(courseId == null)
+        	return "error";
+        
+        Course course = null;
+        try {
+			course = DatabaseManager.getInstance().getCourseDao().findByPrimaryKey(courseId);
+		} catch (SQLException e) {
+			return "error";
+		}
+        
+        if(course == null)
+        	return "error";
+        
+        req.setAttribute("course_to_edit", course);
+        return "insert_data";
+    }
+    
+    @PostMapping("/locations/edit")
+    public String editLocationPage(HttpServletRequest req, Long locationId) {
+        HttpSession session = req.getSession();
+        User u = (User) session.getAttribute("user");
+        if(u == null) {
+            session.setAttribute("after-login", "/courses/insert");
+            return "redirect:/login";
+        }
+        else {
+        	String user_type = (String) session.getAttribute("user_type");
+			if(user_type == null || !user_type.equals("admin"))
+				return "not_authorized";
+        }
+        if(locationId == null)
+        	return "error";
+        
+        Location location = null;
+        try {
+			location = DatabaseManager.getInstance().getLocationDao().findByPrimaryKey(locationId);
+		} catch (SQLException e) {
+			return "error";
+		}
+        
+        if(location == null)
+        	return "error";
+        
+        req.setAttribute("location_to_edit", location);
+        return "insert_data";
     }
 }

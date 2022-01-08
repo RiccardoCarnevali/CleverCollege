@@ -21,14 +21,13 @@ import com.clevercollege.model.User;
 import com.clevercollege.persistence.DatabaseManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 public class InsertDataController {
 
     @PostMapping("/insertData")
-    public String insertData(HttpServletRequest request, String dataFromForm, String kindOfData, String kindOfPlace, String cfProfessor) {
+    public String insertData(HttpServletRequest request, String dataFromForm, String kindOfData, String kindOfPlace, String professorCf, Long id) {
         HttpSession session = request.getSession();
         User u = (User) session.getAttribute("user");
         if(u == null) {
@@ -40,8 +39,10 @@ public class InsertDataController {
         if(user_type == null || !user_type.equals("admin"))
         	return "server error";
 
-        if(dataFromForm == null || kindOfData == null)
+        if(dataFromForm == null || kindOfData == null) {
+        	System.out.println("1");
         	return "server error";
+        }
 
         ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
@@ -52,8 +53,13 @@ public class InsertDataController {
                 if (DatabaseManager.getInstance().getLocationDao().findByName(l.getName()) != null)
                     return "place already exists";
                 else {
-                    l.setId(DatabaseManager.getInstance().getIdBroker().getNextLocationId());
-                    if(kindOfPlace != null)
+                	if(id == null) {
+                		l.setId(DatabaseManager.getInstance().getIdBroker().getNextLocationId());
+                	}
+                	else {
+						l.setId(id);
+					}
+                    if(kindOfPlace != null && id == null)
                         DatabaseManager.getInstance().getClassroomDao().saveOrUpdate(l);
                     else
                         DatabaseManager.getInstance().getLocationDao().saveOrUpdate(l);
@@ -62,25 +68,36 @@ public class InsertDataController {
                 }
             }
             else {
-                if(cfProfessor == null || cfProfessor.isEmpty())
-                    return "no prof selected";
                 c = mapper.readValue(dataFromForm, Course.class);
-                if(DatabaseManager.getInstance().getCourseDao().findByNameAndProfessor(c.getName(), cfProfessor) != null)
+                
+                if(c == null) {
+                	System.out.println(2);
+                	return "server error";
+                }
+                
+                if(professorCf == null || professorCf.isEmpty())
+                	return "no prof selected";
+                
+                if(DatabaseManager.getInstance().getCourseDao().findByNameAndProfessor(c.getName(), professorCf) != null)
                     return "course already exists";
                 else {
-                    User prof = DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(cfProfessor);
-                    c.setId(DatabaseManager.getInstance().getIdBroker().getNextCourseId());
-                    c.setLecturer(prof);
+                	if(id == null) {
+                		System.out.println("id null");
+                		c.setId(DatabaseManager.getInstance().getIdBroker().getNextCourseId());
+                	}
+                	else {
+                		System.out.println("id " + id);
+                		c.setId(id);
+                	}
+                	User professor = DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(professorCf);
+                	c.setLecturer(professor);
                     DatabaseManager.getInstance().getCourseDao().saveOrUpdate(c);
                     DatabaseManager.getInstance().commit();
                     return "data inserted";
                 }
             }
-        } catch (SQLException e) {
-            return "server error";
-        } catch (JsonMappingException e) {
-            return "server error";
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
+        	e.printStackTrace();
             return "server error";
         }
     }
@@ -147,7 +164,7 @@ public class InsertDataController {
                     			return "server error";
                     		s.setPassword(oldUser.getPassword());
                     		s.setDescription(oldUser.getDescription());
-                    		s	.setProfilePicture(oldUser.getProfilePicture());
+                    		s.setProfilePicture(oldUser.getProfilePicture());
                     	}
                         DatabaseManager.getInstance().getStudentDao().saveOrUpdate(s);
                         DatabaseManager.getInstance().commit();

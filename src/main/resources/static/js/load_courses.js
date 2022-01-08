@@ -61,7 +61,7 @@ function loadMore(showMore) {
 				coursesList.append(	"	<li class='list-group-item course'>" +
 											"<span class='course-name'>" + courses[index].name + "</span>" +
 											"<div class='icons' style='float:right'>" +
-												"<span class='clickable modify-button' style='display:block;margin-bottom:20px'><i class='fas fa-pen'></i></span>" +
+												"<span class='clickable modify-button' id='modify-" + courses[index].id + "'style='display:block;margin-bottom:20px'><i class='fas fa-pen'></i></span>" +
 												"<span class='clickable remove-button' id='remove-" + courses[index].id + "'><i class='fas fa-trash'></i></span>" +
 											"</div>" +
 											"<span class='professor-name' style='display:block'>" + courses[index].lecturer.firstName + " " + courses[index].lecturer.lastName + "</span>" +
@@ -83,6 +83,15 @@ function loadMore(showMore) {
 					}
 				});
 			});
+			
+			$(".modify-button").off().on("click", function() {
+				let id = this.id.substr(7);
+				var form = $("	<form method='post' action='/courses/edit' style='display:none'>" +
+									"<input type='text' name='courseId' value='" + id + "'>" +
+								"</form>");
+				$('body').append(form);
+				form.submit();
+			})
 			
 			if(data.length == 16) {
 				$("#coursesContainer").append("<button class=\"btn btn-outline-primary\" id=\"showMoreButton\">Mostra altri</button>");

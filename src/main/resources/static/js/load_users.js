@@ -141,7 +141,6 @@ function loadMore(showMore) {
 				let cf = this.id.substr(7, 16);
 				var form = $("	<form method='post' action='/users/edit' style='display:none'>" +
 									"<input type='text' name='userCf' value='" + cf + "'>" +
-									"<input type='text' name='type' value='" + type + "'>" +
 								"</form>");
 				$('body').append(form);
 				form.submit();
