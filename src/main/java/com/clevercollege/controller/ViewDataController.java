@@ -162,4 +162,14 @@ public class ViewDataController {
         }
         return "insertNewUser";
     }
+    
+    @GetMapping("/check-in")
+    public String getCheckInPage(HttpServletRequest request) {
+    	User user = (User) request.getSession().getAttribute("user");
+    	if(user == null) {
+    		request.getSession().setAttribute("after-login", "check-in");
+    		return "redirect:/login";
+    	}
+    	return "check-in";
+    }
 }
