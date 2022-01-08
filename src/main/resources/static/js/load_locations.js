@@ -1,13 +1,12 @@
 var like = "";
 var type = "locations";
 var locations = new Array();
-var errorShown = false;
 
 $(function() {
 	
 	$("#searchBar").val("");
 	
-	("#typeInput").val("locations");
+	$("#typeInput").val("locations");
 	
 	$("#searchBar").on("input", function() {
 		like = $(this).val();
@@ -72,7 +71,7 @@ function loadMore(showMore) {
 				locationsList.append("	<li class='list-group-item location'>" +
 											"<span class='location-name'>" + locations[index].name + "</span>" +
 											"<div class='icons' style='float:right'>" +
-												"<span class='clickable modify-button' style='display:block;margin-bottom:20px'><i class='fas fa-pen'></i></span>" +
+												"<span class='clickable modify-button' id='modify-" + locations[index].id + "' style='display:block;margin-bottom:20px'><i class='fas fa-pen'></i></span>" +
 												"<span class='clickable remove-button' id='remove-" + locations[index].id + "'><i class='fas fa-trash'></i></span>" +
 											"</div>" +
 											"<span class='location-capacity' style='display:block'>Capacità massima: " + locations[index].capacity + " persone</span>" +
@@ -121,6 +120,15 @@ function loadMore(showMore) {
 				});
 			});
 			
+			$(".modify-button").off().on("click", function() {
+				let id = this.id.substr(7);
+				var form = $("	<form method='post' action='/locations/edit' style='display:none'>" +
+									"<input type='text' name='locationId' value='" + id + "'>" +
+								"</form>");
+				$('body').append(form);
+				form.submit();
+			})
+			
 			if(data.length == 16) {
 				$("#locationsContainer").append("<button class=\"btn btn-outline-primary\" id=\"showMoreButton\">Mostra altri</button>");
 				$("#showMoreButton").off().on("click", function() {
@@ -155,21 +163,6 @@ function removeLocation(id) {
 		},
 		error: errorMessage
 	})
-}
-
-function errorMessage() {
-	if(!errorShown) {
-		errorShown = true;
-		Swal.fire({
-			title: "Oops...",
-			text: "Qualcosa è andato storto.",
-			icon: "error"
-		}).then((result) =>  {
-			if(result.isConfirmed) {
-				location.reload();
-			}
-		})
-	}
 }
 
 function areEquals(locations1, locations2) {

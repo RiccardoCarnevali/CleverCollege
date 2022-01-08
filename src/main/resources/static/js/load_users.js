@@ -2,7 +2,6 @@ var users = new Array();
 var type = "users";
 var sortBy = "cf";
 var like = "";
-var errorShown = false;
 
 $(function() {
 
@@ -28,11 +27,6 @@ $(function() {
 		$("#rows").empty();
 		loadMore(false);
 	})
-
-	$(window).on("resize", function() {
-		let classOnOff = window.matchMedia('(min-width: 450px)').matches;
-		$(".form-check").toggleClass("form-check-inline", classOnOff);
-	});
 
 	loadMore(false);
 })
@@ -86,19 +80,19 @@ function loadMore(showMore) {
 			var userRow = $(".user-row").last();
 			for (; index < users.length; index++) {
 				userRow.append("<div class=\"col-lg-2 col-md-4 col-sm-12 d-flex align-items-stretch\">" +
-					"<div class=\"card\">" +
-					//"<img class=\"card-img-top\" src=\"" + users[index].profilePicture + "\" alt=\"Card image\">" +
-					"<img class=\"card-img-top\" src=\"assets/images/img_avatar1.png\" alt=\"Card image\">" +
-					"<div class=\"card-body d-flex flex-column\">" +
-					"<h4 class=\"card-title\">" + users[index].firstName + " " + users[index].lastName + "</h4>" +
-					"<p class=\"card-text\">" + users[index].cf + "</p>" +
-					"<div class=\"icons\">" +
-					"<span class=\"clickable mt-auto align-self-start modify-button\"><i class=\"fas fa-pen\"></i></span>" +
-					"<span class=\"clickable mt-auto align-self-end remove-button\" style=\"float:right\" id=\"remove-" + users[index].cf + "\"><i class=\"fas fa-trash\"></i></span>" +
-					"</div>" +
-					"</div>" +
-					"</div>" +
-					"</div>");
+									"<div class=\"card\">" +
+										//"<img class=\"card-img-top\" src=\"" + users[index].profilePicture + "\" alt=\"Card image\">" +
+										"<img class=\"card-img-top\" src=\"assets/images/img_avatar1.png\" alt=\"Card image\">" +
+										"<div class=\"card-body d-flex flex-column\">" +
+											"<h4 class=\"card-title\">" + users[index].firstName + " " + users[index].lastName + "</h4>" +
+											"<p class=\"card-text\">" + users[index].cf + "</p>" +
+											"<div class=\"icons\">" +
+												"<span class=\"clickable mt-auto align-self-start modify-button\" id='modify-" + users[index].cf + "'><i class=\"fas fa-pen\"></i></span>" +
+												"<span class=\"clickable mt-auto align-self-end remove-button\" style='float:right' id=\"remove-" + users[index].cf + "\"><i class=\"fas fa-trash\"></i></span>" +
+											"</div>" +
+										"</div>" +
+									"</div>" +
+								"</div>");
 			}
 
 			$(".remove-button").off().on("click", function() {
@@ -142,6 +136,15 @@ function loadMore(showMore) {
 					}
 				});
 			});
+			
+			$(".modify-button").off().on("click", function () {
+				let cf = this.id.substr(7, 16);
+				var form = $("	<form method='post' action='/users/edit' style='display:none'>" +
+									"<input type='text' name='userCf' value='" + cf + "'>" +
+								"</form>");
+				$('body').append(form);
+				form.submit();
+			})
 
 			if (data.length == 7) {
 				$("#usersContainer").append("<button class=\"btn btn-outline-primary\" id=\"showMoreButton\">Mostra altri</button>");
@@ -190,19 +193,4 @@ function areEquals(users1, users2) {
 	}
 
 	return true;
-}
-
-function errorMessage() {
-	if (!errorShown) {
-		errorShown = true;
-		Swal.fire({
-			title: "Oops...",
-			text: "Qualcosa è andato storto.",
-			icon: "error"
-		}).then((result) => {
-			if (result.isConfirmed) {
-				location.reload();
-			}
-		})
-	}
 }

@@ -35,6 +35,19 @@
 				</li>
 			</c:if>
 			
+			
+			<c:if test="${user_type != null && user_type == 'admin'}">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle clickable" id="navbarDropdown" 
+					role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gestisci dati</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/users">Utenti</a>
+						<a class="dropdown-item" href="/courses">Corsi</a>
+						<a class="dropdown-item" href="/locations">Luoghi</a>
+					</div>
+				</li>
+			</c:if>
+			
 			<!-- <li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
 				role="button" data-toggle="dropdown" aria-haspopup="true"

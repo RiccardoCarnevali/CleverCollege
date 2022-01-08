@@ -1,6 +1,6 @@
 $(document).ready(function () {
     var radioButton = document.getElementsByName("kindOfUser");
-    for (let i = 0, lenght = radioButton.length; i < lenght; i++) {
+    for (let i = 0, length = radioButton.length; i < length; i++) {
         radioButton[i].addEventListener("click", function () {
             if (document.getElementById("student").checked) {
                 $("#idStudent").css('display', 'block');
@@ -19,21 +19,6 @@ $(document).ready(function () {
         $(forUserElement[i]).on('input', function () {
             checkField();
         });
-    }
-
-    function User(cf, firstName, lastName, email, password, description, profilePicture) {
-        this.cf = cf;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.description = description;
-        this.profilePicture = profilePicture;
-    }
-
-    function Student(cf, firstName, lastName, email, password, description, profilePicture, studentNumber) {
-        User.call(this, cf, firstName, lastName, email, password, description, profilePicture);
-        this.studentNumber = studentNumber;
     }
 
     $('#insert-user-button').on('click', function (e) {
@@ -114,11 +99,12 @@ var checkField = function () {
 
 var insertUser = function (userFromForm, kindOfUser) {
     $.ajax({
-        url: "insertUser",
+        url: "/insertUser",
         method: "POST",
         data:  {
             userFromForm : userFromForm,
-            kindOfUser : kindOfUser
+            kindOfUser : kindOfUser,
+			update: $("#update").val()
         },
         success: function (response) {
             $('.loader').css('display', 'none');
@@ -163,24 +149,24 @@ var insertUser = function (userFromForm, kindOfUser) {
             else {
                 Swal.fire(
                     'Ben fatto!',
-                    'Inserimento avvenuto con successo!',
+                    'L\'operazione è stata portata a termine con succcesso!',
                     'success'
                 )
-                $("#fiscalCodeUser").val('');
-                $("#name").val('');
-                $("#surname").val('');
-                $("#email").val('');
-                $("#idStudent").val('');
-                $("#insert-user-button").prop('disabled', true);
+				
+				if($("#update").val() == "false") {
+			
+	                $("#fiscalCodeUser").val('');
+	                $("#name").val('');
+	                $("#surname").val('');
+	                $("#email").val('');
+	                $("#idStudent").val('');
+	                $("#insert-user-button").prop('disabled', true);
+				}
             }
         },
-        fail: function () {
+        error: function () {
             $('.loader').css('display', 'none');
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Qualcosa è andato storto!'
-            });
+            errorMessage();
         }
     });
 }

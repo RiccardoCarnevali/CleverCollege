@@ -25,7 +25,8 @@ function loadActivities() {
 				loadWeeklyCard(activities[i]);
 				loadedActivities.push(JSON.stringify(activities[i]));
 			}
-		}
+		},
+		error: errorMessage
 	});
 
 	$.ajax({
@@ -39,7 +40,8 @@ function loadActivities() {
 				loadedActivities.push(JSON.stringify(activities[i]));
 			}
 
-		}
+		},
+		error: errorMessage
 	});
 
 	$.ajax({
@@ -53,7 +55,8 @@ function loadActivities() {
 				loadedActivities.push(JSON.stringify(activities[i]));
 			}
 
-		}
+		},
+		error: errorMessage
 	});
 
 
@@ -363,6 +366,7 @@ function editActivity(id, type) {
 		data: {
 			activityJSON: JSON.stringify(activity),
 			type: type
-		}
+		},
+		error: errorMessage
 	});
 }

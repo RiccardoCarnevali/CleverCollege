@@ -115,25 +115,4 @@ public class ProfessorDaoJDBC implements ProfessorDao {
 		
 		DatabaseManager.getInstance().getUserDao().delete(cf);
 	}
-
-	@Override
-	public List<User> professorWithSubstring(String substring) throws SQLException {
-		List<User> professors = new ArrayList<>();
-
-		String query = "select * from users inner join professors on users.cf = professors.cf where first_name ilike ? or last_name ilike ? limit 20" ;
-
-		PreparedStatement st = conn.prepareStatement(query);
-
-		st.setString(1, "%" + substring + "%");
-		st.setString(2, "%" + substring + "%");
-
-		ResultSet rs = st.executeQuery();
-
-		while (rs.next()) {
-			professors.add(DatabaseManager.getInstance().getUserDao().findByPrimaryKey(rs.getString("cf")));
-		}
-
-		return professors;
-	}
-
 }
