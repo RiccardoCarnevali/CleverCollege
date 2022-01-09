@@ -1,13 +1,25 @@
 package com.clevercollege.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +34,7 @@ import com.clevercollege.persistence.DatabaseManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
 @RestController
 public class InsertDataController {
@@ -58,10 +71,12 @@ public class InsertDataController {
                 	else {
 						l.setId(id);
 					}
+                	createQRCode(request,l);
                     if(kindOfPlace != null && id == null)
                         DatabaseManager.getInstance().getClassroomDao().saveOrUpdate(l);
                     else
                         DatabaseManager.getInstance().getLocationDao().saveOrUpdate(l);
+                    
                     DatabaseManager.getInstance().commit();
                     return "data inserted";
                 }
@@ -363,5 +378,37 @@ public class InsertDataController {
 		}
 		return "ok";
 	}
+	
+	public void createQRCode(HttpServletRequest request, Location location) {
+		User user = (User) request.getSession().getAttribute("user");
+		String userType = (String) request.getSession().getAttribute("user_type");
+		if (user == null || !("admin").equals(userType))
+			return;
+		if (location == null)
+			return;
+
+		String locationJSON = new Gson().toJson(location);
+
+		CloseableHttpClient client = HttpClients.createDefault();
+		HttpPost httpPost = new HttpPost("http://api.qrserver.com/v1/create-qr-code/");
+
+		List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+		postParameters.add(new BasicNameValuePair("data", locationJSON));
+		postParameters.add(new BasicNameValuePair("size", "100x100"));
+		postParameters.add(new BasicNameValuePair("ecc", "L"));
+
+		try {
+			httpPost.setEntity(new UrlEncodedFormEntity(postParameters, "UTF-8"));
+			CloseableHttpResponse response = client.execute(httpPost);
+			
+			File qrCodeImageFile = new File("src/main/resources/static/assets/images/locations-qr-codes/location_" + location.getId() + ".png");
+			BufferedImage qrCodeImage = ImageIO.read(response.getEntity().getContent());
+			ImageIO.write(qrCodeImage, "png", qrCodeImageFile);
+			
+		} catch (IOException e) {
+			return;
+		}
+	}
+
 
 }

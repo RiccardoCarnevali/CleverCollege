@@ -1,10 +1,12 @@
 package com.clevercollege.persistence.dao.jdbc;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,10 +38,11 @@ public class CheckInCheckOutDaoJDBC implements CheckInCheckOutDao {
 			CheckInCheckOut checkInCheckOut = new CheckInCheckOut();
 			
 			checkInCheckOut.setId(rs.getLong("id"));
-			checkInCheckOut.setInTime(rs.getTime("in_time"));
-			checkInCheckOut.setOutTime(rs.getTime("out_time"));
+			checkInCheckOut.setInTime(rs.getTime("in_time").toString());
+			checkInCheckOut.setOutTime(rs.getTime("out_time").toString());
 			checkInCheckOut.setUser(DatabaseManager.getInstance().getUserDao().findByPrimaryKey(rs.getString("c_user")));
 			checkInCheckOut.setLocation(DatabaseManager.getInstance().getLocationDao().findByPrimaryKey(rs.getLong("c_location")));
+			checkInCheckOut.setDate(rs.getDate("c_date").toString());
 			
 			checkInCheckOuts.add(checkInCheckOut);
 		}
@@ -65,10 +68,12 @@ public class CheckInCheckOutDaoJDBC implements CheckInCheckOutDao {
 			checkInCheckOut = new CheckInCheckOut();
 			
 			checkInCheckOut.setId(rs.getLong("id"));
-			checkInCheckOut.setInTime(rs.getTime("in_time"));
-			checkInCheckOut.setOutTime(rs.getTime("out_time"));
+			checkInCheckOut.setInTime(rs.getTime("in_time").toString());
+			checkInCheckOut.setOutTime(rs.getTime("out_time").toString());
 			checkInCheckOut.setUser(DatabaseManager.getInstance().getUserDao().findByPrimaryKey(rs.getString("c_user")));
 			checkInCheckOut.setLocation(DatabaseManager.getInstance().getLocationDao().findByPrimaryKey(rs.getLong("c_location")));
+			checkInCheckOut.setDate(rs.getDate("c_date").toString());
+		
 		}
 		
 		return checkInCheckOut;
@@ -91,31 +96,34 @@ public class CheckInCheckOutDaoJDBC implements CheckInCheckOutDao {
 					+ "in_time = ?,"
 					+ "out_time = ?,"
 					+ "c_user = ?,"
-					+ "c_location = ?"
+					+ "c_location = ?,"
+					+ "c_date = ?"
 					+ "where id = ?";
 			
 			PreparedStatement updateSt = conn.prepareStatement(query);
 			
-			updateSt.setTime(1, checkInCheckOut.getInTime());
-			updateSt.setTime(2, checkInCheckOut.getOutTime());
+			updateSt.setTime(1, Time.valueOf(checkInCheckOut.getInTime()));
+			updateSt.setTime(2, checkInCheckOut.getOutTime() == null ? null : Time.valueOf(checkInCheckOut.getOutTime()));
 			updateSt.setString(3, checkInCheckOut.getUser().getCf());
 			updateSt.setLong(4, checkInCheckOut.getLocation().getId());
-			updateSt.setLong(5, checkInCheckOut.getId());
+			updateSt.setDate(5, Date.valueOf(checkInCheckOut.getDate()));
+			updateSt.setLong(6, checkInCheckOut.getId());
 			
 			updateSt.executeUpdate();
 			
 		}
 		else {
 			
-			query = "insert into check_in_check_out values(?,?,?,?,?)";
+			query = "insert into check_in_check_out values(?,?,?,?,?,?)";
 			
 			PreparedStatement insertSt = conn.prepareStatement(query);
 			
 			insertSt.setLong(1, checkInCheckOut.getId());
-			insertSt.setTime(2, checkInCheckOut.getInTime());
-			insertSt.setTime(3, checkInCheckOut.getOutTime());
+			insertSt.setTime(2, Time.valueOf(checkInCheckOut.getInTime()));
+			insertSt.setTime(3, checkInCheckOut.getOutTime() == null ? null : Time.valueOf(checkInCheckOut.getOutTime()));
 			insertSt.setString(4, checkInCheckOut.getUser().getCf());
 			insertSt.setLong(5, checkInCheckOut.getLocation().getId());
+			insertSt.setDate(6, Date.valueOf(checkInCheckOut.getDate()));
 			
 			insertSt.executeUpdate();
 		}
@@ -131,6 +139,59 @@ public class CheckInCheckOutDaoJDBC implements CheckInCheckOutDao {
 		st.setLong(1, id);
 		
 		st.executeUpdate();
+	}
+	
+	@Override
+	public List<CheckInCheckOut> findByUser(String cf) throws SQLException {
+		List<CheckInCheckOut> checkInCheckOuts = new ArrayList<CheckInCheckOut>();
+		
+		String query = "select * from check_in_check_out where c_user = ?";
+		
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setString(1, cf);
+		
+		ResultSet rs = st.executeQuery();
+		
+		if(rs.next()) {
+			CheckInCheckOut checkInCheckOut = new CheckInCheckOut();
+			
+			checkInCheckOut.setId(rs.getLong("id"));
+			checkInCheckOut.setInTime(rs.getTime("in_time").toString());
+			checkInCheckOut.setOutTime(rs.getTime("out_time").toString());
+			checkInCheckOut.setDate(rs.getDate("c_date").toString());
+			checkInCheckOut.setUser(DatabaseManager.getInstance().getUserDao().findByPrimaryKey(rs.getString("c_user")));
+			checkInCheckOut.setLocation(DatabaseManager.getInstance().getLocationDao().findByPrimaryKey(rs.getLong("c_location")));
+		
+			checkInCheckOuts.add(checkInCheckOut);
+		}
+		
+		return checkInCheckOuts;
+	}
+
+	@Override
+	public CheckInCheckOut findActiveByUser(String cf) throws SQLException{
+		CheckInCheckOut checkInCheckOut = null;
+		
+		String query = "select * from check_in_check_out where c_user = ? and out_time is null";
+		
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setString(1, cf);
+		
+		ResultSet rs = st.executeQuery();
+		
+		if(rs.next()) {
+			checkInCheckOut = new CheckInCheckOut();
+			
+			checkInCheckOut.setId(rs.getLong("id"));
+			checkInCheckOut.setInTime(rs.getTime("in_time").toString());
+			checkInCheckOut.setDate(rs.getDate("c_date").toString());
+			checkInCheckOut.setUser(DatabaseManager.getInstance().getUserDao().findByPrimaryKey(cf));
+			checkInCheckOut.setLocation(DatabaseManager.getInstance().getLocationDao().findByPrimaryKey(rs.getLong("c_location")));
+		}
+		
+		return checkInCheckOut;
 	}
 
 }

@@ -18,34 +18,34 @@ public class CheckInCheckOutDaoJDBCTest {
 	@Test
 	public void findAllWorks() {
 		List<CheckInCheckOut> checkInCheckOutsFromDb = null;
-		
+
 		try {
 			checkInCheckOutsFromDb = DatabaseManager.getInstance().getCheckInCheckOutDao().findAll();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		List<CheckInCheckOut> checkInCheckOuts = new ArrayList<>();
-		checkInCheckOuts.add(new CheckInCheckOut(2, null, null, null, null));
-		
+		checkInCheckOuts.add(new CheckInCheckOut(2, null, null, null, null, null));
+
 		assertArrayEquals(checkInCheckOuts.toArray(), checkInCheckOutsFromDb.toArray());
 	}
-	
+
 	@Test
 	public void findByPrimaryKeyWorks() {
 		CheckInCheckOut checkInCheckOutFromDb1 = null;
 		CheckInCheckOut checkInCheckOutFromDb2 = null;
 		try {
 			checkInCheckOutFromDb1 = DatabaseManager.getInstance().getCheckInCheckOutDao().findByPrimaryKey(2);
-			checkInCheckOutFromDb2 = DatabaseManager.getInstance().getCheckInCheckOutDao().findByPrimaryKey(1);		
+			checkInCheckOutFromDb2 = DatabaseManager.getInstance().getCheckInCheckOutDao().findByPrimaryKey(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		CheckInCheckOut checkInCheckOut = new CheckInCheckOut(2, null, null, null, null);
-		
+
+		CheckInCheckOut checkInCheckOut = new CheckInCheckOut(2, null, null, null, null, null);
+
 		assertEquals(checkInCheckOut, checkInCheckOutFromDb1);
 		assertNull(checkInCheckOutFromDb2);
 	}
-	
+
 }

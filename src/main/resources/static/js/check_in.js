@@ -53,13 +53,14 @@ async function processFrame() {
 			imageDataURL:canvas.toDataURL('image/jpeg')
 		},
 		success: function(result) {
-			if(result.data != null) {
+			console.log(result);
+			if(result != 'found') {
 				console.log('no qr code found');
 			} else {
+				location.reload();
 				loadUserMedia(false);
 			}
 		}
-	})
+	});
 }
-
 
