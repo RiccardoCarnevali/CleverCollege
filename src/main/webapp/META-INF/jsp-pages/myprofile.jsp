@@ -1,6 +1,7 @@
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-	<title>Clever College - Area Personale</title>
+	<title>Area Personale</title>
 	<meta charset="ISO-8859-1">
 	<meta content="maximum-scale=1.0, initial-scale=1.0, width=device-width" name="viewport">
 	
@@ -13,11 +14,11 @@
 	<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 	<script	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-	<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script src="/js/common.js"></script>
-	<script src="/js/myprofile.js"></script>
+	<script src="/js/myprofile.js" charset="UTF-8"></script>
 	<script src="/js/loadbookedcourses.js"></script>
+	<script src="/js/generic_error.js" charset="UTF-8"></script>
 	
 </head>
 
@@ -62,13 +63,14 @@
 							</c:if>
 						</div>
 						<form id="passwordChangeLayout" style="margin-top:15px">
-							<button type="button" id="changePassword" class="btn btn-outline-danger card-link">Cambia password</button>							</div>
+							<button type="button" id="changePassword" class="btn btn-outline-danger card-link">Cambia password</button>							
 						</form>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="footer"></div>
+	</div>	
+	<div class="footer"></div>
 </body>
 
 </html>

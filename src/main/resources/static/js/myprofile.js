@@ -28,7 +28,8 @@ $(function() {
 	            var url = window.URL || window.webkitURL;
 	            $("#profile-picture").attr("src", url.createObjectURL(data));
 			}
-        }
+        },
+		error: errorMessage
 	});
 })
 
@@ -42,6 +43,7 @@ var updateDescription = function() {
 			description: description	
 		},
 		success: showMode,
+		error: errorMessage
 	});
 }
 
@@ -89,7 +91,8 @@ var updateImage = function() {
 							text: "Non è stato possibile aggiornare l'immagine del profilo. Riprova più tardi"
 						})
 					}
-				}
+				},
+				error: errorMessage
 			})
 		var img = new Image();
 		var url = window.URL || window.webkitURL;
@@ -110,12 +113,12 @@ var updateImage = function() {
 				data: formData,
 				contentType: false,
 				processData: false,
-				success: console.log("img done")
+				error: errorMessage
 			})
 			
 			reader = new FileReader()
 			reader.onload = function() {
-				$("#profile-picture").replaceWith("<img id='profile-picture' class='card-img-top rounded-circle' alt='ma guarda quanto sei bello/a' src='"+ reader.result + "'>");
+				$("#profile-picture").attr("src", reader.result);
 			}	
 			reader.readAsDataURL(file);	
 		}
@@ -162,7 +165,8 @@ var changePassword = function() {
 							window.alert("error");
 							break;
 					}
-				}
+				},
+				error: errorMessage
 			});
 		}
 		else {
@@ -177,11 +181,11 @@ var changePassword = function() {
 var changePasswordEdit = function() {
 	$("#passwordChangeLayout").empty();
 	$("#passwordChangeLayout").append("<label for='current-password' style='display: block'>Inserisci la tua password corrente:</label>" +
-									 "<input type='text' id='current-password' maxlength='30' class='form' style='display: block'></input>" +
+									 "<input type='password' id='current-password' maxlength='30' class='form-control' style='display: block' placeholder='Password corrente'></input>" +
 									 "<label for='new-password' style='display: block'>Inserisci la nuova password:</label>" +
-									 "<input type='text' id='new-password' maxlength='30' class='form' style='display: block'></input>" +
+									 "<input type='password' id='new-password' maxlength='30' class='form-control' style='display: block' placeholder='Nuova password'></input>" +
 									 "<label for='new-password' style='display: block'>Conferma la nuova password:</label>" +
-									 "<input type='text' id='new-password-confirm' maxlength='30' class='form' style='display: block'></input>" +
+									 "<input type='password' id='new-password-confirm' maxlength='30' class='form-control' style='display: block' placeholder='Conferma password'></input>" +
 									 "<button type='button' id='password-confirmMod' class='btn btn-outline-primary btn-sm'>Conferma Modifica</button>" +
 									 "<button type='button' id='password-abortMod' class='btn btn-outline-danger btn-sm'>Annulla Modifica</button>");
 	$("#password-confirmMod").on("click", changePassword);
@@ -198,14 +202,14 @@ var swal_password_out = {
 	currentMissing: function() {
 		Swal.fire({
 			icon: 'error',
-			title: 'Password vecchia mancante',
+			title: 'Password corrente mancante',
 			text: 'Inserisci la tua password corrente e riprova'
 		});
 	},
 	confirmError: function() { 
 		Swal.fire({
 			icon: 'error',
-			title: 'Campi nuova password non coincidenti',
+			title: 'Le due password non coincidono',
 			text: 'Controlla di aver inserito correttamente la nuova password e riprova'
 		});
 	},

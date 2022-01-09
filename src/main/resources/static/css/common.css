@@ -19,7 +19,7 @@
 		right: 20px !important;
 	}
 	
-	#loginButton {
+	.ml-auto {
 		margin-left: 0px !important;
 	}
 }
@@ -42,12 +42,12 @@ body {
 	z-index: 100;
 }
 
-.clickable {
-	cursor: pointer;
+.navbar-nav {
+	width: 100%;
 }
 
-#loginButton {
-	margin-left: 25vw;
+.clickable {
+	cursor: pointer;
 }
 
 #logo {

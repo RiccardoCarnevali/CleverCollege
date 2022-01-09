@@ -17,6 +17,24 @@ import com.clevercollege.persistence.DatabaseManager;
 
 @Controller
 public class ViewDataController {
+	
+	@GetMapping("/myprofile")
+	public String getProfilePage(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+
+		User u = (User) session.getAttribute("user");
+		
+		if(u == null) {
+			session.setAttribute("after-login", "/myprofile");
+			return "redirect:/login";
+		}
+		return "myprofile";
+	}
+	
+	@GetMapping("/more-info")
+	public String moreInfoPage() {
+		return "more_information_page";
+	}
 
 	@GetMapping("/users")
 	public String viewUsersPage(HttpServletRequest req) {
@@ -248,7 +266,7 @@ public class ViewDataController {
         HttpSession session = req.getSession();
         User u = (User) session.getAttribute("user");
         if(u == null) {
-            session.setAttribute("after-login", "/courses/insert");
+            session.setAttribute("after-login", "/courses/edit");
             return "redirect:/login";
         }
         else {
@@ -278,7 +296,7 @@ public class ViewDataController {
         HttpSession session = req.getSession();
         User u = (User) session.getAttribute("user");
         if(u == null) {
-            session.setAttribute("after-login", "/courses/insert");
+            session.setAttribute("after-login", "/locations/edit");
             return "redirect:/login";
         }
         else {

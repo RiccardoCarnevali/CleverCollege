@@ -14,7 +14,7 @@
 		<span class="navbar-toggler-icon"></span>
 	</button>
 	<div class="collapse navbar-collapse" id="navbarMain">
-		<ul class="navbar-nav mr-auto">
+		<ul class="navbar-nav">
 			<li class="nav-item"><a class="nav-link" href="/">Home</a></li>
 			
 			<c:if test="${user_type != null && user_type == 'professor'}">
@@ -47,22 +47,18 @@
 					</div>
 				</li>
 			</c:if>
+			<c:if test="${user != null}">
+				<li class="nav-item">
+					<a href="/myprofile" class="nav-link">Area personale</a>
+				</li>
+			</c:if>
 			
-			<!-- <li class="nav-item dropdown"><a
-				class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-				role="button" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false"> Dropdown </a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="#">Action 1</a> <a
-						class="dropdown-item" href="#">Action 2</a>
-				</div>
-			</li> -->
-			<li class="nav-item">
+			<li class="nav-item ml-auto">
 				<a <c:if test="${user != null}">href="/doLogout"</c:if> <c:if test="${user == null}">href="/login"</c:if>
 					 class="btn btn-outline-primary" id="loginButton">
 				<c:if test="${user != null}">Logout</c:if>
 				<c:if test="${user == null}">Login</c:if>
-			</a>
+				</a>
 			</li>
 		</ul>
 	</div>

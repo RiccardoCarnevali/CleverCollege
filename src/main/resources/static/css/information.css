@@ -23,7 +23,6 @@ a:hover, a:focus-visible, a:active{
 #myMap {
     margin: 30px;
     position: relative;
-    min-width: 400px;
     min-height: 400px;
     z-index: 1;
 }
