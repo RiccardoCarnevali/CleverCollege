@@ -85,7 +85,7 @@
                     <input type="email" class="form-control insert-user-element" id="email" placeholder="Inserisci l'email..." name="email"
                      <c:if test="${user_to_edit != null}">value="${user_to_edit.email}"</c:if>>
                 </div>
-                <c:if test="${user_to_edit != null && type_to_edit != null && type_to_edit == 'student'}">
+                <c:if test="${user_to_edit == null || (user_to_edit != null && type_to_edit != null && type_to_edit == 'student')}">
 	                <div class="mb-3">
 	                    <label id="label-for-Student" for="idStudent" class="form-label" style="display: block">Matricola:</label>
 	                    <input type="text" class="form-control insert-user-element" id="idStudent" placeholder="Inserisci la matricola..." name="idStudent" style="display: block"
@@ -107,9 +107,7 @@
                     	<button type="button" id="cancel-insertion" class="btn btn-outline-danger danger-button">Annulla modifica</button>
                     </c:if>
                 </div>
-                <input type="hidden" id="update" value="
-                <c:if test="${user_to_edit == null}">false</c:if>
-                <c:if test="${user_to_edit != null}">true</c:if>">
+                <input type="hidden" id="update" value="<c:if test="${user_to_edit == null}">false</c:if><c:if test="${user_to_edit != null}">true</c:if>">
             </form>
         </div>
     </div>

@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-6">
-                <a id="information" href="/more_information_page.html">
+                <a id="information" href="/more-info">
                     Vuoi maggiori informazioni? Clicca qui!
                 </a>
             </div>
@@ -14,7 +14,7 @@
                     Realizzazione a cura di: <br/>
                     Alessia Donata Camarda,
                     Riccardo Carnevali,
-                    Matteo Puccio e
+                    Matteo Puccio e	
                     Giacomo Galavotti.
                 </p>
             </div>

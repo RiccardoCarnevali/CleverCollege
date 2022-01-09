@@ -24,7 +24,7 @@
         <div id="second-column">
             <div class="mb-3 mt-3" id="fiscalCode">
                 <label for="fiscalCodeInput" class="form-label"><strong>Codice fiscale:</strong></label>
-                <input type="text" class="form-control <c:if test="${no_existing_user_error != null && no_existing_user_error == true}">error-color</c:if>" id="fiscalCodeInput" placeholder="Inserisci il tuo codice fiscale..." name="cf">
+                <input type="text" class="form-control <c:if test="${(no_existing_user_error != null && no_existing_user_error == true) || (password_error != null && password_error == true)}">error-color</c:if>" id="fiscalCodeInput" placeholder="Inserisci il tuo codice fiscale..." name="cf">
             </div>
             <div class="mb-3" id="password">
                 <label for="passwordInput" class="form-label"><strong>Password:</strong></label>
