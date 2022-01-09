@@ -1,45 +1,41 @@
 package com.clevercollege.controller;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clevercollege.model.CheckInCheckOut;
 import com.clevercollege.model.Location;
 import com.clevercollege.model.User;
-import com.google.gson.Gson;
+import com.clevercollege.persistence.DatabaseManager;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 public class CheckInCheckOutController {
 
 	private static final String readQRCodeUrl = "http://api.qrserver.com/v1/read-qr-code/";
-	private static final String createQRCodeUrl = "http://api.qrserver.com/v1/create-qr-code/";
 
 	@PostMapping("/process-qrcode")
 	public String processQRCode(HttpServletRequest request, String imageDataURL) {
-		if (request.getSession().getAttribute("user") == null || imageDataURL == null) {
+		User user = (User) request.getSession().getAttribute("user");
+		if (user == null || imageDataURL == null) {
 			return null;
 		}
 		// convert image from base64 to binary, then from binary to jpg
@@ -69,44 +65,33 @@ public class CheckInCheckOutController {
 			CloseableHttpResponse response = client.execute(httpPost);
 			HttpEntity responseEntity = response.getEntity();
 			if (responseEntity != null) {
+
+				ObjectMapper mapper = new ObjectMapper();
 				String responseAsString = EntityUtils.toString(responseEntity);
-				return responseAsString;
+
+				String data = responseAsString.substring(responseAsString.indexOf("data") + 7,
+						responseAsString.indexOf("}\"") + 1);
+				data = data.replace("\\", "");
+
+				Location checkInLocation = mapper.readValue(data, Location.class);
+				Long id = DatabaseManager.getInstance().getIdBroker().getNextCheckInCheckOutId();
+				String inTime = LocalTime.now().toString().substring(0, 8);
+				String date = LocalDate.now().toString();
+
+				System.out.println("id: " + id + "inTime: " + inTime + "date: " + date);
+
+				CheckInCheckOut checkIn = new CheckInCheckOut(id, inTime, null, date, user, checkInLocation);
+				DatabaseManager.getInstance().getCheckInCheckOutDao().saveOrUpdate(checkIn);
+				DatabaseManager.getInstance().commit();
+				if(checkIn != null)
+					return "found";
+
 			}
 			client.close();
 			response.close();
 
-		} catch (IOException e) {
-		}
+		} catch (Exception e) {	}
 		return null;
 	}
 
-	@PostMapping("create-location-qrcode")
-	public void createQRCode(HttpServletRequest request, Location location) {
-		User user = (User) request.getSession().getAttribute("user");
-		String userType = (String) request.getSession().getAttribute("user_type");
-		if (user == null || !("admin").equals(userType))
-			return;
-		if (location == null)
-			return;
-
-		String locationJSON = new Gson().toJson(location);
-
-		CloseableHttpClient client = HttpClients.createDefault();
-		HttpPost httpPost = new HttpPost(createQRCodeUrl);
-
-		List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-		postParameters.add(new BasicNameValuePair("data", locationJSON));
-		postParameters.add(new BasicNameValuePair("size", "150x150"));
-		postParameters.add(new BasicNameValuePair("ecc", "M"));
-
-		try {
-			httpPost.setEntity(new UrlEncodedFormEntity(postParameters, "UTF-8"));
-			CloseableHttpResponse response = client.execute(httpPost);
-			
-			System.out.println(response.getEntity().getContentType());
-			System.out.println(EntityUtils.toString(response.getEntity()));
-		} catch (IOException e) {
-			return;
-		}
-	}
 }

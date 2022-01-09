@@ -26,12 +26,29 @@
 </head>
 <body>
 	<div class="header"></div>
-	<div class="container">
-		<div class="video-capture-container">
-			<video width="320" height="320" class="video-capture"></video>
-			<canvas style="display:none;"></canvas>
+	<c:if test="${checkIn == null}">
+		<div class="container">
+
+			<h3 class="title">Check-In</h3>
+			<div class="video-capture-container">
+				<video width="320" height="320" class="video-capture"></video>
+				<canvas style="display: none;"></canvas>
+			</div>
+			<button class="btn btn-outline-primary" id="showStreamBttn">Apri
+				Fotocamera</button>
 		</div>
-		<button class="btn btn-outline-primary" id="showStreamBttn">Apri Fotocamera</button>
-	</div>
+	</c:if>
+	<c:if test="${checkIn != null}">
+		<div class="container" style="margin-top: 100px; max-width: 70vw;">
+			<h3 class="title">Check-Out</h3>
+			<p style="text-align: center;">Check-in effettuato in
+				${checkIn.location.name} alle ${checkIn.inTime.substring(0,5)}</p>
+			<div id="checkOutBttnContainer">
+				<a id="checkOutBttn" href="do-check-out"
+					class="btn btn-outline-primary">Check-Out</a>
+			</div>
+		</div>
+	</c:if>
+
 </body>
 </html>

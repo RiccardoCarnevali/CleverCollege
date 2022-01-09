@@ -11,6 +11,7 @@
 	display: block;
 }
 
+/*check-in.jsp*/
 .video-capture-container {
 	background-color: black;
 	margin: 50px auto;
@@ -18,7 +19,34 @@
 	height: 320px;
 }
 
-#showStreamBttn {
+#showStreamBttn, #checkOutBttnContainer {
 	display: block;
 	margin: 0 auto;
 }
+
+#checkOutBttnContainer {
+	width: 120px;
+}
+
+/*view-qr-code.jsp*/
+
+.qr-code-image {
+	display: block;
+	margin: 0 auto;
+	min-width: 300px;
+}
+
+#downloadContainer {
+	display: block;
+	margin: 30px auto;
+	font-size: 4em;
+	text-align: center;
+}
+
+.title {
+	font-weight: bolder;
+	text-transform: uppercase;
+	text-align:center;
+	margin-bottom: 20px;
+}
+

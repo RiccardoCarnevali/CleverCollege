@@ -14,4 +14,8 @@ public interface CheckInCheckOutDao {
 	public void saveOrUpdate(CheckInCheckOut checkInCheckOut) throws SQLException;
 	
 	public void delete(long id) throws SQLException;
+
+	public List<CheckInCheckOut> findByUser(String cf) throws SQLException;
+
+	public CheckInCheckOut findActiveByUser(String cf) throws SQLException;
 }
