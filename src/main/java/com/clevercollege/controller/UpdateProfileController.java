@@ -59,7 +59,6 @@ public class UpdateProfileController {
 
 	@PostMapping("/updateProfilePicture")
 	public String updateImage(@RequestParam("image") MultipartFile img, HttpServletRequest request) {
-		System.out.println("arrivato " + img.getOriginalFilename());
 		User u = (User) request.getSession().getAttribute("user");
 		if (!img.isEmpty()) {
 			String imgName = img.getOriginalFilename();
@@ -73,7 +72,6 @@ public class UpdateProfileController {
 					DatabaseManager.getInstance().commit();
 					return "ok";
 				} else {
-					System.out.println("non valido");
 					return "error";
 				}
 
@@ -95,7 +93,6 @@ public class UpdateProfileController {
 						Paths.get("src/main/resources/static/assets/images/pp/" + u.getProfilePicture())));
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return inputStream;
@@ -105,7 +102,7 @@ public class UpdateProfileController {
 	public String updatePassword(String oldPwd, String newPwd, String confirmPwd, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		User u = (User) session.getAttribute("user");
-		if (u != null) {
+		if (u != null && newPwd != null && confirmPwd != null) {
 			try {
 				if (!oldPwd.isEmpty()) {
 					if (!newPwd.isEmpty() && newPwd.equals(confirmPwd)) {

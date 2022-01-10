@@ -20,6 +20,24 @@ import com.clevercollege.persistence.DatabaseManager;
 @Controller
 public class ViewDataController {
 
+	@GetMapping("/myprofile")
+	public String getProfilePage(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+
+		User u = (User) session.getAttribute("user");
+
+		if(u == null) {
+			session.setAttribute("after-login", "/myprofile");
+			return "redirect:/login";
+		}
+		return "myprofile";
+	}
+
+	@GetMapping("/more-info")
+	public String moreInfoPage() {
+		return "more_information_page";
+	}
+
 	@GetMapping("/users")
 	public String viewUsersPage(HttpServletRequest req) {
 
@@ -232,8 +250,8 @@ public class ViewDataController {
 			return "error";
 		}
 
-		return "insert_user";
-	}
+        return "insert_user";
+    }
 
 	@PostMapping("/courses/edit")
 	public String editCoursePage(HttpServletRequest req, Long courseId) {
@@ -264,31 +282,30 @@ public class ViewDataController {
         return "insert_data";
     }
 
-    @PostMapping("/locations/edit")
-    public String editLocationPage(HttpServletRequest req, Long locationId) {
-        HttpSession session = req.getSession();
-        User u = (User) session.getAttribute("user");
-        if(u == null) {
-            session.setAttribute("after-login", "/courses/insert");
-            return "redirect:/login";
-        }
-        else {
-        	String user_type = (String) session.getAttribute("user_type");
-			if(user_type == null || !user_type.equals("admin"))
+	@PostMapping("/locations/edit")
+	public String editLocationPage(HttpServletRequest req, Long locationId) {
+		HttpSession session = req.getSession();
+		User u = (User) session.getAttribute("user");
+		if (u == null) {
+			session.setAttribute("after-login", "/courses/insert");
+			return "redirect:/login";
+		} else {
+			String user_type = (String) session.getAttribute("user_type");
+			if (user_type == null || !user_type.equals("admin"))
 				return "not_authorized";
-        }
-        if(locationId == null)
-        	return "error";
+		}
+		if (locationId == null)
+			return "error";
 
-        Location location = null;
-        try {
+		Location location = null;
+		try {
 			location = DatabaseManager.getInstance().getLocationDao().findByPrimaryKey(locationId);
 		} catch (SQLException e) {
 			return "error";
 		}
 
-        if(location == null)
-        	return "error";
+		if (location == null)
+			return "error";
 
 		req.setAttribute("location_to_edit", location);
 		return "insert_data";
@@ -310,7 +327,7 @@ public class ViewDataController {
 					request.getSession().setAttribute("checkIn", checkIn);
 				}
 			}
-
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -321,18 +338,18 @@ public class ViewDataController {
 	public String viewQRCode(HttpServletRequest request, Long id) {
 		User user = (User) request.getSession().getAttribute("user");
 		String user_type = (String) request.getSession().getAttribute("user_type");
-
+		
 		if (id == null)
 			return "error";
-
+		
 		if (user == null) {
 			request.getSession().setAttribute("after-login", "view-qr-code?id=" + id);
 			return "redirect:/login";
 		}
-
+		
 		if (!("admin").equals(user_type))
 			return "not_authorized";
-
+		
 		Location location = null;
 		try {
 			location = DatabaseManager.getInstance().getLocationDao().findByPrimaryKey(id);
@@ -344,7 +361,7 @@ public class ViewDataController {
 		request.setAttribute("location_id", id);
 		return "view_qr_code";
 	}
-
+	
 	@GetMapping("do-check-out")
 	public String doCheckOut(HttpServletRequest request) {
 		User user = (User) request.getSession().getAttribute("user");

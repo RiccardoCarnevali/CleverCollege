@@ -64,6 +64,8 @@ public class CheckInCheckOutController {
 
 			CloseableHttpResponse response = client.execute(httpPost);
 			HttpEntity responseEntity = response.getEntity();
+			
+			outputImage.delete();
 			if (responseEntity != null) {
 
 				ObjectMapper mapper = new ObjectMapper();
@@ -77,8 +79,6 @@ public class CheckInCheckOutController {
 				Long id = DatabaseManager.getInstance().getIdBroker().getNextCheckInCheckOutId();
 				String inTime = LocalTime.now().toString().substring(0, 8);
 				String date = LocalDate.now().toString();
-
-				System.out.println("id: " + id + "inTime: " + inTime + "date: " + date);
 
 				CheckInCheckOut checkIn = new CheckInCheckOut(id, inTime, null, date, user, checkInLocation);
 				DatabaseManager.getInstance().getCheckInCheckOutDao().saveOrUpdate(checkIn);

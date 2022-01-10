@@ -1,4 +1,16 @@
 $(document).ready(function () {
+	
+	if (document.getElementById("student").checked) {
+                $("#idStudent").css('display', 'block');
+                $("#label-for-Student").css('display', 'block');
+                checkField();
+
+    } else {	
+        $("#idStudent").css('display', 'none');
+        $("#label-for-Student").css('display', 'none');
+        checkField();
+    }
+	
     var radioButton = document.getElementsByName("kindOfUser");
     for (let i = 0, length = radioButton.length; i < length; i++) {
         radioButton[i].addEventListener("click", function () {
@@ -140,11 +152,7 @@ var insertUser = function (userFromForm, kindOfUser) {
                 });
             }
             else if (response === "server error") {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Qualcosa è andato storto!'
-                });
+                errorMessage();
             }
             else {
                 Swal.fire(
@@ -153,7 +161,7 @@ var insertUser = function (userFromForm, kindOfUser) {
                     'success'
                 )
 				
-				if($("#update").val() == "false") {
+				if($("#update").val() === "false") {
 			
 	                $("#fiscalCodeUser").val('');
 	                $("#name").val('');

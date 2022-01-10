@@ -53,7 +53,6 @@ public class InsertDataController {
         	return "server error";
 
         if(dataFromForm == null || kindOfData == null) {
-        	System.out.println("1");
         	return "server error";
         }
 
@@ -63,7 +62,7 @@ public class InsertDataController {
             Course c;
             if(kindOfData.equals("place")) {
                 l = mapper.readValue(dataFromForm, Location.class);
-                if (DatabaseManager.getInstance().getLocationDao().findByName(l.getName()) != null)
+                if (id == null && DatabaseManager.getInstance().getLocationDao().findByName(l.getName()) != null)
                     return "place already exists";
                 else {
                 	if(id == null) {
@@ -86,7 +85,6 @@ public class InsertDataController {
                 c = mapper.readValue(dataFromForm, Course.class);
                 
                 if(c == null) {
-                	System.out.println(2);
                 	return "server error";
                 }
                 
@@ -97,11 +95,9 @@ public class InsertDataController {
                     return "course already exists";
                 else {
                 	if(id == null) {
-                		System.out.println("id null");
                 		c.setId(DatabaseManager.getInstance().getIdBroker().getNextCourseId());
                 	}
                 	else {
-                		System.out.println("id " + id);
                 		c.setId(id);
                 	}
                 	User professor = DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(professorCf);
