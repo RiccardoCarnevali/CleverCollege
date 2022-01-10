@@ -7,9 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.clevercollege.model.Activity;
 import com.clevercollege.model.Lesson;
 import com.clevercollege.model.SingleLesson;
 import com.clevercollege.model.SingleLessonProxy;
@@ -360,5 +363,47 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 		}
 
 		return singleLessons;
+	}
+
+	@Override
+	public Activity findByDateTimeClassroomProfessor(String cfProfessor, Long idClassroom) throws SQLException {
+		Activity activity = null;
+
+		String firstQuery = "select a.activity_length from activities as a, single_lessons as s where s. id = a.id";
+
+		PreparedStatement s = conn.prepareStatement(firstQuery);
+		ResultSet result = s.executeQuery();
+		while(result.next()) {
+
+			String secondQuery = "select a.id, a.activity_time, a.activity_length, a.description, a.professor, a.classroom " +
+					"from activities as a, single_lessons as s where s. id = a.id and s.seminar_date = ? and" +
+					"classroom = ? and professor = ? and ((activity_time <= ? and ? < activity_time + interval '1 min' * activity_length) " +
+					"or (? <= activity_time and activity_time < ?))";
+
+			PreparedStatement st = conn.prepareStatement(secondQuery);
+
+			st.setDate(1, Date.valueOf(LocalDate.now()));
+			st.setLong(2, idClassroom);
+			st.setString(3, cfProfessor);
+			st.setTime(4, Time.valueOf(LocalTime.now()));
+			st.setTime(5, Time.valueOf(LocalTime.now()));
+			st.setTime(6, Time.valueOf(LocalTime.now()));
+			st.setTime(6, Time.valueOf(LocalTime.now().plusMinutes(result.getInt(1))));
+
+
+			ResultSet rs = st.executeQuery();
+
+			if (rs.next()) {
+				activity = new Activity();
+				activity.setId(rs.getLong("id"));
+				activity.setTime(rs.getTime("activity_time").toString());
+				activity.setLength(rs.getInt("activity_length"));
+				activity.setDescription(rs.getString("description"));
+				activity.setManager(DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(rs.getString("professor")));
+				activity.setClassroom(DatabaseManager.getInstance().getClassroomDao().findByPrimaryKey(rs.getLong("classroom")));
+				activity.setBookers(DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id"), true));
+			}
+		}
+		return activity;
 	}
 }

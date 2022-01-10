@@ -1,5 +1,5 @@
 var classroomChecked = null;
-var listOfStudentsCheckedIn = null;
+var listOfCheckedInStudent = null;
 var listOfBookers = null;
 
 window.onload = findClassroomChecked();
@@ -12,7 +12,7 @@ var findClassroomChecked = function () {
             classroomChecked = JSON.parse(response);
             if(classroomChecked === null)
                 errorMessage();
-            findActivityInClassroomChecked(classroomChecked);
+            checkedInstudents(classroomChecked);
         },
         error: function () {
             errorMessage();
@@ -20,16 +20,16 @@ var findClassroomChecked = function () {
     });
 }
 
-var studentsCheckedIn = function () {
+var checkedInstudents = function () {
     $.ajax({
-        url: "/findStudentsCheckedIn",
+        url: "/findCheckedInStudents",
         method: "POST",
         data: {
             classroomChecked : JSON.stringify(classroomChecked)
         },
         success: function (response) {
-            listOfStudentsCheckedIn = JSON.parse(response);
-            if(listOfStudentsCheckedIn == null)
+            listOfCheckedInStudent = JSON.parse(response);
+            if(listOfCheckedInStudent == null)
                 errorMessage();
             else if(response.length === 0) {
                 var textnode = document.createTextNode("Nessuno studente ha effettuato il check-in all'interno dell'aula.");
@@ -57,7 +57,7 @@ var findActivityInClassroomAndCheckBookers = function () {
             if(listOfBookers === null)
                 errorMessage();
             else {
-                for (let i, max = listOfStudentsCheckedIn.length; i < max; i++) {
+                for (let i, max = listOfCheckedInStudent.length; i < max; i++) {
                     var booked = null;
                     if(listOfBookers.includes(response[i]))
                         booked = "Prenotato all'attività.";
@@ -65,12 +65,12 @@ var findActivityInClassroomAndCheckBookers = function () {
                         booked = "Non prenotato all'attività.";
                     var studentList = $("#student-checked-in");
                     studentList.append("<li class='list-group-item location'>" +
-                        "<span class='location-name'>" + listOfStudentsCheckedIn[i].firstName + listOfStudentsCheckedIn[i].lastName + "</span>" +
+                        "<span class='location-name'>" + listOfCheckedInStudent[i].firstName + listOfCheckedInStudent[i].lastName + "</span>" +
                         "<div class='icons' style='float:right'>" +
-                        "<span class='clickable modify-button' id='forced-checked-out-" + listOfStudentsCheckedIn[i].cf + "' style='display:block;margin-bottom:20px'>" +
+                        "<span class='clickable modify-button' id='forced-checked-out-" + listOfCheckedInStudent[i].cf + "' style='display:block;margin-bottom:20px'>" +
                         "<i class='fas fa-door-open'></i></span>" +
                         "</div>" +
-                        "<span class='location-capacity' style='display:block'>Codice fiscale: " + listOfStudentsCheckedIn[i].cf + "</span>" +
+                        "<span class='location-capacity' style='display:block'>Codice fiscale: " + listOfCheckedInStudent[i].cf + "</span>" +
                         "<span class='location-capacity' style='display:block'>booked</span>" +
                         "</li>");
                 }

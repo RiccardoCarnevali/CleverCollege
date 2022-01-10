@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.clevercollege.model.CheckInCheckOut;
 import com.clevercollege.model.Location;
+import com.clevercollege.model.Student;
 
 public interface CheckInCheckOutDao {
 
@@ -21,4 +22,6 @@ public interface CheckInCheckOutDao {
 	public CheckInCheckOut findActiveByUser(String cf) throws SQLException;
 
 	public Location findPlaceOfCheckIn(String cfUser) throws SQLException;
+
+	public List<Student> findCheckInStudentsByLocation(String nameLocation)throws SQLException;
 }

@@ -1,6 +1,7 @@
 package com.clevercollege.controller;
 
 import java.sql.SQLException;
+import java.time.LocalTime;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -256,37 +257,38 @@ public class ViewDataController {
 			return "error";
 		}
 
-		if (course == null)
-			return "error";
+        if(course == null)
+        	return "error";
 
-		req.setAttribute("course_to_edit", course);
-		return "insert_data";
-	}
+        req.setAttribute("course_to_edit", course);
+        return "insert_data";
+    }
 
-	@PostMapping("/locations/edit")
-	public String editLocationPage(HttpServletRequest req, Long locationId) {
-		HttpSession session = req.getSession();
-		User u = (User) session.getAttribute("user");
-		if (u == null) {
-			session.setAttribute("after-login", "/courses/insert");
-			return "redirect:/login";
-		} else {
-			String user_type = (String) session.getAttribute("user_type");
-			if (user_type == null || !user_type.equals("admin"))
+    @PostMapping("/locations/edit")
+    public String editLocationPage(HttpServletRequest req, Long locationId) {
+        HttpSession session = req.getSession();
+        User u = (User) session.getAttribute("user");
+        if(u == null) {
+            session.setAttribute("after-login", "/courses/insert");
+            return "redirect:/login";
+        }
+        else {
+        	String user_type = (String) session.getAttribute("user_type");
+			if(user_type == null || !user_type.equals("admin"))
 				return "not_authorized";
-		}
-		if (locationId == null)
-			return "error";
+        }
+        if(locationId == null)
+        	return "error";
 
-		Location location = null;
-		try {
+        Location location = null;
+        try {
 			location = DatabaseManager.getInstance().getLocationDao().findByPrimaryKey(locationId);
 		} catch (SQLException e) {
 			return "error";
 		}
 
-		if (location == null)
-			return "error";
+        if(location == null)
+        	return "error";
 
 		req.setAttribute("location_to_edit", location);
 		return "insert_data";
@@ -366,13 +368,6 @@ public class ViewDataController {
 		}
 		return "check-in";
 	}
-
-        if(location == null)
-        	return "error";
-
-        req.setAttribute("location_to_edit", location);
-        return "insert_data";
-    }
 
 	@GetMapping("/checkInCheckOut/studentsCheckedIn")
 	public String viewStudentCheckedIn(HttpServletRequest request) {

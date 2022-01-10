@@ -1,23 +1,21 @@
 package com.clevercollege.controller;
 
-import com.clevercollege.model.Activity;
-import com.clevercollege.model.Location;
-import com.clevercollege.model.User;
+import com.clevercollege.model.*;
 import com.clevercollege.persistence.DatabaseManager;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.List;
 
-@Controller
+@RestController
 public class StudentInClassroomController {
 
     @PostMapping("/findClassroomChecked")
-    @ResponseBody
     public Location findClass(HttpServletRequest request) {
         HttpSession session = request.getSession();
         User u = (User) session.getAttribute("user");
@@ -36,9 +34,8 @@ public class StudentInClassroomController {
         }
     }
 
-    @PostMapping("/findStudentsCheckedIn")
-    @ResponseBody
-    public Activity findClass(HttpServletRequest request, @RequestBody Location classroomChecked) {
+    @PostMapping("/findCheckedInStudents")
+    public List<Student> findCheckedInStudents(HttpServletRequest request, @RequestBody Location classroomChecked) {
         HttpSession session = request.getSession();
         User u = (User) session.getAttribute("user");
         if(u == null) {
@@ -49,8 +46,31 @@ public class StudentInClassroomController {
             return null;
 
         try {
-          //prendi gli studenti dall'aula->e in base alla data e all'ora corrente cerca l'attività
-            //data l'attività verifica se sono prenotati
+            List<Student> checkedInStudents = DatabaseManager.getInstance().getCheckInCheckOutDao().findCheckInStudentsByLocation(classroomChecked.getName());
+            return checkedInStudents;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    @PostMapping("/findActivityInClassroomAndCheckBookers")
+    public List<Student> checkBookers(HttpServletRequest request, @RequestBody Location classroomChecked) {
+        HttpSession session = request.getSession();
+        User u = (User) session.getAttribute("user");
+        if(u == null) {
+            return null;
+        }
+        String user_type = (String) session.getAttribute("user_type");
+        if(user_type == null || !user_type.equals("professor"))
+            return null;
+
+        try {
+            CheckInCheckOut checkIn = DatabaseManager.getInstance().getCheckInCheckOutDao().findActiveByUser(u.getCf());
+            Activity a = DatabaseManager.getInstance().getSingleLessonDao().findByDateTimeClassroomProfessor(u.getCf(), classroomChecked.getId());
+            if(a == null)
+                a = DatabaseManager.getInstance().getSeminarDao().findByDateTimeClassroomProfessor(u.getCf(), classroomChecked.getId());
+            //devo gestire se qua ritorna null?
+            return a.getBookers();
         } catch (SQLException e) {
             return null;
         }
