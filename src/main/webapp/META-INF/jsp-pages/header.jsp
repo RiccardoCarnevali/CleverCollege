@@ -49,6 +49,9 @@
 			</c:if>
 			<c:if test="${user != null}">
 				<li class="nav-item">
+					<a href="/check-in" class="nav-link">Check-in</a>
+				</li>
+				<li class="nav-item">
 					<a href="/myprofile" class="nav-link">Area personale</a>
 				</li>
 			</c:if>

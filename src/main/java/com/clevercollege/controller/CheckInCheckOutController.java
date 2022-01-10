@@ -78,8 +78,6 @@ public class CheckInCheckOutController {
 				String inTime = LocalTime.now().toString().substring(0, 8);
 				String date = LocalDate.now().toString();
 
-				System.out.println("id: " + id + "inTime: " + inTime + "date: " + date);
-
 				CheckInCheckOut checkIn = new CheckInCheckOut(id, inTime, null, date, user, checkInLocation);
 				DatabaseManager.getInstance().getCheckInCheckOutDao().saveOrUpdate(checkIn);
 				DatabaseManager.getInstance().commit();

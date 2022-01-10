@@ -32,7 +32,7 @@
 					<ul class="list-group">
 						<li class="list-group-item"><label id="empty-ul">Non hai attività prenotate. Riposati o studia autonomamente!</label></li>
 					</ul>
-						<a href="#" type="button" class="btn btn-outline-primary" id="check-in-out">Esegui check-in/out</a>
+						<a href="check-in" type="button" class="btn btn-outline-primary" id="check-in-out">Esegui check-in/out</a>
 				</div>
 			</div>	
 			<div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12" style="margin-top: 10px">
