@@ -64,6 +64,8 @@ public class CheckInCheckOutController {
 
 			CloseableHttpResponse response = client.execute(httpPost);
 			HttpEntity responseEntity = response.getEntity();
+			
+			outputImage.delete();
 			if (responseEntity != null) {
 
 				ObjectMapper mapper = new ObjectMapper();
