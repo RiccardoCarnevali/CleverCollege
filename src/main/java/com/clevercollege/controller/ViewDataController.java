@@ -302,4 +302,21 @@ public class ViewDataController {
         req.setAttribute("location_to_edit", location);
         return "insert_data";
     }
+
+	@GetMapping("/checkInCheckOut/studentsCheckedIn")
+	public String viewStudentCheckedIn(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		User u = (User) session.getAttribute("user");
+		if(u == null) {
+			session.setAttribute("after-login", "/checkInCheckOut/studentsCheckedIn");
+			return "redirect:/login";
+		}
+		else {
+			String user_type = (String) session.getAttribute("user_type");
+			if(user_type == null || !user_type.equals("professor"))
+				return "not_authorized";
+		}
+		return "students_in_class";
+	}
+
 }

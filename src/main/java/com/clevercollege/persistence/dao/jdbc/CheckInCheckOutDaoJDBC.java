@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.clevercollege.model.CheckInCheckOut;
+import com.clevercollege.model.Location;
 import com.clevercollege.persistence.DatabaseManager;
 import com.clevercollege.persistence.dao.CheckInCheckOutDao;
 
@@ -131,6 +132,31 @@ public class CheckInCheckOutDaoJDBC implements CheckInCheckOutDao {
 		st.setLong(1, id);
 		
 		st.executeUpdate();
+	}
+
+	@Override
+	public Location findPlaceOfCheckIn(String cfUser) throws SQLException {
+		Location l = null;
+
+		String query = "select l.id, l.location_name, l.capacity from check_in_check_out as c, locations as l where c.c_location = l.id and c.c_user = ? and c.out_time = ?";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, cfUser);
+		st.setTime(2, null);
+
+		ResultSet rs = st.executeQuery();
+
+		if(rs.next()) {
+
+			l = new Location();
+
+			l.setId(rs.getLong("id"));
+			l.setName(rs.getString("location_name"));
+			l.setCapacity(rs.getInt("capacity"));
+		}
+
+		return l;
 	}
 
 }

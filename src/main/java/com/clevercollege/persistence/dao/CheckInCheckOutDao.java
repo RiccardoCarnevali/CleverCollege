@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.clevercollege.model.CheckInCheckOut;
+import com.clevercollege.model.Location;
 
 public interface CheckInCheckOutDao {
 
@@ -14,4 +15,6 @@ public interface CheckInCheckOutDao {
 	public void saveOrUpdate(CheckInCheckOut checkInCheckOut) throws SQLException;
 	
 	public void delete(long id) throws SQLException;
+
+	public Location findPlaceOfCheckIn(String cfUser) throws SQLException;
 }
