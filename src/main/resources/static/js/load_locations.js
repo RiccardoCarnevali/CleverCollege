@@ -71,12 +71,15 @@ function loadMore(showMore) {
 				locationsList.append("	<li class='list-group-item location'>" +
 											"<span class='location-name'>" + locations[index].name + "</span>" +
 											"<div class='icons' style='float:right'>" +
+												"<a href='view-qr-code?id=" + locations[index].id + "' class='fas fa-qrcode' style='display:block;margin-bottom:20px'></a>" +
 												"<span class='clickable modify-button' id='modify-" + locations[index].id + "' style='display:block;margin-bottom:20px'><i class='fas fa-pen'></i></span>" +
 												"<span class='clickable remove-button' id='remove-" + locations[index].id + "'><i class='fas fa-trash'></i></span>" +
 											"</div>" +
 											"<span class='location-capacity' style='display:block'>Capacità massima: " + locations[index].capacity + " persone</span>" +
 										"</li>");
 			}
+			
+			
 			
 			$(".remove-button").off().on("click", function() {
 				let id = this.id.substr(7);

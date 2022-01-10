@@ -16,5 +16,9 @@ public interface CheckInCheckOutDao {
 	
 	public void delete(long id) throws SQLException;
 
+	public List<CheckInCheckOut> findByUser(String cf) throws SQLException;
+
+	public CheckInCheckOut findActiveByUser(String cf) throws SQLException;
+
 	public Location findPlaceOfCheckIn(String cfUser) throws SQLException;
 }

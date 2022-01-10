@@ -1,13 +1,13 @@
 package com.clevercollege.model;
 
-import java.sql.Time;
 import java.util.Objects;
 
 public class CheckInCheckOut {
 
 	private long id;
-	private Time inTime;
-	private Time outTime;
+	private String inTime;
+	private String outTime;
+	private String date;
 	private User user;
 	private Location location;
 
@@ -15,11 +15,12 @@ public class CheckInCheckOut {
 
 	}
 
-	public CheckInCheckOut(long id, Time inTime, Time outTime, User user, Location location) {
+	public CheckInCheckOut(long id, String inTime, String outTime, String date, User user, Location location) {
 		super();
 		this.id = id;
 		this.inTime = inTime;
 		this.outTime = outTime;
+		this.date = date;
 		this.user = user;
 		this.location = location;
 	}
@@ -32,22 +33,30 @@ public class CheckInCheckOut {
 		this.id = id;
 	}
 
-	public Time getInTime() {
+	public String getInTime() {
 		return inTime;
 	}
 
-	public void setInTime(Time inTime) {
+	public void setInTime(String inTime) {
 		this.inTime = inTime;
 	}
 
-	public Time getOutTime() {
+	public String getOutTime() {
 		return outTime;
 	}
 
-	public void setOutTime(Time outTime) {
+	public void setOutTime(String outTime) {
 		this.outTime = outTime;
 	}
 
+	public String getDate() {
+		return date;
+	}
+	
+	public void setDate(String date) {
+		this.date = date;
+	}
+	
 	public User getUser() {
 		return user;
 	}

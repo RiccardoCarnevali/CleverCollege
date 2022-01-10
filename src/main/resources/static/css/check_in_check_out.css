@@ -1,0 +1,52 @@
+@charset "ISO-8859-1";
+
+.container {
+	width: 80%;
+	box-shadow: 0 10px 25px rgb(0 0 0/ 5%), 0 20px 48px rgb(0 0 0/ 5%), 0
+		1px 4px rgb(0 0 0/ 10%);
+	margin-bottom: 100px;
+	padding: 20px;
+	background-color: rgba(255, 255, 255, 0.6);
+	border-radius: 1em;
+	display: block;
+}
+
+/*check-in.jsp*/
+.video-capture-container {
+	background-color: black;
+	margin: 50px auto;
+	width: 320px;
+	height: 320px;
+}
+
+#showStreamBttn, #checkOutBttnContainer {
+	display: block;
+	margin: 0 auto;
+}
+
+#checkOutBttnContainer {
+	width: 120px;
+}
+
+/*view-qr-code.jsp*/
+
+.qr-code-image {
+	display: block;
+	margin: 0 auto;
+	min-width: 300px;
+}
+
+#downloadContainer {
+	display: block;
+	margin: 30px auto;
+	font-size: 4em;
+	text-align: center;
+}
+
+.title {
+	font-weight: bolder;
+	text-transform: uppercase;
+	text-align:center;
+	margin-bottom: 20px;
+}
+
