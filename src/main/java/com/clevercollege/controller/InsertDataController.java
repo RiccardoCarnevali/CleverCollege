@@ -246,7 +246,7 @@ public class InsertDataController {
             else {
                 for(int i = 0; i < cons.size(); i++)
                     valid3 = valid3.concat(cons.get(i).toString());
-                for(int i = valid3.length(), j = 0; i < 3 && j < voc.size(); i++)
+                for(int i = valid3.length(), j = 0; i < 3 && j < voc.size(); i++, j++)
                     valid3 = valid3.concat(voc.get(j).toString());
             }
         }
