@@ -324,7 +324,7 @@ public class ViewDataController {
 			request.getSession().setAttribute("checkIn", null);
 			if (checkIn != null) {
 				if (checkIn.getOutTime() == null) {
-					request.getSession().setAttribute("checkIn", checkIn);
+					request.setAttribute("checkIn", checkIn);
 				}
 			}
 			
@@ -373,16 +373,16 @@ public class ViewDataController {
 		try {
 			checkOut = DatabaseManager.getInstance().getCheckInCheckOutDao().findActiveByUser(user.getCf());
 			if(checkOut == null)
-				return "check-in";
+				return "redirect:/check-in";
 			String outTime = LocalTime.now().toString().substring(0,8);
 			checkOut.setOutTime(outTime);
 			DatabaseManager.getInstance().getCheckInCheckOutDao().saveOrUpdate(checkOut);
 			DatabaseManager.getInstance().commit();
-			request.getSession().setAttribute("checkIn", null);
+			request.setAttribute("checkIn", null);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "check-in";
+		return "redirect:/check-in";
 	}
 }
