@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -354,6 +355,45 @@ public class SeminarDaoJDBC implements SeminarDao {
 
 			seminars.add(seminar);
 		}
+		return seminars;
+	}
+
+	@Override
+	public List<Seminar> findActiveByProfessor(String cf, boolean lazy) throws SQLException {
+		List<Seminar> seminars = new ArrayList<>();
+
+		String query = "select * from seminars as x, activities as y "
+				+ "where x.id = y.id and y.professor = ? and x.seminar_date >= ?";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, cf);
+		st.setDate(2, Date.valueOf(LocalDate.now().minusDays(1)));
+
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			Seminar seminar;
+			if (lazy) {
+				seminar = new SeminarProxy();
+			} else {
+				seminar = new Seminar();
+				seminar.setBookers(
+						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id"), true));
+			}
+			seminar.setId(rs.getLong("id"));
+			seminar.setTime(rs.getTime("activity_time").toString());
+			seminar.setDate(rs.getDate("seminar_date").toString());
+			seminar.setLength(rs.getInt("activity_length"));
+			seminar.setDescription(rs.getString("description"));
+			seminar.setManager(DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(cf));
+			seminar.setClassroom(
+					DatabaseManager.getInstance().getClassroomDao().findByPrimaryKey(rs.getLong("classroom")));
+
+			seminars.add(seminar);
+		}
+
 		return seminars;
 	}
 }

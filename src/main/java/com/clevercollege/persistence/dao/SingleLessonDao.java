@@ -24,4 +24,6 @@ public interface SingleLessonDao {
 	public List<SingleLesson> findBookedByStudentNotExpired(String studentCf, boolean lazy) throws SQLException;
 	
 	public List<SingleLesson> findByCollidingTimeForStudent(String date, String time, int length, String studentCf, boolean lazy) throws SQLException;
+
+	public List<SingleLesson> findActiveByProfessor(String cf, boolean lazy) throws SQLException;
 }

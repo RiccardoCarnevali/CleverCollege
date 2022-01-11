@@ -24,4 +24,6 @@ public interface SeminarDao {
 	public List<Seminar> findBookedByStudent(String studentCf, boolean lazy, int amount, int offset) throws SQLException;
 	
 	public List<Seminar> findBookedByStudentNotExpired(String studentCf, boolean lazy) throws SQLException;
+
+	public List<Seminar> findActiveByProfessor(String cf, boolean lazy) throws SQLException;
 }

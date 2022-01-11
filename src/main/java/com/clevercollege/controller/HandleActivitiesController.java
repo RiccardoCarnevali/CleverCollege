@@ -59,7 +59,7 @@ public class HandleActivitiesController {
 		List<SingleLesson> singleLessons = new ArrayList<SingleLesson>();
 		if (userType == "professor")
 			try {
-				singleLessons.addAll(DatabaseManager.getInstance().getSingleLessonDao().findByProfessor(cf, true));
+				singleLessons.addAll(DatabaseManager.getInstance().getSingleLessonDao().findActiveByProfessor(cf, true));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -101,7 +101,7 @@ public class HandleActivitiesController {
 		List<Seminar> seminars = new ArrayList<Seminar>();
 		if (userType.equals("professor"))
 			try {
-				seminars.addAll(DatabaseManager.getInstance().getSeminarDao().findByProfessor(cf, true));
+				seminars.addAll(DatabaseManager.getInstance().getSeminarDao().findActiveByProfessor(cf, true));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import javax.imageio.ImageIO;
@@ -78,6 +79,12 @@ public class CheckInCheckOutController {
 				String inTime = LocalTime.now().toString().substring(0, 8);
 				String date = LocalDate.now().toString();
 
+				CheckInCheckOut activeCheckIn = DatabaseManager.getInstance().getCheckInCheckOutDao().findActiveByUser(user.getCf());
+				if(activeCheckIn != null) {
+					activeCheckIn.setOutTime(LocalDateTime.now().toString());
+					DatabaseManager.getInstance().getCheckInCheckOutDao().saveOrUpdate(activeCheckIn);
+				}
+				
 				CheckInCheckOut checkIn = new CheckInCheckOut(id, inTime, null, date, user, checkInLocation);
 				DatabaseManager.getInstance().getCheckInCheckOutDao().saveOrUpdate(checkIn);
 				DatabaseManager.getInstance().commit();

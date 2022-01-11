@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -357,6 +358,46 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 			singleLesson.setDate(rs.getDate("lesson_date").toString());
 
 			singleLessons.add(singleLesson);
+		}
+
+		return singleLessons;
+	}
+
+	@Override
+	public List<SingleLesson> findActiveByProfessor(String cf, boolean lazy) throws SQLException {
+		List<SingleLesson> singleLessons = new ArrayList<>();
+
+		String query = "select * from single_lessons as x, activities as y, lessons as z "
+				+ "where x.id = y.id and y.id = z.id and y.professor = ? and x.lesson_date >= ?";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, cf);
+		st.setDate(2, Date.valueOf(LocalDate.now().minusDays(1)));
+
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			SingleLesson lesson;
+			if (lazy) {
+				lesson = new SingleLessonProxy();
+			} else {
+				lesson = new SingleLesson();
+				lesson.setBookers(
+						DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id"), true));
+			}
+			lesson.setId(rs.getLong("id"));
+			lesson.setDate(rs.getDate("lesson_date").toString());
+			lesson.setTime(rs.getTime("activity_time").toString());
+			lesson.setLength(rs.getInt("activity_length"));
+			lesson.setDescription(rs.getString("description"));
+			lesson.setManager(DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(cf));
+			lesson.setCourse(DatabaseManager.getInstance().getCourseDao().findByPrimaryKey(rs.getLong("course")));
+			lesson.setClassroom(
+					DatabaseManager.getInstance().getClassroomDao().findByPrimaryKey(rs.getLong("classroom")));
+
+			singleLessons.add(lesson);
 		}
 
 		return singleLessons;
