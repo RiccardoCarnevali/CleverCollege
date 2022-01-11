@@ -129,8 +129,8 @@ public class HandleActivitiesController {
 	}
 
 	@PostMapping("/createActivity")
-	public String createActivity(HttpServletRequest request, String jsonString, String type, Boolean edit) {
-		if (jsonString == null || type == null) {
+	public String createActivity(HttpServletRequest request, String jsonString, String type, Boolean edit, Boolean ignoreConflict) {
+		if (jsonString == null || type == null || edit == null || ignoreConflict == null) {
 			return null;
 		}
 		HttpSession session = request.getSession();
@@ -153,6 +153,8 @@ public class HandleActivitiesController {
 					single.setId(id);
 				}
 				else {
+					single.setBookers(DatabaseManager.getInstance().getActivityDao().findByPrimaryKey(id, false).getBookers());
+					
 					DatabaseManager.getInstance().getSingleLessonDao().delete(single.getId());
 					DatabaseManager.getInstance().getSeminarDao().delete(single.getId());
 					DatabaseManager.getInstance().getWeeklyLessonDao().delete(single.getId());
@@ -161,8 +163,11 @@ public class HandleActivitiesController {
 				if (!single.checkValid()) {
 					return null;
 				}
-				String conflictActivity = checkProfessorActivityConflict(single, LocalDate.parse(single.getDate()),
-						user);
+				
+				String conflictActivity = null; 
+				if(!ignoreConflict)
+					conflictActivity = checkProfessorActivityConflict(single, 
+							LocalDate.parse(single.getDate()),user);
 
 				if (conflictActivity != null) {
 					postResults.put("activity_conflict", new JSONObject(conflictActivity));
@@ -175,6 +180,8 @@ public class HandleActivitiesController {
 					weekly.setId(id);
 				}
 				else {
+					weekly.setBookers(DatabaseManager.getInstance().getActivityDao().findByPrimaryKey(id, false).getBookers());
+					
 					DatabaseManager.getInstance().getSingleLessonDao().delete(weekly.getId());
 					DatabaseManager.getInstance().getSeminarDao().delete(weekly.getId());
 					DatabaseManager.getInstance().getWeeklyLessonDao().delete(weekly.getId());
@@ -183,9 +190,11 @@ public class HandleActivitiesController {
 				if (!weekly.checkValid())
 					return null;
 
-				String conflictActivity = checkProfessorActivityConflict(weekly, user);
+				String conflictActivity = null; 
+				if(!ignoreConflict)
+					conflictActivity = checkProfessorActivityConflict(weekly, user);
 
-				if (conflictActivity != null) {
+				if (conflictActivity != null && !ignoreConflict) {
 					postResults.put("activity_conflict", new JSONObject(conflictActivity));
 				} else {
 					DatabaseManager.getInstance().getWeeklyLessonDao().saveOrUpdate(weekly);
@@ -195,6 +204,8 @@ public class HandleActivitiesController {
 				if (!edit) {
 					seminar.setId(id);
 				} else {
+					seminar.setBookers(DatabaseManager.getInstance().getActivityDao().findByPrimaryKey(id, false).getBookers());
+					
 					DatabaseManager.getInstance().getSingleLessonDao().delete(seminar.getId());
 					DatabaseManager.getInstance().getSeminarDao().delete(seminar.getId());
 					DatabaseManager.getInstance().getWeeklyLessonDao().delete(seminar.getId());
@@ -203,11 +214,13 @@ public class HandleActivitiesController {
 				if (!seminar.checkValid()) {
 					return null;
 				}
+				
+				String conflictActivity = null; 
+				if(!ignoreConflict)
+					conflictActivity = checkProfessorActivityConflict(seminar, 
+							LocalDate.parse(seminar.getDate()),	user);
 
-				String conflictActivity = checkProfessorActivityConflict(seminar, LocalDate.parse(seminar.getDate()),
-						user);
-
-				if (conflictActivity != null) {
+				if (conflictActivity != null && !ignoreConflict) {
 					postResults.put("activity_conflict", conflictActivity);
 				} else {
 					DatabaseManager.getInstance().getSeminarDao().saveOrUpdate(seminar);
