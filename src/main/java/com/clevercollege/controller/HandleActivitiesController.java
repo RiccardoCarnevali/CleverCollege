@@ -36,7 +36,7 @@ public class HandleActivitiesController {
 		String userType = (String) session.getAttribute("user_type");
 		String cf = ((User) session.getAttribute("user")).getCf();
 		List<Activity> activities = new ArrayList<Activity>();
-		if (userType == "professor")
+		if (userType.equals("professor"))
 			try {
 				activities = DatabaseManager.getInstance().getActivityDao().findByProfessor(cf, true);
 			} catch (SQLException e) {
@@ -78,7 +78,7 @@ public class HandleActivitiesController {
 		String userType = (String) session.getAttribute("user_type");
 		String cf = ((User) session.getAttribute("user")).getCf();
 		List<WeeklyLesson> weeklyLessons = new ArrayList<WeeklyLesson>();
-		if (userType == "professor")
+		if (userType.equals("professor"))
 			try {
 				weeklyLessons.addAll(DatabaseManager.getInstance().getWeeklyLessonDao().findByProfessor(cf, true));
 			} catch (SQLException e) {
@@ -99,7 +99,7 @@ public class HandleActivitiesController {
 		String userType = (String) session.getAttribute("user_type");
 		String cf = ((User) session.getAttribute("user")).getCf();
 		List<Seminar> seminars = new ArrayList<Seminar>();
-		if (userType == "professor")
+		if (userType.equals("professor"))
 			try {
 				seminars.addAll(DatabaseManager.getInstance().getSeminarDao().findByProfessor(cf, true));
 			} catch (SQLException e) {
@@ -149,16 +149,12 @@ public class HandleActivitiesController {
 
 			if (type.equals("single")) {
 				SingleLesson single = mapper.readValue(jsonString, SingleLesson.class);
-				if (!edit) {
+				if (!edit)
 					single.setId(id);
-				}
-				else {
-					single.setBookers(DatabaseManager.getInstance().getActivityDao().findByPrimaryKey(id, false).getBookers());
-					
-					DatabaseManager.getInstance().getSingleLessonDao().delete(single.getId());
-					DatabaseManager.getInstance().getSeminarDao().delete(single.getId());
-					DatabaseManager.getInstance().getWeeklyLessonDao().delete(single.getId());
-				}
+				else
+					single.setBookers(DatabaseManager.getInstance().getActivityDao()
+							.findByPrimaryKey(single.getId(), false).getBookers());
+				
 				single.setManager(user);
 				if (!single.checkValid()) {
 					return null;
@@ -172,20 +168,20 @@ public class HandleActivitiesController {
 				if (conflictActivity != null) {
 					postResults.put("activity_conflict", new JSONObject(conflictActivity));
 				} else {
+					if(edit) {
+						DatabaseManager.getInstance().getSingleLessonDao().delete(single.getId());
+						DatabaseManager.getInstance().getWeeklyLessonDao().delete(single.getId());
+					}
 					DatabaseManager.getInstance().getSingleLessonDao().saveOrUpdate(single);
 				}
 			} else if (type.equals("weekly")) {
 				WeeklyLesson weekly = mapper.readValue(jsonString, WeeklyLesson.class);
-				if (!edit) {
+				if (!edit) 
 					weekly.setId(id);
-				}
-				else {
-					weekly.setBookers(DatabaseManager.getInstance().getActivityDao().findByPrimaryKey(id, false).getBookers());
-					
-					DatabaseManager.getInstance().getSingleLessonDao().delete(weekly.getId());
-					DatabaseManager.getInstance().getSeminarDao().delete(weekly.getId());
-					DatabaseManager.getInstance().getWeeklyLessonDao().delete(weekly.getId());
-				}
+				else 
+					weekly.setBookers(DatabaseManager.getInstance()
+							.getActivityDao().findByPrimaryKey(weekly.getId(), false).getBookers());
+				
 				weekly.setManager(user);
 				if (!weekly.checkValid())
 					return null;
@@ -194,22 +190,24 @@ public class HandleActivitiesController {
 				if(!ignoreConflict)
 					conflictActivity = checkProfessorActivityConflict(weekly, user);
 
-				if (conflictActivity != null && !ignoreConflict) {
+				if (conflictActivity != null) {
 					postResults.put("activity_conflict", new JSONObject(conflictActivity));
 				} else {
+					if(edit) {
+						DatabaseManager.getInstance().getSingleLessonDao().delete(weekly.getId());
+						DatabaseManager.getInstance().getWeeklyLessonDao().delete(weekly.getId());
+					}
 					DatabaseManager.getInstance().getWeeklyLessonDao().saveOrUpdate(weekly);
 				}
 			} else if (type.equals("seminar")) {
 				Seminar seminar = mapper.readValue(jsonString, Seminar.class);
-				if (!edit) {
+				
+				if (!edit)
 					seminar.setId(id);
-				} else {
-					seminar.setBookers(DatabaseManager.getInstance().getActivityDao().findByPrimaryKey(id, false).getBookers());
-					
-					DatabaseManager.getInstance().getSingleLessonDao().delete(seminar.getId());
-					DatabaseManager.getInstance().getSeminarDao().delete(seminar.getId());
-					DatabaseManager.getInstance().getWeeklyLessonDao().delete(seminar.getId());
-				}
+				else
+					seminar.setBookers(DatabaseManager.getInstance()
+							.getActivityDao().findByPrimaryKey(seminar.getId(), false).getBookers());
+				
 				seminar.setManager(user);
 				if (!seminar.checkValid()) {
 					return null;
@@ -220,16 +218,21 @@ public class HandleActivitiesController {
 					conflictActivity = checkProfessorActivityConflict(seminar, 
 							LocalDate.parse(seminar.getDate()),	user);
 
-				if (conflictActivity != null && !ignoreConflict) {
+				if (conflictActivity != null) {
 					postResults.put("activity_conflict", conflictActivity);
 				} else {
+					if(edit) {
+						DatabaseManager.getInstance().getSingleLessonDao().delete(seminar.getId());
+						DatabaseManager.getInstance().getWeeklyLessonDao().delete(seminar.getId());
+					}
 					DatabaseManager.getInstance().getSeminarDao().saveOrUpdate(seminar);
 				}
 			}
-			DatabaseManager.getInstance().commit();
 			if(postResults.has("activity_conflict")) {
 				return postResults.toString();
 			}
+			
+			DatabaseManager.getInstance().commit();
 			return null;
 		} catch (SQLException | JsonProcessingException | JSONException e) {
 			// TODO Auto-generated catch block
@@ -351,7 +354,10 @@ public class HandleActivitiesController {
 			return;
 		}
 		try {
-			DatabaseManager.getInstance().getActivityDao().delete(id);
+			DatabaseManager.getInstance().getSingleLessonDao().delete(id);
+			DatabaseManager.getInstance().getWeeklyLessonDao().delete(id);
+			DatabaseManager.getInstance().getSeminarDao().delete(id);
+			DatabaseManager.getInstance().commit();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

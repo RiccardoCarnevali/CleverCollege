@@ -23,7 +23,7 @@ public class ActivitiesController {
 			return "redirect:/login";
 		}
 
-		if (request.getSession().getAttribute("user_type") != "professor") {
+		if (!("professor").equals(request.getSession().getAttribute("user_type"))) {
 			return "/not_authorized";
 		}
 
@@ -37,7 +37,7 @@ public class ActivitiesController {
 			return "redirect:/login";
 		}
 
-		if (request.getSession().getAttribute("user_type") != "professor") {
+		if (!("professor").equals(request.getSession().getAttribute("user_type"))) {
 			return "/not_authorized";
 		}
 
@@ -51,7 +51,7 @@ public class ActivitiesController {
 			return "redirect:/login";
 		}
 
-		if (request.getSession().getAttribute("user_type") != "professor") {
+		if (!("professor").equals(request.getSession().getAttribute("user_type"))) {
 			return "/not_authorized";
 		}
 

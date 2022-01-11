@@ -16,7 +16,6 @@
 	<div class="collapse navbar-collapse" id="navbarMain">
 		<ul class="navbar-nav">
 			<li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-			
 			<c:if test="${user_type != null && user_type == 'professor'}">
 				<li class="nav-item">
 					<a class="nav-link" href="/activities/handle_activities">Attività</a>
