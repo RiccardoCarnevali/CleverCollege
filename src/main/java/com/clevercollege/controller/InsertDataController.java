@@ -137,6 +137,7 @@ public class InsertDataController {
             return "server error";
         }
         
+        u.setCf(normalizeCf(u.getCf()));
         if(u.getCf() == null || u.getFirstName() == null || u.getLastName() == null || u.getEmail() == null)
         	return "server error";
 
@@ -145,7 +146,7 @@ public class InsertDataController {
 
         if(!checkValidCf(u.getFirstName(), u.getLastName(), u.getCf()))
             return "cf not valid";
-
+        
             try {
                 if(!update && DatabaseManager.getInstance().getUserDao().findByEmail(u.getEmail()) != null)
                     return "email already exists";
@@ -159,6 +160,7 @@ public class InsertDataController {
                     } catch (JsonProcessingException e) {
                         return "server error";
                     }
+                    s.setCf(normalizeCf(s.getCf()));
                     if(s.getStudentNumber() == null)
                     	return "server error";
                     
@@ -208,14 +210,21 @@ public class InsertDataController {
     }
 
     private boolean checkValidCf(String name, String surname, String cf) {
-        cf = cf.trim(); name = name.trim(); surname = surname.trim();
-        cf = cf.replaceAll(" ", ""); name = name.replaceAll(" ", ""); surname = surname.replaceAll(" ", "");
-        cf = cf.toLowerCase(); name = name.toLowerCase(); surname = surname.toLowerCase();
+        name = name.trim(); surname = surname.trim();
+        name = name.replaceAll(" ", ""); surname = surname.replaceAll(" ", "");
+        name = name.toLowerCase(); surname = surname.toLowerCase();
 
         String first3 = cf.substring(0, 3);
         String second3 = cf.substring(3, 6);
 
         return checkForCf(surname, first3, 3) && checkForCf(name, second3, 4);
+    }
+    
+    private String normalizeCf(String cf) {
+    	cf = cf.trim();
+    	cf = cf.replaceAll(" ", "");
+    	cf = cf.toLowerCase();
+    	return cf;
     }
 
     private boolean checkForCf(String nameOrSurname, String char3, int numChar) {
