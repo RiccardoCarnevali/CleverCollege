@@ -19,13 +19,14 @@
 	height: 320px;
 }
 
-#showStreamBttn, #checkOutBttnContainer {
+#showStreamBttn {
 	display: block;
 	margin: 0 auto;
 }
 
-#checkOutBttnContainer {
-	width: 120px;
+.check-in-out-button-container {
+	margin: 10px 0px;
+	text-align: center;
 }
 
 /*view-qr-code.jsp*/

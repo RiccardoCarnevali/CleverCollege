@@ -386,7 +386,7 @@ public class ViewDataController {
 		return "redirect:/check-in";
 	}
 
-	@GetMapping("/checkInCheckOut/studentsCheckedIn")
+	@GetMapping("/check-in/studentsCheckedIn")
 	public String viewStudentCheckedIn(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		User u = (User) session.getAttribute("user");
