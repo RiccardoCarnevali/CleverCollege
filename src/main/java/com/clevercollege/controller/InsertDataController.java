@@ -19,6 +19,7 @@ import com.clevercollege.model.SingleLesson;
 import com.clevercollege.model.Student;
 import com.clevercollege.model.User;
 import com.clevercollege.persistence.DatabaseManager;
+import com.clevercollege.services.EmailService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

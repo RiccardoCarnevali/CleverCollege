@@ -187,6 +187,45 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 
 		return singleLessons;
 	}
+	
+	@Override
+	public List<SingleLesson> findNotExpiredOrStarted(boolean lazy) throws SQLException {
+
+		List<SingleLesson> singleLessons = new ArrayList<>();
+		
+		String query = "select * from single_lessons SL, activities A where SL.id = A.id and (lesson_date > current_date or (lesson_date = current_date and activity_time > current_time))";
+		
+		Statement st = conn.createStatement();
+		
+		ResultSet rs = st.executeQuery(query);
+		
+		while (rs.next()) {
+
+			Lesson lesson = DatabaseManager.getInstance().getLessonDao().findByPrimaryKey(rs.getLong("id"), lazy);
+
+			SingleLesson singleLesson;
+
+			if (lazy) {
+				singleLesson = new SingleLessonProxy();
+			} else {
+				singleLesson = new SingleLesson();
+				singleLesson.setBookers(lesson.getBookers());
+			}
+
+			singleLesson.setId(lesson.getId());
+			singleLesson.setTime(lesson.getTime());
+			singleLesson.setLength(lesson.getLength());
+			singleLesson.setDescription(lesson.getDescription());
+			singleLesson.setManager(lesson.getManager());
+			singleLesson.setClassroom(lesson.getClassroom());
+			singleLesson.setCourse(lesson.getCourse());
+			singleLesson.setDate(rs.getDate("lesson_date").toString());
+
+			singleLessons.add(singleLesson);
+		}
+		
+		return singleLessons;
+	}
 
 	@Override
 	public List<SingleLesson> findByCourseNotExpired(long courseId, boolean lazy) throws SQLException {

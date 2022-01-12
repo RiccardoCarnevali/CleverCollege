@@ -18,12 +18,12 @@ public class ActivitiesController {
 
 	@GetMapping("/activities/handle_activities")
 	public String handleActivities(HttpServletRequest request) {
-		if (request.getSession().getAttribute("user_type") == null) {
+		if (request.getSession().getAttribute("user") == null) {
 			request.getSession().setAttribute("after-login", "/activities/handle_activities");
 			return "redirect:/login";
 		}
 
-		if (request.getSession().getAttribute("user_type") != "professor") {
+		if (!request.getSession().getAttribute("user_type").equals("professor")) {
 			return "/not_authorized";
 		}
 
@@ -32,12 +32,12 @@ public class ActivitiesController {
 
 	@GetMapping("/activities/create_activity")
 	public String createActivity(HttpServletRequest request) {
-		if (request.getSession().getAttribute("user_type") == null) {
+		if (request.getSession().getAttribute("user") == null) {
 			request.getSession().setAttribute("after-login", "/activities/create_activity");
 			return "redirect:/login";
 		}
 
-		if (request.getSession().getAttribute("user_type") != "professor") {
+		if (!request.getSession().getAttribute("user_type").equals("professor")) {
 			return "/not_authorized";
 		}
 
@@ -46,12 +46,12 @@ public class ActivitiesController {
 
 	@PostMapping("/activities/edit_activity")
 	public String editActivity(HttpServletRequest request, Long id, String type) {
-		if (request.getSession().getAttribute("user_type") == null) {
+		if (request.getSession().getAttribute("user") == null) {
 			request.getSession().setAttribute("after-login", "/activities/create_activity");
 			return "redirect:/login";
 		}
 
-		if (request.getSession().getAttribute("user_type") != "professor") {
+		if (!request.getSession().getAttribute("user_type").equals("professor")) {
 			return "/not_authorized";
 		}
 
@@ -69,7 +69,6 @@ public class ActivitiesController {
 				request.setAttribute("activity", seminar);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

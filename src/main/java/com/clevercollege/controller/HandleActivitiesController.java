@@ -2,6 +2,7 @@ package com.clevercollege.controller;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,9 @@ import com.clevercollege.model.SingleLesson;
 import com.clevercollege.model.User;
 import com.clevercollege.model.WeeklyLesson;
 import com.clevercollege.persistence.DatabaseManager;
+import com.clevercollege.services.CheckinReminderTask;
+import com.clevercollege.services.CheckoutReminderTask;
+import com.clevercollege.services.NotificationService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -36,14 +40,13 @@ public class HandleActivitiesController {
 		String userType = (String) session.getAttribute("user_type");
 		String cf = ((User) session.getAttribute("user")).getCf();
 		List<Activity> activities = new ArrayList<Activity>();
-		if (userType == "professor")
-			try {
-				activities = DatabaseManager.getInstance().getActivityDao().findByProfessor(cf, true);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		else {
-			// TODO: Handle user activities
+		if (!userType.equals("professor"))
+			return null;
+		
+		try {
+			activities = DatabaseManager.getInstance().getActivityDao().findByProfessor(cf, true);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return activities;
 	}
@@ -57,14 +60,13 @@ public class HandleActivitiesController {
 		String userType = (String) session.getAttribute("user_type");
 		String cf = ((User) session.getAttribute("user")).getCf();
 		List<SingleLesson> singleLessons = new ArrayList<SingleLesson>();
-		if (userType == "professor")
-			try {
-				singleLessons.addAll(DatabaseManager.getInstance().getSingleLessonDao().findByProfessor(cf, true));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		else {
-			// TODO: Handle user activities
+		if (!userType.equals("professor"))
+			return null;
+		
+		try {
+			singleLessons.addAll(DatabaseManager.getInstance().getSingleLessonDao().findByProfessor(cf, true));
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return singleLessons;
 	}
@@ -78,14 +80,13 @@ public class HandleActivitiesController {
 		String userType = (String) session.getAttribute("user_type");
 		String cf = ((User) session.getAttribute("user")).getCf();
 		List<WeeklyLesson> weeklyLessons = new ArrayList<WeeklyLesson>();
-		if (userType == "professor")
-			try {
-				weeklyLessons.addAll(DatabaseManager.getInstance().getWeeklyLessonDao().findByProfessor(cf, true));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		else {
-			// TODO: Handle user activities
+		if (!userType.equals("professor"))
+			return null;
+		
+		try {
+			weeklyLessons.addAll(DatabaseManager.getInstance().getWeeklyLessonDao().findByProfessor(cf, true));
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return weeklyLessons;
 	}
@@ -99,14 +100,13 @@ public class HandleActivitiesController {
 		String userType = (String) session.getAttribute("user_type");
 		String cf = ((User) session.getAttribute("user")).getCf();
 		List<Seminar> seminars = new ArrayList<Seminar>();
-		if (userType == "professor")
-			try {
-				seminars.addAll(DatabaseManager.getInstance().getSeminarDao().findByProfessor(cf, true));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		else {
-			// TODO: Handle user activities
+		if (!userType.equals("professor"))
+			return null;
+		
+		try {
+			seminars.addAll(DatabaseManager.getInstance().getSeminarDao().findByProfessor(cf, true));
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return seminars;
 	}
@@ -114,11 +114,22 @@ public class HandleActivitiesController {
 	@PostMapping("/enableWeeklyLesson")
 	public void enableWeeklyLesson(HttpServletRequest request, Long id, Boolean disable, Boolean indefinite) {
 		HttpSession session = request.getSession();
-		if (session.getAttribute("user_type") == null || !("professor").equals(session.getAttribute("user_type"))) {
+		
+		if (session.getAttribute("user") == null || id == null || disable == null || indefinite == null) {
 			return;
 		}
+		
+		String user_type = (String) session.getAttribute("user_type");
+		
+		if(!user_type.equals("professor"))
+			return;
+		
 		try {
 			WeeklyLesson lesson = DatabaseManager.getInstance().getWeeklyLessonDao().findByPrimaryKey(id);
+			
+			if(lesson == null)
+				return;
+			
 			lesson.setDisabled(disable);
 			lesson.setDisabledIndefinitely(indefinite);
 			DatabaseManager.getInstance().getWeeklyLessonDao().saveOrUpdate(lesson);
@@ -134,10 +145,15 @@ public class HandleActivitiesController {
 			return null;
 		}
 		HttpSession session = request.getSession();
-		if (session.getAttribute("user_type") == null || session.getAttribute("user") == null
-				|| !("professor").equals(session.getAttribute("user_type"))) {
+		if (session.getAttribute("user_type") == null || session.getAttribute("user") == null) {
 			return null;
 		}
+		
+		String user_type = (String) session.getAttribute("user_type");
+		
+		if(!user_type.equals("professor"))
+			return null;
+		
 		JSONObject postResults = new JSONObject();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
@@ -167,7 +183,16 @@ public class HandleActivitiesController {
 				if (conflictActivity != null) {
 					postResults.put("activity_conflict", new JSONObject(conflictActivity));
 				} else {
+					
+					if(edit) {
+						NotificationService.getInstance().cancelSchedule(single.getId() + "in");
+						NotificationService.getInstance().cancelSchedule(single.getId() + "out");
+					}
 					DatabaseManager.getInstance().getSingleLessonDao().saveOrUpdate(single);
+					NotificationService.getInstance().schedule(new CheckinReminderTask(single), 
+							LocalDateTime.of(LocalDate.parse(single.getDate()), LocalTime.parse(single.getTime())).minusMinutes(5), single.getId() + "in");
+					NotificationService.getInstance().schedule(new CheckoutReminderTask(single), 
+							LocalDateTime.of(LocalDate.parse(single.getDate()), LocalTime.parse(single.getTime())).plusMinutes(single.getLength()), single.getId() + "out");
 				}
 			} else if (type.equals("weekly")) {
 				WeeklyLesson weekly = mapper.readValue(jsonString, WeeklyLesson.class);
@@ -210,7 +235,16 @@ public class HandleActivitiesController {
 				if (conflictActivity != null) {
 					postResults.put("activity_conflict", conflictActivity);
 				} else {
+					
+					if(edit) {
+						NotificationService.getInstance().cancelSchedule(seminar.getId() + "in");
+						NotificationService.getInstance().cancelSchedule(seminar.getId() + "out");
+					}
 					DatabaseManager.getInstance().getSeminarDao().saveOrUpdate(seminar);
+					NotificationService.getInstance().schedule(new CheckinReminderTask(seminar), 
+							LocalDateTime.of(LocalDate.parse(seminar.getDate()), LocalTime.parse(seminar.getTime())).minusMinutes(5), seminar.getId() + "in");
+					NotificationService.getInstance().schedule(new CheckoutReminderTask(seminar), 
+							LocalDateTime.of(LocalDate.parse(seminar.getDate()), LocalTime.parse(seminar.getTime())).plusMinutes(seminar.getLength()), seminar.getId() + "out");
 				}
 			}
 			DatabaseManager.getInstance().commit();
@@ -219,13 +253,13 @@ public class HandleActivitiesController {
 			}
 			return null;
 		} catch (SQLException | JsonProcessingException | JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
 
 	private String checkProfessorActivityConflict(WeeklyLesson weekly, User user) throws SQLException {
+		
 		Integer weekday1 = weekly.getWeekDay();
 
 		LocalTime start1 = LocalTime.parse(weekly.getTime());
@@ -332,15 +366,17 @@ public class HandleActivitiesController {
 	@PostMapping("/deleteActivity")
 	public void deleteActivity(HttpServletRequest request, Long id) {
 		HttpSession session = request.getSession();
+		
+		if(id == null)
+			return;
+		
 		String userType = (String) session.getAttribute("user_type");
-		if (userType == null || session.getAttribute("user") == null
-				|| (!("professor").equals(userType) && !("admin").equals(userType))) {
+		if (userType == null || session.getAttribute("user") == null || !userType.equals("professor")) {
 			return;
 		}
 		try {
 			DatabaseManager.getInstance().getActivityDao().delete(id);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
