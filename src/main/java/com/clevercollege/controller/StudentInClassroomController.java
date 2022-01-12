@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,6 +32,7 @@ public class StudentInClassroomController {
             Location l = DatabaseManager.getInstance().getCheckInCheckOutDao().findPlaceOfCheckIn(u.getCf());
             return l;
         } catch (SQLException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -42,13 +45,15 @@ public class StudentInClassroomController {
             return null;
         }
         String user_type = (String) session.getAttribute("user_type");
-        if(user_type == null || !user_type.equals("professor"))
+        if(user_type == null || !user_type.equals("professor")) {
             return null;
+        }
 
         try {
-            List<Student> checkedInStudents = DatabaseManager.getInstance().getCheckInCheckOutDao().findCheckInStudentsByLocation(classroomChecked.getName());
+            List<Student> checkedInStudents = DatabaseManager.getInstance().getCheckInCheckOutDao().findCheckInStudentsByLocation(classroomChecked.getId());
             return checkedInStudents;
         } catch (SQLException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -65,14 +70,38 @@ public class StudentInClassroomController {
             return null;
 
         try {
-            CheckInCheckOut checkIn = DatabaseManager.getInstance().getCheckInCheckOutDao().findActiveByUser(u.getCf());
             Activity a = DatabaseManager.getInstance().getSingleLessonDao().findByDateTimeClassroomProfessor(u.getCf(), classroomChecked.getId());
             if(a == null)
                 a = DatabaseManager.getInstance().getSeminarDao().findByDateTimeClassroomProfessor(u.getCf(), classroomChecked.getId());
-            //devo gestire se qua ritorna null?
+            if(a == null)
+                return new ArrayList<>();
             return a.getBookers();
         } catch (SQLException e) {
+            e.printStackTrace();
             return null;
+        }
+    }
+
+    @PostMapping("/forcedStudentCheckOut")
+    public String forcedCheckOut(HttpServletRequest request, String studentId) {
+        HttpSession session = request.getSession();
+        User u = (User) session.getAttribute("user");
+        if(u == null) {
+            return null;
+        }
+        String user_type = (String) session.getAttribute("user_type");
+        if(user_type == null || !user_type.equals("professor"))
+            return null;
+
+        try {
+            CheckInCheckOut c = DatabaseManager.getInstance().getCheckInCheckOutDao().findActiveByUser(studentId);
+            c.setOutTime(LocalTime.now().toString().substring(0,8));
+            DatabaseManager.getInstance().getCheckInCheckOutDao().saveOrUpdate(c);
+            DatabaseManager.getInstance().commit();
+            return "check-out done";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "server error";
         }
     }
 

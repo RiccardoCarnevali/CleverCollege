@@ -23,5 +23,5 @@ public interface CheckInCheckOutDao {
 
 	public Location findPlaceOfCheckIn(String cfUser) throws SQLException;
 
-	public List<Student> findCheckInStudentsByLocation(String nameLocation)throws SQLException;
+	public List<Student> findCheckInStudentsByLocation(Long idLocation)throws SQLException;
 }

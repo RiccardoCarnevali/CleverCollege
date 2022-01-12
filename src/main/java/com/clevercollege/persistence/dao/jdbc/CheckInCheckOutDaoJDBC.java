@@ -202,12 +202,11 @@ public class CheckInCheckOutDaoJDBC implements CheckInCheckOutDao {
 	public Location findPlaceOfCheckIn(String cfUser) throws SQLException {
 		Location l = null;
 
-		String query = "select l.id, l.location_name, l.capacity from check_in_check_out as c, locations as l where c.c_location = l.id and c.c_user = ? and c.out_time = ?";
+		String query = "select l.id, l.location_name, l.capacity from check_in_check_out as c, locations as l where c.c_location = l.id and c.c_user = ? and c.out_time is null";
 
 		PreparedStatement st = conn.prepareStatement(query);
 
 		st.setString(1, cfUser);
-		st.setTime(2, null);
 
 		ResultSet rs = st.executeQuery();
 
@@ -224,14 +223,15 @@ public class CheckInCheckOutDaoJDBC implements CheckInCheckOutDao {
 	}
 
 	@Override
-	public List<Student> findCheckInStudentsByLocation(String nameLocation) throws SQLException{
+	public List<Student> findCheckInStudentsByLocation(Long idLocation) throws SQLException{
 		List<Student> checkedInStudents = new ArrayList<>();
 
-		String query = "select s.cf, s.student_number from students as s , check_in_check_out as c where c.c_location = ? and out_time is null";
+		String query = "select s.cf, s.student_number from students as s , check_in_check_out as c " +
+				"where s.cf = c.c_user and c.c_location = ? and c.out_time is null";
 
 		PreparedStatement st = conn.prepareStatement(query);
 
-		st.setString(1, nameLocation);
+		st.setLong(1, idLocation);
 
 		ResultSet rs = st.executeQuery();
 

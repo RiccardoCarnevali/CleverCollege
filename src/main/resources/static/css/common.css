@@ -165,7 +165,7 @@ a, h2, h3 {
 	border-color: #b71c1c;
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 760px) {
 	#creators{
 		display: none;
 	}

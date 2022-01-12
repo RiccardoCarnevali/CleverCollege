@@ -365,22 +365,35 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 		return singleLessons;
 	}
 
-	@Override
-	public Activity findByDateTimeClassroomProfessor(String cfProfessor, Long idClassroom) throws SQLException {
-		Activity activity = null;
 
-		String firstQuery = "select a.activity_length from activities as a, single_lessons as s where s. id = a.id";
+	private List<Integer> findAllActivityLength() throws SQLException {
+		List<Integer> lengths = new ArrayList<>();
 
-		PreparedStatement s = conn.prepareStatement(firstQuery);
+		String query = "select a.activity_length from activities as a, single_lessons as s where s. id = a.id " +
+				"and s.lesson_date = ?";
+
+		PreparedStatement s = conn.prepareStatement(query);
+		s.setDate(1, Date.valueOf(LocalDate.now()));
 		ResultSet result = s.executeQuery();
 		while(result.next()) {
+			lengths.add(result.getInt(1));
+		}
+		return lengths;
+	}
 
-			String secondQuery = "select a.id, a.activity_time, a.activity_length, a.description, a.professor, a.classroom " +
-					"from activities as a, single_lessons as s where s. id = a.id and s.seminar_date = ? and" +
+	@Override
+	public Activity findByDateTimeClassroomProfessor(String cfProfessor, Long idClassroom) throws SQLException {
+
+		Activity activity = null;
+		List<Integer> activityLengths = findAllActivityLength();
+
+		for(int i = 0; i < activityLengths.size(); i++) {
+
+			String query = "select a.id, a.activity_time, a.activity_length, a.description, a.professor, a.classroom " +
+					"from activities as a, single_lessons as s where s. id = a.id and s.lesson_date = ? and " +
 					"classroom = ? and professor = ? and ((activity_time <= ? and ? < activity_time + interval '1 min' * activity_length) " +
 					"or (? <= activity_time and activity_time < ?))";
-
-			PreparedStatement st = conn.prepareStatement(secondQuery);
+			PreparedStatement st = conn.prepareStatement(query);
 
 			st.setDate(1, Date.valueOf(LocalDate.now()));
 			st.setLong(2, idClassroom);
@@ -388,20 +401,20 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 			st.setTime(4, Time.valueOf(LocalTime.now()));
 			st.setTime(5, Time.valueOf(LocalTime.now()));
 			st.setTime(6, Time.valueOf(LocalTime.now()));
-			st.setTime(6, Time.valueOf(LocalTime.now().plusMinutes(result.getInt(1))));
+			st.setTime(7, Time.valueOf(LocalTime.now().plusMinutes(activityLengths.get(i))));
 
 
 			ResultSet rs = st.executeQuery();
-
 			if (rs.next()) {
 				activity = new Activity();
-				activity.setId(rs.getLong("id"));
-				activity.setTime(rs.getTime("activity_time").toString());
-				activity.setLength(rs.getInt("activity_length"));
-				activity.setDescription(rs.getString("description"));
-				activity.setManager(DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(rs.getString("professor")));
-				activity.setClassroom(DatabaseManager.getInstance().getClassroomDao().findByPrimaryKey(rs.getLong("classroom")));
-				activity.setBookers(DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong("id"), true));
+				activity.setId(rs.getLong(1));
+				activity.setTime(rs.getTime(2).toString());
+				activity.setLength(rs.getInt(3));
+				activity.setDescription(rs.getString(4));
+				activity.setManager(DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(rs.getString(5)));
+				activity.setClassroom(DatabaseManager.getInstance().getClassroomDao().findByPrimaryKey(rs.getLong(6)));
+				activity.setBookers(DatabaseManager.getInstance().getStudentDao().findBookersForActivity(rs.getLong(1), true));
+				return activity;
 			}
 		}
 		return activity;

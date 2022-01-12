@@ -14,7 +14,9 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/js/common.js"></script>
+    <script src="/js/studentsCheckedIn.js"></script>
     <script src="/js/generic_error.js" charset="UTF-8"></script>
 </head>
 <body>
@@ -32,14 +34,6 @@
     </select>
 
     <ul class="list-group" id="student-checked-in">
-        <li class='list-group-item location'>
-            <span class='location-name'>loc1</span>
-            <div class='icons' style='float:right'>
-                <span class='clickable modify-button' id='modify-' style='display:block;margin-bottom:20px'><i class='fas fa-pen'></i></span>
-                <span class='clickable remove-button' id='remove-'><i class='fas fa-trash'></i></span>
-            </div>
-            <span class='location-capacity' style='display:block'>Capacità massima: 10 persone</span>
-        </li>
     </ul>
 </div>
 <div class="footer"></div>
