@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<c:if test="${user == null}">${user_type = null}</c:if>
 
 <a id="logo" href="/"> <img alt="Clever College"
 							src="/assets/images/cc-logo.png">
