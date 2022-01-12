@@ -81,5 +81,4 @@ public class IdBrokerJDBC implements IdBroker {
 		
 		return rs.getLong("id");
 	}
-
 }
