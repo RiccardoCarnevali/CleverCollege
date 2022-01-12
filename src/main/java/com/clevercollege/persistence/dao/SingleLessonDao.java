@@ -17,7 +17,7 @@ public interface SingleLessonDao {
 
 	public List<SingleLesson> findByProfessor(String cf, boolean lazy) throws SQLException;
 	
-	public List<SingleLesson> findNotExpiredOrStarted(boolean lazy) throws SQLException;
+	public List<SingleLesson> findNotExpired(boolean lazy) throws SQLException;
 	
 	public List<SingleLesson> findByCourseNotExpired(long courseId, boolean lazy) throws SQLException;
 	

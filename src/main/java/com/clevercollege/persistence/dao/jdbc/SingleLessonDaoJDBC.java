@@ -189,7 +189,7 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 	}
 	
 	@Override
-	public List<SingleLesson> findNotExpiredOrStarted(boolean lazy) throws SQLException {
+	public List<SingleLesson> findNotExpired(boolean lazy) throws SQLException {
 
 		List<SingleLesson> singleLessons = new ArrayList<>();
 		

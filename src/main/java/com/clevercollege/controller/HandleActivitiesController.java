@@ -376,6 +376,8 @@ public class HandleActivitiesController {
 		}
 		try {
 			DatabaseManager.getInstance().getActivityDao().delete(id);
+			NotificationService.getInstance().cancelSchedule(id + "in");
+			NotificationService.getInstance().cancelSchedule(id + "out");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

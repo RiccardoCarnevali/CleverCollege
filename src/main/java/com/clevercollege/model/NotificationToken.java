@@ -6,15 +6,17 @@ public class NotificationToken {
 
 	private String user;
 	private String token;
+	private boolean enabled;
 	
 	public NotificationToken() {
 		
 	}
 	
-	public NotificationToken(String user, String token) {
+	public NotificationToken(String user, String token, boolean enabled) {
 		super();
 		this.user = user;
 		this.token = token;
+		this.enabled = enabled;
 	}
 	
 	public String getUser() {
@@ -28,6 +30,12 @@ public class NotificationToken {
 	}
 	public void setToken(String token) {
 		this.token = token;
+	}
+	public boolean isEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	@Override

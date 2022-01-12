@@ -24,8 +24,8 @@ public class CheckoutReminderTask implements Runnable {
 	private long activityId;
 	
 	public CheckoutReminderTask(SingleLesson singleLesson) {
-		notificationTitle = "La lezione è finita!";
-		notificationBody = "La lezione di " + singleLesson.getCourse().getName() + " è finita, se non devi rimanere in "
+		notificationTitle = "La lezione e' finita!";
+		notificationBody = "La lezione di " + singleLesson.getCourse().getName() + " e' finita, se non devi rimanere in "
 							+ singleLesson.getClassroom().getName() + " ricorda di effettuare il check-out quando esci!";
 		activityId = singleLesson.getId();
 	}
@@ -44,7 +44,7 @@ public class CheckoutReminderTask implements Runnable {
 			List<NotificationToken> notificationTokens = notificationTokenDao.findTokensForActivityStillInClassroom(activityId);
 			
 			CloseableHttpClient client = HttpClients.createDefault();
-			HttpPost httpPost = new HttpPost("https://fcm.googleapis.com/fcm/send"); 
+			HttpPost httpPost = new HttpPost("https://fcm.googleapis.com/fcm/send");
 			httpPost.addHeader("Content-Type", "application/json;charset=UTF-8");
 			httpPost.addHeader("Authorization", "key=AAAA_K0h54U:APA91bH5aq1AvSHnxraq2TRTsDTbNDpq2eXr2gQ7HA-Val-iuNwUbWGHMi7Ykq33blIOu_72zN4HsB1CeLNF0F2ysVfjxvmIA7pgsNjNlID6HaK6jB-MsJAkJ4XeLsxxYUQe-juIPrfC");
 			for(NotificationToken notToken : notificationTokens) {
@@ -52,7 +52,7 @@ public class CheckoutReminderTask implements Runnable {
 				httpPost.setEntity(new StringEntity(json));
 				CloseableHttpResponse response = client.execute(httpPost);
 				String responseObjectJson = EntityUtils.toString(response.getEntity());
-				if(responseObjectJson.contains("InvalidRegistration"))
+				if(responseObjectJson.contains("InvalidRegistration") || responseObjectJson.contains("NotRegistered"))
 					notificationTokenDao.delete(notToken);
 			}
 			

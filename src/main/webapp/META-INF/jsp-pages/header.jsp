@@ -2,9 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
-<a id="logo" href="/"> <img alt="Clever College"
-							src="/assets/images/cc-logo.png">
-</a>
+<a id="logo" href="/"> <img alt="Clever College" src="/assets/images/cc-logo.png"></a>
 
 <div class="header-top"></div>
 <div class="navbar navbar-light navbar-expand-lg">
@@ -53,7 +51,13 @@
 				</li>
 			</c:if>
 			
-			<li class="nav-item ml-auto">
+			<c:if test="${user != null}">
+				<li class="nav-item ml-auto">
+					<span class="clickable nav-link" id="notification-bell"></span>
+				</li>
+			</c:if>
+			
+			<li class="nav-item <c:if test="${user == null}">ml-auto</c:if>">
 				<a <c:if test="${user != null}">href="/doLogout"</c:if> <c:if test="${user == null}">href="/login"</c:if>
 					 class="btn btn-outline-primary" id="loginButton">
 				<c:if test="${user != null}">Logout</c:if>

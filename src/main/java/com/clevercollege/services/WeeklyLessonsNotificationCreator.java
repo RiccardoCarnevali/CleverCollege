@@ -23,7 +23,7 @@ public class WeeklyLessonsNotificationCreator {
 		Map<String, ScheduledFuture<?>> schedule = NotificationService.getInstance().getSchedule();
 		
 		try {
-			List<SingleLesson> singleLessons = DatabaseManager.getInstance().getSingleLessonDao().findNotExpiredOrStarted(true);
+			List<SingleLesson> singleLessons = DatabaseManager.getInstance().getSingleLessonDao().findNotExpired(true);
 			
 			for(SingleLesson singleLesson : singleLessons) {
 				if(schedule.get(singleLesson.getId() + "in") == null) 

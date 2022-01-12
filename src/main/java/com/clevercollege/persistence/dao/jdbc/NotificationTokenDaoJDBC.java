@@ -24,7 +24,7 @@ public class NotificationTokenDaoJDBC implements NotificationTokenDao {
 		
 		List<NotificationToken> notificationTokens = new ArrayList<>();
 		
-		String query = "select * from notification_tokens";
+		String query = "select * from notification_tokens where enabled = true";
 		
 		Statement st = conn.createStatement();
 		
@@ -44,7 +44,7 @@ public class NotificationTokenDaoJDBC implements NotificationTokenDao {
 	
 	@Override
 	public boolean findToken(NotificationToken notificationToken) throws SQLException {
-		String query = "select * from notification_tokens where notification_token = ? and notification_user = ?";
+		String query = "select * from notification_tokens where notification_token = ? and notification_user = ? and enabled = true";
 		
 		PreparedStatement st = conn.prepareStatement(query);
 		
@@ -66,7 +66,7 @@ public class NotificationTokenDaoJDBC implements NotificationTokenDao {
 		
 		String query = "select notification_token, notification_user "
 						+ "from notification_tokens NT, books B "
-						+ "where NT.notification_user = B.student and B.activity = ?";
+						+ "where NT.notification_user = B.student and B.activity = ? and NT.enabled = true";
 		
 		PreparedStatement st = conn.prepareStatement(query);
 		
@@ -85,7 +85,7 @@ public class NotificationTokenDaoJDBC implements NotificationTokenDao {
 		
 		query = "select notification_token, notification_user "
 				+ "from notification_tokens NT, activities A "
-				+ "where NT.notification_user = A.professor and A.id = ?";
+				+ "where NT.notification_user = A.professor and A.id = ? and NT.enabled = true";
 		
 		st = conn.prepareStatement(query);
 		
@@ -113,7 +113,7 @@ public class NotificationTokenDaoJDBC implements NotificationTokenDao {
 		
 		String query = "select notification_token, notification_user "
 						+ "from notification_tokens NT, books B, check_in_check_out C "
-						+ "where NT.notification_user = B.student and B.student = C.c_user and B.activity = ? and C.out_time is null";
+						+ "where NT.notification_user = B.student and B.student = C.c_user and B.activity = ? and C.out_time is null and NT.enabled = true";
 		
 		PreparedStatement st = conn.prepareStatement(query);
 		
@@ -132,7 +132,7 @@ public class NotificationTokenDaoJDBC implements NotificationTokenDao {
 		
 		query = "select notification_token, notification_user "
 				+ "from notification_tokens NT, activities A, check_in_check_out C "
-				+ "where NT.notification_user = A.professor and A.professor = C.c_user and A.id = ? and C.out_time is null";
+				+ "where NT.notification_user = A.professor and A.professor = C.c_user and A.id = ? and C.out_time is null and NT.enabled = true";
 		
 		st = conn.prepareStatement(query);
 		
@@ -153,15 +153,41 @@ public class NotificationTokenDaoJDBC implements NotificationTokenDao {
 	}
 	
 	@Override
-	public void save(NotificationToken notificationToken) throws SQLException {
-		String query = "insert into notification_tokens values(?, ?)";
+	public void saveOrUpdate(NotificationToken notificationToken) throws SQLException {
+		
+		String query = "select * from notification_tokens where notification_token = ? and notification_user = ?";
 		
 		PreparedStatement st = conn.prepareStatement(query);
 		
 		st.setString(1, notificationToken.getToken());
 		st.setString(2, notificationToken.getUser());
 		
-		st.executeUpdate();
+		ResultSet rs = st.executeQuery();
+		
+		if(rs.next()) {
+			query = "update notification_tokens set "
+					+ "enabled = ? "
+					+ "where notification_token = ? and notification_user = ?";
+			
+			PreparedStatement updateSt = conn.prepareStatement(query);
+			
+			updateSt.setBoolean(1, notificationToken.isEnabled());
+			updateSt.setString(2, notificationToken.getToken());
+			updateSt.setString(3, notificationToken.getUser());
+			
+			updateSt.executeUpdate();
+		}
+		else {
+			query = "insert into notification_tokens values(?, ?, ?)";
+			
+			PreparedStatement insertSt = conn.prepareStatement(query);
+			
+			insertSt.setString(1, notificationToken.getToken());
+			insertSt.setString(2, notificationToken.getUser());
+			insertSt.setBoolean(3, notificationToken.isEnabled());
+			
+			insertSt.executeUpdate();
+		}
 	}
 	
 	@Override

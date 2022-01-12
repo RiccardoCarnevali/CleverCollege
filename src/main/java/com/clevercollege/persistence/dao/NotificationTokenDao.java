@@ -15,7 +15,7 @@ public interface NotificationTokenDao {
 	
 	public List<NotificationToken> findTokensForActivityStillInClassroom(long activityId) throws SQLException;
 
-	public void save(NotificationToken notificationToken) throws SQLException;
+	public void saveOrUpdate(NotificationToken notificationToken) throws SQLException;
 	
 	public void delete(NotificationToken notificationToken) throws SQLException;
 }

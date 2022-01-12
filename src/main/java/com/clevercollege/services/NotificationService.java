@@ -18,11 +18,13 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.stereotype.Service;
 
 import com.clevercollege.model.NotificationToken;
 import com.clevercollege.persistence.DatabaseManager;
 import com.clevercollege.persistence.dao.NotificationTokenDao;
 
+@Service
 public class NotificationService {
 	
 	private static NotificationService instance = null;
@@ -36,8 +38,6 @@ public class NotificationService {
 		executor.setRemoveOnCancelPolicy(true);
 		
 		schedule = new HashMap<>();
-		
-		//TODO recupero degli schedule da db
 	}
 	
 	public static NotificationService getInstance() {
@@ -76,7 +76,6 @@ public class NotificationService {
 				httpPost.setEntity(new StringEntity(json));
 				CloseableHttpResponse response = client.execute(httpPost);
 				String responseObjectJson = EntityUtils.toString(response.getEntity());
-				System.out.println(responseObjectJson);
 				if(responseObjectJson.contains("InvalidRegistration") || responseObjectJson.contains("NotRegistered"))
 					notificationTokenDao.delete(notToken);
 			}

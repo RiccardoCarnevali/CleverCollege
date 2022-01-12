@@ -20,13 +20,12 @@ const messaging = firebase.messaging();
 
 function initializeFireBaseMessaging() {
 	messaging.requestPermission().then(function() {
-		console.log("Notification permission")
 		return messaging.getToken();
 	}).then(function(token) {
 		
 		$.ajax({
 			type: "POST",
-			url: "/set-new-client",
+			url: "/set-client",
 			data: {
 				token: token,
 			},
@@ -44,16 +43,62 @@ function initializeFireBaseMessaging() {
 			error: errorMessage
 		});
 		
-		console.log("Token: " + token)
-		$("#token").append(token);
-	}).catch(function(reason) {
-		console.log(reason);
-		$("#token").append(reason);
-	})
+		$("#notification-bell").removeClass("far");
+		$("#notification-bell").addClass("fas");
+	});
+}
+
+function suppressFireBaseMessaging() {
+	messaging.requestPermission().then(function() {
+		return messaging.getToken();
+	}).then(function(token) {
+		
+		$.ajax({
+			type: "POST",
+			url: "/unset-client",
+			data: {
+				token: token
+			},
+			success: function(data) {
+				if(data == "error")
+					errorMessage();
+				else {
+					$("#notification-bell").removeClass("fas");
+					$("#notification-bell").addClass("far");
+				}
+			},
+			error: errorMessage
+		});
+	});
+}
+
+function checkFireBaseMessaging() {
+	messaging.requestPermission().then(function() {
+		return messaging.getToken();
+	}).then(function(token) {
+		
+		$.ajax({
+			type: "POST",
+			url: "/check-client",
+			data: {
+				token: token
+			},
+			success: function(data) {
+				if(data == "already present") {
+					$("#notification-bell").addClass("fas fa-bell");
+				}
+				else if(data == "not present") {
+					$("#notification-bell").addClass("far fa-bell");
+				}
+				else
+					errorMessage();
+			},
+			error: errorMessage
+		})
+	});
 }
 
 messaging.onMessage(function(payload) {
-	console.log(payload);
 	const notificationOption = {
 		body: payload.notification.body,
 		icon: payload.notification.icon
@@ -61,10 +106,8 @@ messaging.onMessage(function(payload) {
 	
 	if(Notification.permission == "granted") {
 		var notification = new Notification(payload.notification.title, notificationOption);
-		
 		notification.onclick = function(ev) {
 			ev.preventDefault();
-			window.open(payload.notification.click_action, "_blank");
 			notification.close();
 		}		
 	}
@@ -72,7 +115,6 @@ messaging.onMessage(function(payload) {
 
 messaging.onTokenRefresh(function() {
 	messaging.getToken().then(function(newToken) {
-		console.log("New token: " + newToken);
 		
 		$.ajax({
 			type: "POST",
@@ -82,18 +124,5 @@ messaging.onTokenRefresh(function() {
 			}
 		});
 		
-	}).catch(function(reason) {
-		console.log(reason);
-	})
-})
-
-$(function() {
-	$("#subscribe").on("click", initializeFireBaseMessaging);
-	
-	$("#sendMessage").on("click", function() {
-		$.ajax({
-			type: "POST",
-			url: "/send-notification-to-all"
-		})
-	})
+	});
 })
