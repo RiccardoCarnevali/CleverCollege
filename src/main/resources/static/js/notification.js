@@ -45,6 +45,8 @@ function initializeFireBaseMessaging() {
 		
 		$("#notification-bell").removeClass("far");
 		$("#notification-bell").addClass("fas");
+	}).catch(function(reason) {
+		
 	});
 }
 
@@ -69,6 +71,8 @@ function suppressFireBaseMessaging() {
 			},
 			error: errorMessage
 		});
+	}).catch(function(reason) {
+		
 	});
 }
 
@@ -95,6 +99,8 @@ function checkFireBaseMessaging() {
 			},
 			error: errorMessage
 		})
+	}).catch(function(reason) {
+		
 	});
 }
 
@@ -123,6 +129,8 @@ messaging.onTokenRefresh(function() {
 				token: newToken,
 			}
 		});
+		
+	}).catch(function(reason) {
 		
 	});
 })
