@@ -6,12 +6,16 @@ $(document).ready(function () {
 
     var searchBar = document.getElementById("searchBar");
     searchBar.oninput = function () {
+        var noElementLi = document.getElementsByClassName("no-element-class");
+        for(let i = 0; i < noElementLi.length; i++)
+            noElementLi.item(i).remove();
         if (searchBar.value !== "") {
             makeAllStudentsVisible();
             searchStudentsFromSubstring(searchBar.value);
         }
-        else
+        else {
             makeAllStudentsVisible();
+        }
     };
 
     $("#sortInput").on('change', function () {
@@ -42,17 +46,36 @@ $(document).ready(function () {
 });
 
 var searchStudentsFromSubstring = function (substring) {
+    if(listOfCheckedInStudent.length === 0) {
+        var studentList = $("#student-checked-in");
+        studentList.empty();
+        studentList.append("<li class='list-group-item student no-element-class' style='text-align:center'>Nessuno risultato soddisfa la ricerca.</li>");
+        return;
+    }
     var allLiElements = document.getElementsByClassName("list-group-item");
     var allInformationElements = document.getElementsByClassName("student-name");
+    var visibleElement = 0;
     for(let i = 0; i < allLiElements.length; i++) {
         var content = allInformationElements.item(i).innerHTML.toLowerCase();
         if(content.indexOf(substring.toLowerCase()) === -1) {
             allLiElements.item(i).style.display = "none";
         }
+        else
+            visibleElement++;
+    }
+    if(visibleElement === 0) {
+        var studentList = $("#student-checked-in");
+        studentList.append("<li class='list-group-item student no-element-class' style='text-align:center'>Nessuno risultato soddisfa la ricerca.</li>");
     }
 }
 
 var makeAllStudentsVisible = function () {
+    if(listOfCheckedInStudent.length === 0) {
+        var studentList = $("#student-checked-in");
+        studentList.empty();
+        studentList.append("<li class='list-group-item student no-element-class' style='text-align:center'>Nessuno studente ha effettuato il check-in in aula.</li>");
+        return;
+    }
     var allLiElements = document.getElementsByClassName("list-group-item");
     for(let i = 0; i < allLiElements.length; i++) {
         allLiElements.item(i).style.display = "flex";
@@ -99,10 +122,7 @@ var checkedInstudents = function () {
             listOfCheckedInStudent = response;
             if (listOfCheckedInStudent == null)
                 errorRedirect();
-            else if (response.length === 0) {
-                var studentList = $("#student-checked-in");
-                studentList.append("<li class='list-group-item student' style='text-align: center'>Nessuno studente ha effettuato il check-in in aula.</li>");
-            } else
+            else
                 findActivityInClassroomAndCheckBookers();
         },
         error: function () {
@@ -132,6 +152,11 @@ var findActivityInClassroomAndCheckBookers = function () {
 }
 
 var insertStudentInList = function(checkedInStudent, firstInsert) {
+
+    if(checkedInStudent.length === 0) {
+        $("#student-checked-in").append("<li class='list-group-item student no-element-class' style='text-align: center'>Nessuno studente ha effettuato il check-in in aula.</li>");
+    }
+
     for (let i = 0, max = checkedInStudent.length; i < max; i++) {
         var booked = null;
         //map mappa ogni elemento dell'array con un altro elemento in base al valore specificato nell'operazione della lambda
@@ -153,9 +178,9 @@ var insertStudentInList = function(checkedInStudent, firstInsert) {
             document.getElementById(checkedInStudent[i].cf).style.display = "none";
     }
     var checkOutButton = document.getElementsByClassName("forced-checked-out");
-    for(let i = 0, length = checkOutButton.length; i < length; i++) {
-        checkOutButton[i].addEventListener('click', function () {
-            forcedCheckOut(checkOutButton[i].parentElement.parentElement.id);
+    for(let btn of checkOutButton) {
+        btn.addEventListener('click', function () {
+            forcedCheckOut(btn.parentElement.parentElement.id);
         });
     }
 }
@@ -168,12 +193,16 @@ var forcedCheckOut = function (studentId) {
             studentId: studentId
         },
         success: function (response) {
-            if(response ===  "server error")
+            if(response === "server error")
                 errorMessage();
             else {
+                for(let i = 0; i < listOfCheckedInStudent.length; i++) {
+                    if(listOfCheckedInStudent[i].cf === studentId)
+                        listOfCheckedInStudent.splice(i, 1);
+                }
                 document.getElementById(studentId).remove();
-                if($("#student-checked-in").length === 1) {
-                    $("#student-checked-in").append("<li class='list-group-item student' style='text-align: center'>Nessuno studente ha effettuato il check-in in aula.</li>");
+                if(listOfCheckedInStudent.length === 0) {
+                    $("#student-checked-in").append("<li class='list-group-item student no-element-class' style='text-align: center'>Nessuno studente ha effettuato il check-in in aula.</li>");
                 }
                 Swal.fire(
                     'Rimozione avvenuta!',

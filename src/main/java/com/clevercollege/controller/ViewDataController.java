@@ -391,7 +391,7 @@ public class ViewDataController {
 		HttpSession session = request.getSession();
 		User u = (User) session.getAttribute("user");
 		if(u == null) {
-			session.setAttribute("after-login", "/checkInCheckOut/studentsCheckedIn");
+			session.setAttribute("after-login", "/check-in/studentsCheckedIn");
 			return "redirect:/login";
 		}
 		else {
