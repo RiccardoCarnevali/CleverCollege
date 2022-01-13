@@ -8,7 +8,12 @@
 }
 
 .card-img-top {
-	border-radius: 50%;
+	width: 180px;
+	height: 180px;
+	object-fit: cover;
+	margin: 15px auto 0px auto;
+	border: 2px outset #7e57c2;
+	box-shadow: 0 10px 25px rgb(126 87 194 / 5%), 0 20px 48px rgb(126 87 194 / 5%), 0 1px 4px rgb(126 87 194 / 10%);	
 }
 
 .card-text {

@@ -43,7 +43,8 @@
 			<div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12" style="margin-top: 10px">
 				<div class="card">
 					<div style="text-align: center">
-						<img id="profile-picture" class="card-img-top rounded-circle" alt="ma guarda quanto sei bello/a" src="/assets/images/pp-placeholder.png">
+						<img id="profile-picture" class="card-img-top rounded-circle" <c:if test="${empty user.profilePicture}">src="/assets/images/pp-placeholder.png"</c:if>
+																					  <c:if test="${not empty user.profilePicture}">src="/assets/images/pp/${user.cf}.png"</c:if>>
 						<span id="modPP-icon" class="card-text clickable fas fa-pen"></span>
 						<input type="file" id="modPP" accept=".png,.jpg,.jpeg" style="display: none">
 					</div>

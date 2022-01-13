@@ -1,5 +1,6 @@
 package com.clevercollege.controller;
 
+import java.io.File;
 import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -108,6 +109,10 @@ public class RemoveDataController {
 		try {
 			DatabaseManager.getInstance().getLocationDao().delete(id);
 			DatabaseManager.getInstance().commit();
+			File qrCode = new File("src/main/resources/static/assets/images/locations-qr-codes/location_" + id + ".png");
+			File qrCodeBin = new File("target/classes/static/assets/images/locations-qr-codes/location_" + id + ".png");
+			qrCode.delete();
+			qrCodeBin.delete();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "error";

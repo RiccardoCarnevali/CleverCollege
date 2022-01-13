@@ -1,12 +1,15 @@
 package com.clevercollege.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -60,26 +63,41 @@ public class UpdateProfileController {
 	@PostMapping("/updateProfilePicture")
 	public String updateImage(@RequestParam("image") MultipartFile img, HttpServletRequest request) {
 		User u = (User) request.getSession().getAttribute("user");
-		if (!img.isEmpty()) {
-			String imgName = img.getOriginalFilename();
-			try {
-				if (Files.probeContentType(Paths.get(imgName)) == "image" || img.getSize() < 1000000) {
-					File f = new File("src/main/resources/static/assets/images/pp/" + u.getCf() + ".png");
-					f.createNewFile();
-					img.transferTo(f.getAbsoluteFile());
-					u.setProfilePicture(u.getCf() + ".png");
-					DatabaseManager.getInstance().getUserDao().saveOrUpdate(u);
-					DatabaseManager.getInstance().commit();
-					return "ok";
-				} else {
-					return "error";
-				}
-
-			} catch (IllegalStateException | IOException | SQLException e) {
-				return "error";
+		
+		if (img.isEmpty())
+			return "error";
+		
+		String imgName = img.getOriginalFilename();
+		try {
+			if (img.getSize() > 1000000)
+				return "img too big";
+			
+			if(!Files.probeContentType(Paths.get(imgName)).split("/")[0].equals("image"))
+				return "not an img";
+	
+			File f = new File("src/main/resources/static/assets/images/pp/" + u.getCf() + ".png");
+			f.createNewFile();
+			img.transferTo(f.getAbsoluteFile());
+			
+			BufferedImage bImg = ImageIO.read(f);
+			
+			if(bImg.getWidth() < 180 || bImg.getHeight() < 180) {
+				f.delete();
+				return "img too small";
 			}
+			
+			File fBin = new File("target/classes/static/assets/images/pp/" + u.getCf() + ".png");
+			Files.copy(f.toPath(), fBin.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			
+			u.setProfilePicture(u.getCf() + ".png");
+			DatabaseManager.getInstance().getUserDao().saveOrUpdate(u);
+			DatabaseManager.getInstance().commit();
+			return "ok";
+
+		} catch (IllegalStateException | IOException | SQLException e) {
+			e.printStackTrace();
+			return "error";
 		}
-		return "error";
 	}
 
 	@PostMapping(path = "/putProfilePicture", produces = org.springframework.http.MediaType.IMAGE_PNG_VALUE)
