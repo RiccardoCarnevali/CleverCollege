@@ -44,7 +44,13 @@ function loadMore(showMore) {
 			if(showMoreButton != null) {
 				showMoreButton.remove();
 			}
-			
+
+			if(data.length === 0) {
+				var locationList = $("#locations");
+				locationList.append("<li class='list-group-item' style='text-align: center; margin: 10px 0px'>Nessun luogo è stato ancora registrato.</li>");
+				return;
+			}
+
 			if(locations.length != 0 && data.length != 0){
 				if(areEquals(data.slice(0,15), locations)) {
 					if(data.length == 16) {

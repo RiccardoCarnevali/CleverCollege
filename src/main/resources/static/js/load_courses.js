@@ -34,6 +34,12 @@ function loadMore(showMore) {
 			if(showMoreButton != null) {
 				showMoreButton.remove();
 			}
+
+			if(data.length === 0) {
+				var coursesList = $("#courses");
+				coursesList.append("<li class='list-group-item' style='text-align: center; margin: 10px 0px'>Nessun corso è stato ancora registrato.</li>");
+				return;
+			}
 			
 			if(courses.length != 0 && data.length != 0){
 				if(areEquals(data.slice(0,15), courses)) {
