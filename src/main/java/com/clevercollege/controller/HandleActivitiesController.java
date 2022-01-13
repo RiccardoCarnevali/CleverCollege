@@ -178,9 +178,6 @@ public class HandleActivitiesController {
 				WeeklyLesson weekly = mapper.readValue(jsonString, WeeklyLesson.class);
 				if (!edit) 
 					weekly.setId(id);
-				else 
-					weekly.setBookers(DatabaseManager.getInstance()
-							.getActivityDao().findByPrimaryKey(weekly.getId(), false).getBookers());
 				
 				weekly.setManager(user);
 				if (!weekly.checkValid())

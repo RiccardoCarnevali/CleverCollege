@@ -6,7 +6,22 @@ $(function() {
 	loadUserMedia(false);
 	video = document.querySelector('.video-capture');
 	canvas = document.querySelector('canvas');
+	
+	//carica i luoghi
+	loadedLocations = [];
+	
+	like = '';
+	loadLocations(false);
+
+	$("#locationSearchBar").on("input", function() {
+		like = $(this).val();
+		loadLocations(false);
+	});
 });
+
+function loadLocations(showMore) {
+	
+}
 
 function loadUserMedia(show) {
 	if (show) {

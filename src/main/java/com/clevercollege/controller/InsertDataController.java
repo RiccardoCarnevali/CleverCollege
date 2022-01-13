@@ -416,9 +416,10 @@ public class InsertDataController {
 			CloseableHttpResponse response = client.execute(httpPost);
 			
 			File qrCodeImageFile = new File("src/main/resources/static/assets/images/locations-qr-codes/location_" + location.getId() + ".png");
+			File qrCodeImageBinFile = new File("target/classes/static/assets/images/locations-qr-codes/location_" + location.getId() + ".png");
 			BufferedImage qrCodeImage = ImageIO.read(response.getEntity().getContent());
 			ImageIO.write(qrCodeImage, "png", qrCodeImageFile);
-			
+			ImageIO.write(qrCodeImage, "png", qrCodeImageBinFile);
 		} catch (IOException e) {
 			return;
 		}

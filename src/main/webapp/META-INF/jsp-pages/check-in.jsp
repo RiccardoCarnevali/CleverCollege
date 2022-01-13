@@ -36,6 +36,10 @@
 			</div>
 			<button class="btn btn-outline-primary" id="showStreamBttn">Apri
 				Fotocamera</button>
+			<div class="manual-check-in-container">
+				<p>In alternativa, seleziona manualmente il luogo in cui desideri 
+				fare il check-in</p>
+			</div>
 		</div>
 	</c:if>
 	<c:if test="${checkIn != null}">

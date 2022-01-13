@@ -106,7 +106,7 @@
 					</select>
 				</div>
 			</div>
-			<label for="classroomSearchBar" style="margin-left: 32px;"><strong>classroom:</strong></label>
+			<label for="classroomSearchBar" style="margin-left: 55px;"><strong>Aula:</strong></label>
 			<div id="classroomsContainer">
 				<input type="search" id="classroomSearchBar" class="form-control" />
 				<div id="classroomList">
