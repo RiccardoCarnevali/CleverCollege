@@ -54,6 +54,20 @@ function loadMore(showMore) {
 				showMoreButton.remove();
 			}
 
+			if(data.length === 0 && offset === 0) {
+				var usersList = $("#rows");
+				usersList.empty();
+				users = [];
+				var message = "";
+				if(like !== "") {
+					message = "Nessun risultato soddisfa la ricerca.";
+				}
+				else
+					message = "Nessun utente è stato ancora registrato.";
+				usersList.append("<li class='list-group-item' style='text-align: center; margin: 10px 0px'>" + message + "</li>");
+				return;
+			}
+
 			if (users.length != 0 && data.length != 0) {
 				if (areEquals(data.slice(0,6), users)){
 					if (data.length == 7) {

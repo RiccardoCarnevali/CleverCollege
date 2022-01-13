@@ -45,9 +45,17 @@ function loadMore(showMore) {
 				showMoreButton.remove();
 			}
 
-			if(data.length === 0) {
+			if(data.length === 0 && offset === 0) {
 				var locationList = $("#locations");
-				locationList.append("<li class='list-group-item' style='text-align: center; margin: 10px 0px'>Nessun luogo è stato ancora registrato.</li>");
+				locationList.empty();
+				locations = [];
+				var message = "";
+				if(like !== "") {
+					message = "Nessun risultato soddisfa la ricerca.";
+				}
+				else
+					message = "Nessun luogo è stato ancora registrato.";
+				locationList.append("<li class='list-group-item' style='text-align: center; margin: 10px 0px'>" + message + "</li>");
 				return;
 			}
 

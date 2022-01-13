@@ -29,15 +29,22 @@ function loadMore(showMore) {
 			offset: offset
 		},
 		success: function(data) {
-			
 			var showMoreButton = $("#showMoreButton");
 			if(showMoreButton != null) {
 				showMoreButton.remove();
 			}
 
-			if(data.length === 0) {
+			if(data.length === 0 && offset === 0) {
 				var coursesList = $("#courses");
-				coursesList.append("<li class='list-group-item' style='text-align: center; margin: 10px 0px'>Nessun corso è stato ancora registrato.</li>");
+				coursesList.empty();
+				courses = [];
+				var message = "";
+				if(like !== "") {
+					message = "Nessun risultato soddisfa la ricerca.";
+				}
+				else
+					message = "Nessun corso è stato ancora registrato.";
+				coursesList.append("<li class='list-group-item' style='text-align: center; margin: 10px 0px'>" + message + "</li>");
 				return;
 			}
 			
