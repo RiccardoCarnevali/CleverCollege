@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.clevercollege.model.Activity;
 import com.clevercollege.model.Seminar;
-import com.clevercollege.model.SingleLesson;
 
 public interface SeminarDao {
 
@@ -28,4 +27,6 @@ public interface SeminarDao {
 	public List<Seminar> findBookedByStudentNotExpired(String studentCf, boolean lazy) throws SQLException;
 
 	public Activity findByDateTimeClassroomProfessor(String cfProfessor, Long idClassroom) throws SQLException;
+
+	public List<Seminar> findActiveByProfessor(String cf, boolean lazy) throws SQLException;
 }

@@ -1,12 +1,12 @@
 $(function() {
-	$('#createActivityBttn').on('click', createActivity);
-	$('#editActivityBttn').on('click', editActivity);
+	$('#createActivityBttn').on('click', function(){createActivity(false)});
+	$('#editActivityBttn').on('click', function(){editActivity(false)});
 	$('input[name="activity-type"]').change(function() {
 		hideUnusedInputs(this.value);
 	})
 	hideUnusedInputs($('input[name="activity-type"]:checked').val());
 
-	
+
 	loadedClassrooms = [];
 
 	//check if there is a loaded activity already
@@ -15,7 +15,7 @@ $(function() {
 		like = $('.classroom-name').html();
 		$("#classroomSearchBar").val(like);
 	}
-	if(like == null)
+	if (like == null)
 		like = '';
 	loadClassrooms(false);
 
@@ -56,8 +56,8 @@ function loadClassrooms(showMore) {
 			$('#showMoreButton').remove();
 			if (areEquals(data.slice(0, 15), loadedClassrooms) && loadedClassrooms.length != 0) {
 				if (data.length == 16) {
-					$("#classroomsContainer").append('<button class="btn btn-outline-primary"'
-						+ ' id="showMoreButton">Mostra altre aule</button>');
+					$("#classroomList").append('<button class="btn btn-outline-primary"'
+						+ ' id="showMoreButton">Mostra altri</button>');
 					$("#showMoreButton").off().on("click", function() {
 						loadClassrooms(true);
 					});
@@ -90,7 +90,7 @@ function loadClassrooms(showMore) {
 						'<label for="classroom' + index + '"></div>');
 			}
 			if (data.length == 16) {
-				$("#classroomsContainer").append('<button class="btn btn-outline-primary" id="showMoreButton">Mostra altri</button>');
+				$("#classroomList").append('<button class="btn btn-outline-primary" id="showMoreButton">Mostra altri</button>');
 				$("#showMoreButton").off().on("click", function() {
 					loadClassrooms(true);
 				});
@@ -116,7 +116,7 @@ function loadCourses() {
 	});
 }
 
-function createActivity() {
+function createActivity(ignoreConflict) {
 	$('.empty-form-error').remove();
 	if (checkFieldsValidity()) {
 		var activity = createJSONActivity();
@@ -127,7 +127,8 @@ function createActivity() {
 			data: {
 				jsonString: activity,
 				type: $('input[name="activity-type"]:checked').val(),
-				edit: false
+				edit: false,
+				ignoreConflict: ignoreConflict
 			},
 			success: function(data) {
 				if (data == '') {
@@ -139,7 +140,17 @@ function createActivity() {
 					$('#activityInfoInput input').val('');
 					$('textarea').val('');
 				} else {
-					generateConflictDiv(JSON.parse(data));
+					Swal.fire({
+						title: 'Conflitto attività!',
+						text: conflictAlertText(JSON.parse(data)),
+						icon: 'warning',
+						showCancelButton: true,
+						confirmButtonText: 'Inserisci',
+						cancelButtonText: 'Annulla'
+					}).then((choice) => {
+						if(choice.isConfirmed)
+							createActivity(true);
+					});
 				}
 			},
 			error: errorMessage
@@ -158,7 +169,7 @@ function createActivity() {
 	}
 }
 
-function editActivity() {
+function editActivity(ignoreConflict) {
 	$('.empty-form-error').remove();
 	if (checkFieldsValidity()) {
 		var activity = createJSONActivity();
@@ -168,7 +179,8 @@ function editActivity() {
 			data: {
 				jsonString: activity,
 				type: $('input[name="activity-type"]:checked').val(),
-				edit: true
+				edit: true,
+				ignoreConflict: ignoreConflict
 			},
 			success: function(data) {
 				if (data == '') {
@@ -180,7 +192,17 @@ function editActivity() {
 						window.location.href = "handle_activities";
 					});
 				} else {
-					generateConflictDiv(JSON.parse(data));
+					Swal.fire({
+						title: 'Conflitto attività!',
+						text: conflictAlertText(JSON.parse(data)),
+						icon: 'warning',
+						showCancelButton: true,
+						confirmButtonText: 'Inserisci',
+						cancelButtonText: 'Annulla'
+					}).then((choice) => {
+						if(choice.isConfirmed)
+							editActivity(true);
+					});
 				}
 			},
 			error: errorMessage
@@ -195,6 +217,27 @@ function editActivity() {
 			$('#classroomsContainer').after('<div class="empty-form-error">Seleziona un\'aula</div>');
 		$('textarea:empty').after('<div class="empty-form-error">Questo campo deve essere compilato</div>');
 	}
+}
+
+function conflictAlertText(result) {
+	let activityConflict = result.activity_conflict;
+	let activityConflictType = activityConflict.activity_conflict_type;
+	let text = '';
+	let weekdays = ['lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato', 'domenica'];
+	if (activityConflictType == 'weekly') {
+		text = "L'attività che si sta cercando di inserire va in conflitto con la lezione settimanale di "
+			+ weekdays[activityConflict.weekDay] + " di " + activityConflict.course.name +
+			". Vuoi procedere con l'inserimento?";
+	} else if (activityConflictType == 'single') {
+		text = "L'attività che si sta cercando di inserire va in conflitto con la lezione del "
+			+ activityConflict.date + " di " + activityConflict.course.name +
+			". Vuoi procedere con l'inserimento?";
+	} else if (activityConflictType == 'seminar') {
+		text = "L'attività che si sta cercando di inserire va in conflitto con il seminario del "
+			+ activityConflict.date +
+			". Vuoi procedere con l'inserimento?";
+	}
+	return text;
 }
 
 function checkFieldsValidity() {
@@ -251,29 +294,3 @@ function areEquals(classroom1, classroom2) {
 	return true;
 }
 
-function generateConflictDiv(result) {
-	let activityConflict = result.activity_conflict;
-	let activityConflictType = activityConflict.activity_conflict_type;
-
-	let conflictDescription = '';
-	if (activityConflictType == "weekly") {
-		weekdays = ["lunedì", "martedì", "mercoledì", "giovedì",
-			"venerdì", "sabato", "domenica"];
-		conflictDescription = "L'attività inserita è in conflitto con la lezione settimanale di "
-			+ activityConflict.course.name + " di " + weekdays[activityConflict.weekDay] +
-			".\nSi prega di cambiarne l'orario o il giorno.";
-	} else if (activityConflictType == "single") {
-		conflictDescription = "L'attività inserita è in conflitto con la lezione di " +
-			activityConflict.course.name + " del " + activityConflict.date +
-			".\nSi prega di cambiarne l'orario o il giorno.";
-	} else if (activityConflictType == "seminar") {
-		 conflictDescription = "L'attività inserita è in conflitto con il seminario del "
-			+ activityConflict.date + ".\nSi prega di cambiarne l'orario o il giorno.";
-	}
-	$('#conflictContainer').remove();
-	let conflictDiv = '<div class="container" id="conflictContainer">'+
-		'<h4>Oops... Attività in conflitto!</h4>' +
-		'<p>' + conflictDescription + '</p></div>';
-	$('#createActivityContainer').after(conflictDiv);
-
-}

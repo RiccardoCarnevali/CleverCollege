@@ -2,7 +2,6 @@ package com.clevercollege.controller;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -31,6 +30,7 @@ import com.clevercollege.model.SingleLesson;
 import com.clevercollege.model.Student;
 import com.clevercollege.model.User;
 import com.clevercollege.persistence.DatabaseManager;
+import com.clevercollege.services.EmailService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -137,15 +137,16 @@ public class InsertDataController {
             return "server error";
         }
         
+        u.setCf(normalizeCf(u.getCf()));
         if(u.getCf() == null || u.getFirstName() == null || u.getLastName() == null || u.getEmail() == null)
         	return "server error";
 
-        String token = UUID.randomUUID().toString();
+        String token = UUID.randomUUID().toString().subSequence(0, 20).toString();
         String tmpPassword = BCrypt.hashpw(token, BCrypt.gensalt(12));
 
         if(!checkValidCf(u.getFirstName(), u.getLastName(), u.getCf()))
             return "cf not valid";
-
+        
             try {
                 if(!update && DatabaseManager.getInstance().getUserDao().findByEmail(u.getEmail()) != null)
                     return "email already exists";
@@ -159,6 +160,7 @@ public class InsertDataController {
                     } catch (JsonProcessingException e) {
                         return "server error";
                     }
+                    s.setCf(normalizeCf(s.getCf()));
                     if(s.getStudentNumber() == null)
                     	return "server error";
                     
@@ -207,15 +209,22 @@ public class InsertDataController {
             }
     }
 
-    private boolean checkValidCf(String name, String surname, String cf) {
-        cf = cf.trim(); name = name.trim(); surname = surname.trim();
-        cf = cf.replaceAll(" ", ""); name = name.replaceAll(" ", ""); surname = surname.replaceAll(" ", "");
-        cf = cf.toLowerCase(); name = name.toLowerCase(); surname = surname.toLowerCase();
+	private boolean checkValidCf(String name, String surname, String cf) {
+        name = name.trim(); surname = surname.trim();
+        name = name.replaceAll(" ", ""); surname = surname.replaceAll(" ", "");
+        name = name.toLowerCase(); surname = surname.toLowerCase();
 
         String first3 = cf.substring(0, 3);
         String second3 = cf.substring(3, 6);
 
         return checkForCf(surname, first3, 3) && checkForCf(name, second3, 4);
+    }
+    
+    private String normalizeCf(String cf) {
+    	cf = cf.trim();
+    	cf = cf.replaceAll(" ", "");
+    	cf = cf.toLowerCase();
+    	return cf;
     }
 
     private boolean checkForCf(String nameOrSurname, String char3, int numChar) {
@@ -402,9 +411,10 @@ public class InsertDataController {
 			CloseableHttpResponse response = client.execute(httpPost);
 			
 			File qrCodeImageFile = new File("src/main/resources/static/assets/images/locations-qr-codes/location_" + location.getId() + ".png");
+			File qrCodeImageBinFile = new File("target/classes/static/assets/images/locations-qr-codes/location_" + location.getId() + ".png");
 			BufferedImage qrCodeImage = ImageIO.read(response.getEntity().getContent());
 			ImageIO.write(qrCodeImage, "png", qrCodeImageFile);
-			
+			ImageIO.write(qrCodeImage, "png", qrCodeImageBinFile);
 		} catch (IOException e) {
 			return;
 		}

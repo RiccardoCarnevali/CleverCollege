@@ -32,8 +32,7 @@ public class LocationController {
 		HttpSession session = request.getSession();
 		String user_type = (String) session.getAttribute("user_type");
 
-		if (user_type == null || (!user_type.equals("professor") && !user_type.equals("admin")) 
-				|| like == null || offset == null)
+		if (user_type == null || like == null || offset == null)
 			return null;
 		
 		List<Location> locations = null;

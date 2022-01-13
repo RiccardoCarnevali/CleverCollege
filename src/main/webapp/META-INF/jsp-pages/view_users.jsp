@@ -16,9 +16,12 @@
 		<link rel="stylesheet" href="/css/view_users.css">
 		<link rel="stylesheet" href="/css/view_data.css">
 		
+		<script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-messaging.js"></script>
+		<script src="/js/notification.js" charset="UTF-8"></script>
 		<script src="/js/common.js"></script>
-		<script src="/js/load_users.js" charset="UTF-8"></script>
 		<script src="/js/generic_error.js" charset="UTF-8"></script>
+		<script src="/js/load_users.js" charset="UTF-8"></script>
 		
 		<title>Utenti</title>
 	</head>

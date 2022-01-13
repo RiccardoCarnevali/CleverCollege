@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
@@ -15,10 +16,14 @@
 	<script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 	<script	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	
+	<script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-messaging.js"></script>
+	<script src="/js/notification.js" charset="UTF-8"></script>
 	<script src="/js/common.js"></script>
+	<script src="/js/generic_error.js" charset="UTF-8"></script>
 	<script src="/js/myprofile.js" charset="UTF-8"></script>
 	<script src="/js/loadbookedcourses.js"></script>
-	<script src="/js/generic_error.js" charset="UTF-8"></script>
 	
 </head>
 
@@ -28,9 +33,9 @@
 		<div id="mainTable" class="row">
 			<div class="col-xl-9 col-lg-8 col-md-12 col-sm-12 col-12" style="margin-top: 10px">
 				<div id="booked-tab">
-					<h1>Attività prenotate</h1>
+					<h1>Attivitï¿½ prenotate</h1>
 					<ul class="list-group">
-						<li class="list-group-item"><label id="empty-ul">Non hai attività prenotate. Riposati o studia autonomamente!</label></li>
+						<li class="list-group-item"><label id="empty-ul">Non hai attivitï¿½ prenotate. Riposati o studia autonomamente!</label></li>
 					</ul>
 						<a href="check-in" type="button" class="btn btn-outline-primary" id="check-in-out">Esegui check-in/out</a>
 				</div>
@@ -56,7 +61,7 @@
 						</p>
 						<div id="descriptionLayout">					
 							<c:if test="${empty user.description}">
-								<label id="dd-placeholder">Non è presente una descrizione. Aggiungine una!</label>
+								<label id="dd-placeholder">Non ï¿½ presente una descrizione. Aggiungine una!</label>
 							</c:if> 
 							<c:if test="${not empty user.description}">
 								<div id="description">${user.description}</div>

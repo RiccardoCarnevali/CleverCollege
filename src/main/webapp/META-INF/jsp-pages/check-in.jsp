@@ -19,7 +19,15 @@
 <script
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"
+	charset="UTF-8"></script>
+<script
+	src="https://www.gstatic.com/firebasejs/8.2.4/firebase-messaging.js"
+	charset="UTF-8"></script>
+<script src="/js/notification.js" charset="UTF-8"></script>
 <script src="/js/common.js"></script>
+<script src="/js/generic_error.js" charset="UTF-8"></script>
 <script src="/js/data-model.js"></script>
 <script src="/js/check_in.js"></script>
 
@@ -36,6 +44,16 @@
 			</div>
 			<button class="btn btn-outline-primary" id="showStreamBttn">Apri
 				Fotocamera</button>
+			<div class="manual-check-in-container">
+				<h5>In alternativa, seleziona manualmente il luogo in cui
+					desideri fare il check-in</h5>
+				<div id="locationsContainer">
+					<input type="search" id="locationSearchBar" class="form-control" />
+					<div id="locationList">
+						<ul id="locations"></ul>
+					</div>
+				</div>
+			</div>
 		</div>
 	</c:if>
 	<c:if test="${checkIn != null}">

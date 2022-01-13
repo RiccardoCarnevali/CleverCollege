@@ -1,4 +1,4 @@
-package com.clevercollege.controller;
+package com.clevercollege.services;
 
 import java.util.Properties;
 

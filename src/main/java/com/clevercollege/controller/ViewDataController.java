@@ -113,7 +113,8 @@ public class ViewDataController {
 			return "redirect:/login";
 		} else {
 			String user_type = (String) session.getAttribute("user_type");
-			if (user_type == null || !user_type.equals("admin"))
+
+			if(user_type == null || !user_type.equals("student"))
 				return "not_authorized";
 		}
 
@@ -132,7 +133,8 @@ public class ViewDataController {
 			return "redirect:/login";
 		} else {
 			String user_type = (String) session.getAttribute("user_type");
-			if (user_type == null || !user_type.equals("admin"))
+
+			if(user_type == null || !user_type.equals("student"))
 				return "not_authorized";
 		}
 
@@ -151,7 +153,8 @@ public class ViewDataController {
 			return "redirect:/login";
 		} else {
 			String user_type = (String) session.getAttribute("user_type");
-			if (user_type == null || !user_type.equals("admin"))
+			
+			if(user_type == null || !user_type.equals("student"))
 				return "not_authorized";
 		}
 
@@ -380,7 +383,6 @@ public class ViewDataController {
 			DatabaseManager.getInstance().commit();
 			request.setAttribute("checkIn", null);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "redirect:/check-in";

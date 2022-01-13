@@ -181,7 +181,7 @@ var changePassword = function() {
 var changePasswordEdit = function() {
 	$("#passwordChangeLayout").empty();
 	$("#passwordChangeLayout").append("<label for='current-password' style='display: block'>Inserisci la tua password corrente:</label>" +
-									 "<input type='password' id='current-password' maxlength='30' class='form-control' style='display: block' placeholder='Password corrente'></input>" +
+									 "<input type='password' id='current-password' maxlength='50' class='form-control' style='display: block' placeholder='Password corrente'></input>" +
 									 "<label for='new-password' style='display: block'>Inserisci la nuova password:</label>" +
 									 "<input type='password' id='new-password' maxlength='30' class='form-control' style='display: block' placeholder='Nuova password'></input>" +
 									 "<label for='new-password' style='display: block'>Conferma la nuova password:</label>" +
