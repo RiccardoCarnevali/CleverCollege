@@ -48,7 +48,7 @@
 				<label for="passwordInput" class="form-label"><strong>Password:</strong></label>
 				<div style="position:relative">
 					<input type="password" class="form-control" id="passwordInput"
-						placeholder="Password" name="newPassword">
+						placeholder="Password" name="newPassword" maxlength="30">
 					<i class="fas fa-eye-slash clickable" id="see-password"></i>
 				</div>
 			</div>
@@ -56,7 +56,7 @@
 				<label for="passwordRepeatInput" class="form-label"><strong>Ripeti password:</strong></label>
 				<div style="position:relative">
 					<input type="password" class="form-control" id="passwordRepeatInput"
-						placeholder="Ripeti password" name="newPasswordConfirm">
+						placeholder="Ripeti password" name="newPasswordConfirm" maxlength="30">
 					<i class="fas fa-eye-slash clickable" id="see-password-repeat"></i>
 				</div>
 			</div>

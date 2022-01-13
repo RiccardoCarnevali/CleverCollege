@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.text.RandomStringGenerator;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -140,7 +140,7 @@ public class InsertDataController {
         if(u.getCf() == null || u.getFirstName() == null || u.getLastName() == null || u.getEmail() == null)
         	return "server error";
 
-        String token = generateRandomPassword(20);
+        String token = UUID.randomUUID().toString().substring(0, 10);
         String tmpPassword = BCrypt.hashpw(token, BCrypt.gensalt(12));
 
         if(!checkValidCf(u.getFirstName(), u.getLastName(), u.getCf()))
@@ -207,13 +207,7 @@ public class InsertDataController {
                 return "server error";
             }
     }
-
-    private String generateRandomPassword(int length) {
-    	RandomStringGenerator pwdGenerator = new RandomStringGenerator.Builder().withinRange(20, 45)
-    	        .build();
-    	    return pwdGenerator.generate(length);
-	}
-
+    
 	private boolean checkValidCf(String name, String surname, String cf) {
         name = name.trim(); surname = surname.trim();
         name = name.replaceAll(" ", ""); surname = surname.replaceAll(" ", "");
@@ -416,8 +410,10 @@ public class InsertDataController {
 			CloseableHttpResponse response = client.execute(httpPost);
 			
 			File qrCodeImageFile = new File("src/main/resources/static/assets/images/locations-qr-codes/location_" + location.getId() + ".png");
+			File qrCodeImageBinFile = new File("target/classes/static/assets/images/locations-qr-codes/location_" + location.getId() + ".png");
 			BufferedImage qrCodeImage = ImageIO.read(response.getEntity().getContent());
 			ImageIO.write(qrCodeImage, "png", qrCodeImageFile);
+			ImageIO.write(qrCodeImage, "png", qrCodeImageBinFile);
 			
 		} catch (IOException e) {
 			return;

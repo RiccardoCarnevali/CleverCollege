@@ -29,7 +29,7 @@
             <div class="mb-3" id="password">
                 <label for="passwordInput" class="form-label"><strong>Password:</strong></label>
                 <div style="position:relative">
-	                <input type="password" class="form-control" id="passwordInput" placeholder="Inserisci la tua password..." name="password">
+	                <input type="password" class="form-control" id="passwordInput" maxlength="30" placeholder="Inserisci la tua password..." name="password">
 	                <i class="fas fa-eye-slash clickable" id="see-password"></i>
                 </div>
             </div>
