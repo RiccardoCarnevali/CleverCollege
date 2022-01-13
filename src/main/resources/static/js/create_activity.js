@@ -56,8 +56,8 @@ function loadClassrooms(showMore) {
 			$('#showMoreButton').remove();
 			if (areEquals(data.slice(0, 15), loadedClassrooms) && loadedClassrooms.length != 0) {
 				if (data.length == 16) {
-					$("#classroomsContainer").append('<button class="btn btn-outline-primary"'
-						+ ' id="showMoreButton">Mostra altre aule</button>');
+					$("#classroomList").append('<button class="btn btn-outline-primary"'
+						+ ' id="showMoreButton">Mostra altri</button>');
 					$("#showMoreButton").off().on("click", function() {
 						loadClassrooms(true);
 					});
@@ -90,7 +90,7 @@ function loadClassrooms(showMore) {
 						'<label for="classroom' + index + '"></div>');
 			}
 			if (data.length == 16) {
-				$("#classroomsContainer").append('<button class="btn btn-outline-primary" id="showMoreButton">Mostra altri</button>');
+				$("#classroomList").append('<button class="btn btn-outline-primary" id="showMoreButton">Mostra altri</button>');
 				$("#showMoreButton").off().on("click", function() {
 					loadClassrooms(true);
 				});

@@ -11,6 +11,7 @@ import com.clevercollege.persistence.dao.ClassroomDao;
 import com.clevercollege.persistence.dao.CourseDao;
 import com.clevercollege.persistence.dao.LessonDao;
 import com.clevercollege.persistence.dao.LocationDao;
+import com.clevercollege.persistence.dao.NotificationTokenDao;
 import com.clevercollege.persistence.dao.ProfessorDao;
 import com.clevercollege.persistence.dao.RecoveryTokenDao;
 import com.clevercollege.persistence.dao.SeminarDao;
@@ -25,6 +26,7 @@ import com.clevercollege.persistence.dao.jdbc.ClassroomDaoJDBC;
 import com.clevercollege.persistence.dao.jdbc.CourseDaoJDBC;
 import com.clevercollege.persistence.dao.jdbc.LessonDaoJDBC;
 import com.clevercollege.persistence.dao.jdbc.LocationDaoJDBC;
+import com.clevercollege.persistence.dao.jdbc.NotificationTokenDaoJDBC;
 import com.clevercollege.persistence.dao.jdbc.ProfessorDaoJDBC;
 import com.clevercollege.persistence.dao.jdbc.RecoveryTokenDaoJDBC;
 import com.clevercollege.persistence.dao.jdbc.SeminarDaoJDBC;
@@ -46,6 +48,7 @@ public class DatabaseManager {
 	private CourseDao courseDao = null;
 	private LessonDao lessonDao = null;
 	private LocationDao locationDao = null;
+	private NotificationTokenDao notificationTokenDao = null;
 	private ProfessorDao professorDao = null;
 	private RecoveryTokenDao recoveryTokenDao = null;
 	private SeminarDao seminarDao = null;
@@ -111,6 +114,12 @@ public class DatabaseManager {
 		if(locationDao == null)
 			locationDao = new LocationDaoJDBC(conn);
 		return locationDao;
+	}
+	
+	public NotificationTokenDao getNotificationTokenDao() {
+		if(notificationTokenDao == null)
+			notificationTokenDao = new NotificationTokenDaoJDBC(conn);
+		return notificationTokenDao;
 	}
 	
 	public ProfessorDao getProfessorDao() {

@@ -3,6 +3,7 @@ package com.clevercollege.controller;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -42,7 +43,7 @@ public class CheckInCheckOutController {
 		// convert image from base64 to binary, then from binary to jpg
 		String base64Image = imageDataURL.split(",")[1];
 		byte[] imageBytes = DatatypeConverter.parseBase64Binary(base64Image);
-
+		File outputImage = null;
 		BufferedImage bufferedImage;
 
 		try {
@@ -50,7 +51,7 @@ public class CheckInCheckOutController {
 			if (bufferedImage == null) {
 				return null;
 			}
-			File outputImage = new File("image.jpg");
+			outputImage = new File("image.jpg");
 			ImageIO.write(bufferedImage, "jpg", outputImage);
 
 			CloseableHttpClient client = HttpClients.createDefault();
@@ -79,24 +80,62 @@ public class CheckInCheckOutController {
 				String inTime = LocalTime.now().toString().substring(0, 8);
 				String date = LocalDate.now().toString();
 
-				CheckInCheckOut activeCheckIn = DatabaseManager.getInstance().getCheckInCheckOutDao().findActiveByUser(user.getCf());
-				if(activeCheckIn != null) {
+				CheckInCheckOut activeCheckIn = DatabaseManager.getInstance().getCheckInCheckOutDao()
+						.findActiveByUser(user.getCf());
+				if (activeCheckIn != null) {
 					activeCheckIn.setOutTime(LocalDateTime.now().toString());
 					DatabaseManager.getInstance().getCheckInCheckOutDao().saveOrUpdate(activeCheckIn);
 				}
-				
+
 				CheckInCheckOut checkIn = new CheckInCheckOut(id, inTime, null, date, user, checkInLocation);
 				DatabaseManager.getInstance().getCheckInCheckOutDao().saveOrUpdate(checkIn);
 				DatabaseManager.getInstance().commit();
-				if(checkIn != null)
+				outputImage.delete();
+				if (checkIn != null)
 					return "found";
 
 			}
 			client.close();
 			response.close();
 
-		} catch (Exception e) {	}
+		} catch (Exception e) {
+			if (outputImage != null)
+				outputImage.delete();
+		}
 		return null;
 	}
 
+	@PostMapping("check-in-by-id")
+	public void checkInById(HttpServletRequest request, Long locationId) {
+		User user = (User) request.getSession().getAttribute("user");
+		if (user == null || locationId == null)
+			return;
+
+		try {
+
+			Location checkInLocation = DatabaseManager.getInstance().getLocationDao()
+					.findByPrimaryKey(locationId);
+			if(checkInLocation == null)
+				return;
+			
+			CheckInCheckOut activeCheckIn = DatabaseManager.getInstance().getCheckInCheckOutDao()
+					.findActiveByUser(user.getCf());
+			if (activeCheckIn != null) {
+				activeCheckIn.setOutTime(LocalDateTime.now().toString());
+				DatabaseManager.getInstance().getCheckInCheckOutDao().saveOrUpdate(activeCheckIn);
+			}
+			
+			Long id = DatabaseManager.getInstance().getIdBroker().getNextCheckInCheckOutId();
+			String inTime = LocalTime.now().toString().substring(0, 8);
+			String date = LocalDate.now().toString();
+			
+			CheckInCheckOut checkIn = new CheckInCheckOut(id, inTime, null, date, user, checkInLocation);
+			DatabaseManager.getInstance().getCheckInCheckOutDao().saveOrUpdate(checkIn);
+			
+			DatabaseManager.getInstance().commit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

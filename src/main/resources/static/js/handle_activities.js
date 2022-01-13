@@ -333,7 +333,7 @@ function deleteActivity(id) {
 		showCancelButton: 'true',
 		confirmButtonText: 'Conferma',
 		cancelButtonText: 'Annulla',
-		icon: 'question'
+		icon: 'warning'
 	}).then((result) => {
 		if (result.isConfirmed) {
 			$.ajax({

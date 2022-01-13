@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.clevercollege.model.RecoveryToken;
 import com.clevercollege.model.User;
 import com.clevercollege.persistence.DatabaseManager;
+import com.clevercollege.services.EmailService;
 
 @Controller
 public class AccountRecoveryController {

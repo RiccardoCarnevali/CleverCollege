@@ -12,6 +12,5 @@ public interface IdBroker {
 	
 	public long getNextLocationId() throws SQLException;
 	
-	public long getNextPasswordTokenId() throws SQLException;
-	
+	public long getNextPasswordTokenId() throws SQLException;	
 }

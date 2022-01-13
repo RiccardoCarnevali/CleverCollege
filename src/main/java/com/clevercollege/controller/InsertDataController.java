@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.text.RandomStringGenerator;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -30,6 +30,7 @@ import com.clevercollege.model.SingleLesson;
 import com.clevercollege.model.Student;
 import com.clevercollege.model.User;
 import com.clevercollege.persistence.DatabaseManager;
+import com.clevercollege.services.EmailService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -140,7 +141,7 @@ public class InsertDataController {
         if(u.getCf() == null || u.getFirstName() == null || u.getLastName() == null || u.getEmail() == null)
         	return "server error";
 
-        String token = generateRandomPassword(20);
+        String token = UUID.randomUUID().toString().subSequence(0, 20).toString();
         String tmpPassword = BCrypt.hashpw(token, BCrypt.gensalt(12));
 
         if(!checkValidCf(u.getFirstName(), u.getLastName(), u.getCf()))
@@ -207,12 +208,6 @@ public class InsertDataController {
                 return "server error";
             }
     }
-
-    private String generateRandomPassword(int length) {
-    	RandomStringGenerator pwdGenerator = new RandomStringGenerator.Builder().withinRange(20, 45)
-    	        .build();
-    	    return pwdGenerator.generate(length);
-	}
 
 	private boolean checkValidCf(String name, String surname, String cf) {
         name = name.trim(); surname = surname.trim();

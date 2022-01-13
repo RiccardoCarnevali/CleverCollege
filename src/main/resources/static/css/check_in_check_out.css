@@ -6,6 +6,10 @@
 		height: 200px !important;
 	}
 	
+	#locationsContainer {
+		margin: 0 !important;
+	}
+	
 }
 
 .container {
@@ -34,6 +38,39 @@
 
 #checkOutBttnContainer {
 	width: 120px;
+}
+
+#showMoreButton {
+	display: flex;
+	margin: 20px auto;
+}
+
+.manual-check-in-container {
+	margin-top: 30px;
+}
+
+.manual-check-in-container h5 {
+	text-align: center;
+}
+
+#locations {
+	width: 100%;
+	padding-left: 0;
+}
+
+#locationList {
+	width: 100%;
+	display: block;
+	max-height: 200px;
+}
+
+#locationsContainer {
+	margin: 0 30px;
+}
+
+.fa-door-open {
+	float: right;
+	color: #7e57c2;
 }
 
 /*view-qr-code.jsp*/
