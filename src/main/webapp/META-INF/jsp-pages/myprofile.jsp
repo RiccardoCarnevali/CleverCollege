@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
@@ -32,9 +33,9 @@
 		<div id="mainTable" class="row">
 			<div class="col-xl-9 col-lg-8 col-md-12 col-sm-12 col-12" style="margin-top: 10px">
 				<div id="booked-tab">
-					<h1>Attività prenotate</h1>
+					<h1>Attivitï¿½ prenotate</h1>
 					<ul class="list-group">
-						<li class="list-group-item"><label id="empty-ul">Non hai attività prenotate. Riposati o studia autonomamente!</label></li>
+						<li class="list-group-item"><label id="empty-ul">Non hai attivitï¿½ prenotate. Riposati o studia autonomamente!</label></li>
 					</ul>
 						<a href="check-in" type="button" class="btn btn-outline-primary" id="check-in-out">Esegui check-in/out</a>
 				</div>
@@ -60,7 +61,7 @@
 						</p>
 						<div id="descriptionLayout">					
 							<c:if test="${empty user.description}">
-								<label id="dd-placeholder">Non è presente una descrizione. Aggiungine una!</label>
+								<label id="dd-placeholder">Non ï¿½ presente una descrizione. Aggiungine una!</label>
 							</c:if> 
 							<c:if test="${not empty user.description}">
 								<div id="description">${user.description}</div>

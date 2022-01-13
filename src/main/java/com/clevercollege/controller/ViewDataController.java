@@ -19,20 +19,20 @@ import com.clevercollege.persistence.DatabaseManager;
 
 @Controller
 public class ViewDataController {
-	
+
 	@GetMapping("/myprofile")
 	public String getProfilePage(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 
 		User u = (User) session.getAttribute("user");
-		
+
 		if(u == null) {
 			session.setAttribute("after-login", "/myprofile");
 			return "redirect:/login";
 		}
 		return "myprofile";
 	}
-	
+
 	@GetMapping("/more-info")
 	public String moreInfoPage() {
 		return "more_information_page";
@@ -252,7 +252,7 @@ public class ViewDataController {
 		} catch (SQLException e) {
 			return "error";
 		}
-        
+
         return "insert_user";
     }
 
@@ -277,10 +277,10 @@ public class ViewDataController {
 		} catch (SQLException e) {
 			return "error";
 		}
-        
+
         if(course == null)
         	return "error";
-        
+
         req.setAttribute("course_to_edit", course);
         return "insert_data";
     }
@@ -387,4 +387,21 @@ public class ViewDataController {
 		}
 		return "redirect:/check-in";
 	}
+
+	@GetMapping("/check-in/studentsCheckedIn")
+	public String viewStudentCheckedIn(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		User u = (User) session.getAttribute("user");
+		if(u == null) {
+			session.setAttribute("after-login", "/check-in/studentsCheckedIn");
+			return "redirect:/login";
+		}
+		else {
+			String user_type = (String) session.getAttribute("user_type");
+			if(user_type == null || !user_type.equals("professor"))
+				return "not_authorized";
+		}
+		return "students_in_class";
+	}
+
 }

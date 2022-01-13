@@ -61,10 +61,15 @@
 			<h3 class="title">Check-Out</h3>
 			<p style="text-align: center;">Check-in effettuato in
 				${checkIn.location.name} alle ${checkIn.inTime.substring(0,5)}</p>
-			<div id="checkOutBttnContainer">
+			<div class="check-in-out-button-container">
 				<a id="checkOutBttn" href="do-check-out"
 					class="btn btn-outline-primary">Check-Out</a>
 			</div>
+			<c:if test="${user_type == 'professor'}">
+				<div class="check-in-out-button-container">
+					<a href="/check-in/studentsCheckedIn" class="btn btn-outline-primary">Elenco presenti in aula</a>
+				</div>
+			</c:if>
 		</div>
 	</c:if>
 

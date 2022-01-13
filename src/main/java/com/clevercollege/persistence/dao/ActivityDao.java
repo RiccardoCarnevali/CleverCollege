@@ -20,4 +20,5 @@ public interface ActivityDao {
 	public void delete(long id) throws SQLException;
 	
 	public List<Activity> findByStudentBooked(String studentCf) throws SQLException;
+
 }

@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.clevercollege.model.CheckInCheckOut;
+import com.clevercollege.model.Location;
+import com.clevercollege.model.Student;
+import com.clevercollege.model.User;
 import com.clevercollege.persistence.DatabaseManager;
 import com.clevercollege.persistence.dao.CheckInCheckOutDao;
 
@@ -194,4 +197,58 @@ public class CheckInCheckOutDaoJDBC implements CheckInCheckOutDao {
 		return checkInCheckOut;
 	}
 
+
+	@Override
+	public Location findPlaceOfCheckIn(String cfUser) throws SQLException {
+		Location l = null;
+
+		String query = "select l.id, l.location_name, l.capacity from check_in_check_out as c, locations as l where c.c_location = l.id and c.c_user = ? and c.out_time is null";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, cfUser);
+
+		ResultSet rs = st.executeQuery();
+
+		if(rs.next()) {
+
+			l = new Location();
+
+			l.setId(rs.getLong("id"));
+			l.setName(rs.getString("location_name"));
+			l.setCapacity(rs.getInt("capacity"));
+		}
+
+		return l;
+	}
+
+	@Override
+	public List<Student> findCheckInStudentsByLocation(Long idLocation) throws SQLException{
+		List<Student> checkedInStudents = new ArrayList<>();
+
+		String query = "select s.cf, s.student_number from students as s , check_in_check_out as c " +
+				"where s.cf = c.c_user and c.c_location = ? and c.out_time is null";
+
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setLong(1, idLocation);
+
+		ResultSet rs = st.executeQuery();
+
+		while(rs.next()) {
+			Student s = new Student();
+			User user = DatabaseManager.getInstance().getUserDao().findByPrimaryKey(rs.getString(1));
+			s.setCf(user.getCf());
+			s.setFirstName(user.getFirstName());
+			s.setLastName(user.getLastName());
+			s.setEmail(user.getEmail());
+			s.setPassword(user.getPassword());
+			s.setDescription(user.getDescription());
+			s.setProfilePicture(user.getProfilePicture());
+			s.setStudentNumber(rs.getString(2));
+			checkedInStudents.add(s);
+		}
+
+		return checkedInStudents;
+	}
 }
