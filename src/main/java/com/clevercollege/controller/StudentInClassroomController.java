@@ -1,18 +1,23 @@
 package com.clevercollege.controller;
 
-import com.clevercollege.model.*;
-import com.clevercollege.persistence.DatabaseManager;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.clevercollege.model.Activity;
+import com.clevercollege.model.CheckInCheckOut;
+import com.clevercollege.model.Location;
+import com.clevercollege.model.Student;
+import com.clevercollege.model.User;
+import com.clevercollege.persistence.DatabaseManager;
 
 @RestController
 public class StudentInClassroomController {

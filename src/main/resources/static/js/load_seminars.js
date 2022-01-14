@@ -48,7 +48,10 @@ function displaySeminars(seminars, bookedSeminars) {
 
 		seminarsList.append("<div class='card'>" +
 								"<div class='card-header'>" +
-									"<p class='card-title'>Seminario di " + weekday[date.getDay()] + " " + date.getDate() + " " + months[date.getMonth()] + "</p>" +
+									"<span class='seminar-info card-title'>" +
+										"<span class='seminar-name'>Seminario di " + weekday[date.getDay()] + " " + date.getDate() + " " + months[date.getMonth()] + "</span>" +
+										"<span class='professor-name'>" + seminars[i].manager.firstName + " " + seminars[i].manager.lastName + "</span>" +
+									"</span>" +	
 									"<div class='unbook-button-wrapper " + unBookClass + "' id='unbook-wrapper-" + seminars[i].id + "'><button class='btn btn-outline-primary unbook-button' id='unbook-seminar-" + seminars[i].id + "'><span class='unbook-button-text'>DISDICI</span><i class='fas fa-minus-circle'></i></button></div>" +
 									"<div class='book-button-wrapper " + bookClass + "' id='book-wrapper-" + seminars[i].id + "'><button class='btn btn-outline-primary book-button' id='book-seminar-" + seminars[i].id + "'><span class='book-button-text'>PRENOTA</span><i class='fas fa-plus-circle'></i></button></div>" +
 									"<span class='accicon collapsed clickable expand-button' data-toggle='collapse' data-target='#seminar-" + seminars[i].id + "' aria-expanded='true'>" +

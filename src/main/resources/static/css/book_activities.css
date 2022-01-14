@@ -38,7 +38,7 @@
 	display: flex;
 }
 
-.course-info {
+.course-info, .seminar-info {
 	display: inline-flex;
 	flex-direction: column;
 }
