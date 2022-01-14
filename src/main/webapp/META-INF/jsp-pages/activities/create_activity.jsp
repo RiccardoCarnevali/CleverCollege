@@ -88,7 +88,8 @@
 				<div class="form-group" id="courseInput">
 					<strong>Corso</strong><select class="form-control"
 						id="courseSelect"
-						<c:if test="${activity != null}">value="activity.course.name"</c:if>></select>
+						<c:if test="${activity != null}">value="${activity.course.name}"</c:if>>
+						</select>
 				</div>
 				<div class="form-group hide" id="weekdayInput">
 					<strong>Giorno Settimanale</strong> <select class="form-control"

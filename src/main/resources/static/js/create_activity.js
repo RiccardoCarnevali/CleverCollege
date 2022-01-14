@@ -1,3 +1,5 @@
+var editActivityCourse = null;
+
 $(function() {
 	$('#createActivityBttn').on('click', function(){createActivity(false)});
 	$('#editActivityBttn').on('click', function(){editActivity(false)});
@@ -15,6 +17,7 @@ $(function() {
 		like = $('.classroom-name').html();
 		$("#classroomSearchBar").val(like);
 	}
+	
 	if (like == null)
 		like = '';
 	loadClassrooms(false);
@@ -24,6 +27,10 @@ $(function() {
 		loadClassrooms(false);
 	});
 
+	var courseSelect = $('#courseSelect');
+	if(courseSelect)
+		editActivityCourse = courseSelect.attr('value');
+	
 	loadCourses();
 })
 
@@ -108,9 +115,14 @@ function loadCourses() {
 		url: '/getProfessorCourses',
 		success: function(courses) {
 			loadedCourses = courses;
+			
 			for (let i = 0; i < courses.length; ++i) {
-				$('#courseSelect').append('<option value="' + i + '">' + courses[i].name + '</option>');
+				if(courses[i].name != editActivityCourse)
+					$('#courseSelect').append('<option value="' + index + '">' + courses[i].name + '</option>');
+				else
+					$('#courseSelect').append('<option value="' + index + '" selected="selected">' + courses[i].name + '</option>');
 			}
+		
 		},
 		error: errorMessage
 	});

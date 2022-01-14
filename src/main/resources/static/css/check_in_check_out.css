@@ -25,6 +25,7 @@
 
 /*check-in.jsp*/
 .video-capture-container {
+	display: none;
 	background-color: black;
 	margin: 50px auto;
 	width: 320px;
