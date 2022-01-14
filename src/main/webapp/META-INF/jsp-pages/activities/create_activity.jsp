@@ -77,13 +77,13 @@
 						type="date" id="activityDatePicker" name="activity-date"
 						<c:if test="${activity_type != 'weekly' && activity != null}">value="${activity.date}"</c:if>>
 				</div>
-				<div class="form-group">
+				<div class="form-group" id="startTimeInput">
 					<label for="activityStartPicker"><strong>Orario</strong></label> <input
 						type="time" id="activityStartPicker" step="600"
 						name="activity-start"
 						<c:if test="${activity != null}">value="${activity.time.substring(0,5)}"</c:if>>
 				</div>
-				<div class="form-group">
+				<div class="form-group" id="lengthInput">
 					<label for="activityLengthPicker"><strong>Durata</strong></label> <input
 						type="time" id="activityLengthPicker" name="activity-length"
 						min="00:00" max="10:00" step="600"
@@ -130,7 +130,7 @@
 
 			</div>
 			<div class="form-row" id="descriptionInput">
-				<label for="descriptionTextarea"><strong>Descrizione</strong></label>
+				<label for="descriptionTextArea"><strong>Descrizione</strong></label>
 				<textarea class="form-control" id="descriptionTextArea" rows="3"
 					cols="50" maxlength="400" name="activity-description"><c:if
 						test="${activity != null}">${activity.description}</c:if></textarea>
