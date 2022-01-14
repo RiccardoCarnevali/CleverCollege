@@ -38,6 +38,7 @@
 		<div class="container">
 
 			<h3 class="title">Check-In</h3>
+			<h5>Scannerizza un codice qr</h5>
 			<div class="video-capture-container">
 				<video width="320" height="320" class="video-capture"></video>
 				<canvas style="display:none;" class="video-canvas"></canvas>
