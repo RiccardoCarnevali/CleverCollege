@@ -118,9 +118,9 @@ function loadCourses() {
 			
 			for (let i = 0; i < courses.length; ++i) {
 				if(courses[i].name != editActivityCourse)
-					$('#courseSelect').append('<option value="' + index + '">' + courses[i].name + '</option>');
+					$('#courseSelect').append('<option value="' + i + '">' + courses[i].name + '</option>');
 				else
-					$('#courseSelect').append('<option value="' + index + '" selected="selected">' + courses[i].name + '</option>');
+					$('#courseSelect').append('<option value="' + i + '" selected="selected">' + courses[i].name + '</option>');
 			}
 		
 		},

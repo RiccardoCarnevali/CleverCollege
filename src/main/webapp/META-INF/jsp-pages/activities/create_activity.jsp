@@ -28,10 +28,14 @@
 <script
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-messaging.js"></script>
+<script src="/js/notification.js" charset="UTF-8"></script>
 <script src="/js/common.js"></script>
+<script src="/js/generic_error.js" charset="UTF-8"></script>
 <script src="/js/data-model.js"></script>
 <script src="/js/create_activity.js"></script>
-<script src="/js/generic_error.js" charset="UTF-8"></script>
 
 </head>
 <body>
@@ -88,7 +92,7 @@
 				<div class="form-group" id="courseInput">
 					<strong>Corso</strong><select class="form-control"
 						id="courseSelect"
-						<c:if test="${activity != null}">value="${activity.course.name}"</c:if>>
+						<c:if test="${activity != null && activity_type != 'seminar'}">value="${activity.course.name}"</c:if>>
 						</select>
 				</div>
 				<div class="form-group hide" id="weekdayInput">
