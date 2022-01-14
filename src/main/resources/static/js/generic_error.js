@@ -7,10 +7,8 @@ function errorMessage() {
 			title: "Oops...",
 			text: "Qualcosa è andato storto.",
 			icon: "error"
-		}).then((result) => {
-			if (result.isConfirmed) {
-				location.reload();
-			}
+		}).then(() => {
+			location.reload();
 		})
 	}
 }

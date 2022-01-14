@@ -44,7 +44,21 @@ function loadMore(showMore) {
 			if(showMoreButton != null) {
 				showMoreButton.remove();
 			}
-			
+
+			if(data.length === 0 && offset === 0) {
+				var locationList = $("#locations");
+				locationList.empty();
+				locations = [];
+				var message = "";
+				if(like !== "") {
+					message = "Nessun risultato soddisfa la ricerca.";
+				}
+				else
+					message = "Nessun luogo è stato ancora registrato.";
+				locationList.append("<li class='list-group-item' style='text-align: center; margin: 10px 0px'>" + message + "</li>");
+				return;
+			}
+
 			if(locations.length != 0 && data.length != 0){
 				if(areEquals(data.slice(0,15), locations)) {
 					if(data.length == 16) {

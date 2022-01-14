@@ -31,7 +31,7 @@ function displaySeminars(seminars, bookedSeminars) {
 	var seminarsList = $("#seminars");
 
 	if (seminars.length == 0)
-		seminarsList.append("<div class='no-activities' style='box-shadow:none'>Non sono in programma seminari</div>")
+		seminarsList.append("<li class='list-group-item' style='text-align: center; margin: 10px 0px'> Nessuno seminario è ancora stato registrato.</li>")
 
 	for (let i = 0; i < seminars.length; i++) {
 

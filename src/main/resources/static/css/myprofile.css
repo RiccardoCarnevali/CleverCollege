@@ -27,8 +27,7 @@ h2 {
 	object-fit: cover;
 	margin: 15px auto 0px auto;
 	border: 2px outset #7e57c2;
-	box-shadow: 0 10px 25px rgb(126 87 194 / 5%), 0 20px 48px rgb(126 87 194 / 5%), 0 1px 4px rgb(126 87 194 / 10%);
-	
+	box-shadow: 0 10px 25px rgb(126 87 194 / 5%), 0 20px 48px rgb(126 87 194 / 5%), 0 1px 4px rgb(126 87 194 / 10%);	
 }
 
 .card {
@@ -91,4 +90,11 @@ span {
 .form-control:hover, .form-control:focus {
 	box-shadow: none;
 	border-color: #7e57c2;
+}
+
+#see-current-password, #see-new-password, #see-new-password-confirm {
+	color: #7e57c2;
+	position: absolute;
+	right: 10px;
+	top:12px
 }

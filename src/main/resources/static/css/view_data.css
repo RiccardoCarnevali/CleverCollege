@@ -1,8 +1,8 @@
-.course, .location {
+.course, .location, .student {
 	margin-top: 10px;
 }
 
-.icons .remove-button{
+.icons .remove-button, .forced-checked-out{
 	color: tomato;
 }
 
@@ -10,12 +10,12 @@
 	color: #0d6efd;
 }
 
-.professor-name, .location-capacity {
+.professor-name, .location-capacity, .other-student-info {
 	font-style: italic;
 	color: grey;
 }
 
-.course-name, .location-name {
+.course-name, .location-name, .student-name {
 	font-weight: bold;
 }
 
@@ -61,4 +61,14 @@
 
 #sortInput, #typeInput {
 	margin: 5px 0px;
+}
+
+#student-checked-in {
+	margin-bottom: 15px;
+}
+
+@media screen and (max-width: 760px) {
+	#student-checked-in {
+		margin-bottom: 0px;
+	}
 }

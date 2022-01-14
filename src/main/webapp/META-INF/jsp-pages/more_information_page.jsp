@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -32,8 +33,8 @@
 	                    <h3>Chi siamo?</h3>
 	                </div>
 	                <div>
-	                    <p>Siamo quattro studenti del terzo anno della facoltà  di informatica dell'Università  della Calabria
-	                        (UNICAL). Il nostro gruppo è formato da tre ragazzi, Riccardo, Matteo e Giacomo, e una ragazza,
+	                    <p>Siamo quattro studenti del terzo anno della facoltï¿½ di informatica dell'Universitï¿½ della Calabria
+	                        (UNICAL). Il nostro gruppo ï¿½ formato da tre ragazzi, Riccardo, Matteo e Giacomo, e una ragazza,
 	                        Alessia Donata, tutti e quattro impegnati equamente nella realizzazione di questo progetto,
 	                        creato e implementato come requisito per gli esami di Web Computing e Ingegneria del Software.
 	                    </p>
@@ -50,12 +51,12 @@
 	                    <h3>Da dove nasce l'idea?</h3>
 	                </div>
 	                <div>
-	                    <p>Per monitorare i contagi e i possibili focolai all'interno del Campus, la nostra Università  ha messo
+	                    <p>Per monitorare i contagi e i possibili focolai all'interno del Campus, la nostra Universitï¿½ ha messo
 	                        a nostra disposizione un'applicazione di nome Smart Campus, utile per tracciare gli spostamenti
-	                        degli studenti all'interno dei luoghi universitari. Tale applicazione, però, non è gradita da tutti
-	                        gli studenti della nostra università , così abbiamo deciso di provare a realizzare un sito web simile
-	                        a tale progetto ma che si differenziasse in ciò che gli studenti credono una "lacuna". Quel che è
-	                        venuto fuori è Clever College.
+	                        degli studenti all'interno dei luoghi universitari. Tale applicazione, perï¿½, non ï¿½ gradita da tutti
+	                        gli studenti della nostra universitï¿½, cosï¿½ abbiamo deciso di provare a realizzare un sito web simile
+	                        a tale progetto ma che si differenziasse in ciï¿½ che gli studenti credono una "lacuna". Quel che ï¿½
+	                        venuto fuori ï¿½ Clever College.
 	                    </p>
 	                </div>
 	            </div>
