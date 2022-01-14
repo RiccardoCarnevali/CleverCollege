@@ -135,11 +135,10 @@ function createActivity(ignoreConflict) {
 
 		$.ajax({
 			type: "post",
-			url: "/createActivity",
+			url: "/do-create-activity",
 			data: {
 				jsonString: activity,
 				type: $('input[name="activity-type"]:checked').val(),
-				edit: false,
 				ignoreConflict: ignoreConflict
 			},
 			success: function(data) {
@@ -187,11 +186,11 @@ function editActivity(ignoreConflict) {
 		var activity = createJSONActivity();
 		$.ajax({
 			type: "post",
-			url: "/createActivity",
+			url: "/do-edit-activity",
 			data: {
 				jsonString: activity,
 				type: $('input[name="activity-type"]:checked').val(),
-				edit: true,
+				editId: $('input[name="activity-id"]').val(),
 				ignoreConflict: ignoreConflict
 			},
 			success: function(data) {

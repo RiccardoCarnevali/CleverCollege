@@ -43,7 +43,7 @@ public class HandleActivitiesController {
 
 		if (!userType.equals("professor"))
 			return null;
-		
+
 		try {
 			activities = DatabaseManager.getInstance().getActivityDao().findByProfessor(cf, true);
 		} catch (SQLException e) {
@@ -64,7 +64,7 @@ public class HandleActivitiesController {
 
 		if (!userType.equals("professor"))
 			return null;
-		
+
 		try {
 			singleLessons.addAll(DatabaseManager.getInstance().getSingleLessonDao().findByProfessor(cf, true));
 		} catch (SQLException e) {
@@ -85,7 +85,7 @@ public class HandleActivitiesController {
 
 		if (!userType.equals("professor"))
 			return null;
-		
+
 		try {
 			weeklyLessons.addAll(DatabaseManager.getInstance().getWeeklyLessonDao().findByProfessor(cf, true));
 		} catch (SQLException e) {
@@ -106,7 +106,7 @@ public class HandleActivitiesController {
 
 		if (!userType.equals("professor"))
 			return null;
-		
+
 		try {
 			seminars.addAll(DatabaseManager.getInstance().getSeminarDao().findByProfessor(cf, true));
 		} catch (SQLException e) {
@@ -118,22 +118,22 @@ public class HandleActivitiesController {
 	@PostMapping("/enableWeeklyLesson")
 	public void enableWeeklyLesson(HttpServletRequest request, Long id, Boolean disable, Boolean indefinite) {
 		HttpSession session = request.getSession();
-		
+
 		if (session.getAttribute("user") == null || id == null || disable == null || indefinite == null) {
 			return;
 		}
-		
+
 		String user_type = (String) session.getAttribute("user_type");
-		
-		if(!user_type.equals("professor"))
+
+		if (!user_type.equals("professor"))
 			return;
-		
+
 		try {
 			WeeklyLesson lesson = DatabaseManager.getInstance().getWeeklyLessonDao().findByPrimaryKey(id);
-			
-			if(lesson == null)
+
+			if (lesson == null)
 				return;
-			
+
 			lesson.setDisabled(disable);
 			lesson.setDisabledIndefinitely(indefinite);
 			DatabaseManager.getInstance().getWeeklyLessonDao().saveOrUpdate(lesson);
@@ -143,124 +143,212 @@ public class HandleActivitiesController {
 		}
 	}
 
-	@PostMapping("/createActivity")
-	public String createActivity(HttpServletRequest request, String jsonString, String type, Boolean edit, Boolean ignoreConflict) {
-		if (jsonString == null || type == null || edit == null || ignoreConflict == null) {
+	@PostMapping("/do-create-activity")
+	public String createActivity(HttpServletRequest request, String jsonString, String type, Boolean ignoreConflict) {
+		if (jsonString == null || type == null || ignoreConflict == null) {
 			return null;
 		}
 		HttpSession session = request.getSession();
 		if (session.getAttribute("user_type") == null || session.getAttribute("user") == null) {
 			return null;
 		}
-		
+
 		String user_type = (String) session.getAttribute("user_type");
-		
-		if(!user_type.equals("professor"))
+
+		if (!user_type.equals("professor"))
 			return null;
-		
+
 		JSONObject postResults = new JSONObject();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			User user = (User) session.getAttribute("user");
-			Long id = null;
-			if (!edit) {
-				id = DatabaseManager.getInstance().getIdBroker().getNextActivityId();
-			}
+			Long id = DatabaseManager.getInstance().getIdBroker().getNextActivityId();
 
 			if (type.equals("single")) {
 				SingleLesson single = mapper.readValue(jsonString, SingleLesson.class);
-				if (!edit)
-					single.setId(id);
-				else
-					single.setBookers(DatabaseManager.getInstance().getActivityDao()
-							.findByPrimaryKey(single.getId(), false).getBookers());
-				
+				single.setId(id);
 				single.setManager(user);
+				
 				if (!single.checkValid()) {
 					return null;
 				}
-				
-				String conflictActivity = null; 
-				if(!ignoreConflict)
-					conflictActivity = checkProfessorActivityConflict(single, 
-							LocalDate.parse(single.getDate()),user);
+
+				String conflictActivity = null;
+				if (!ignoreConflict)
+					conflictActivity = checkProfessorActivityConflict(single, LocalDate.parse(single.getDate()), user);
 
 				if (conflictActivity != null) {
 					postResults.put("activity_conflict", new JSONObject(conflictActivity));
 				} else {
-					if(edit) {
-						DatabaseManager.getInstance().getSingleLessonDao().delete(single.getId());
-						DatabaseManager.getInstance().getWeeklyLessonDao().delete(single.getId());
-						NotificationService.getInstance().cancelSchedule(single.getId() + "in");
-						NotificationService.getInstance().cancelSchedule(single.getId() + "out");
-					}
 					DatabaseManager.getInstance().getSingleLessonDao().saveOrUpdate(single);
-					NotificationService.getInstance().schedule(new CheckinReminderTask(single), 
-							LocalDateTime.of(LocalDate.parse(single.getDate()), LocalTime.parse(single.getTime())).minusMinutes(5), single.getId() + "in");
-					NotificationService.getInstance().schedule(new CheckoutReminderTask(single), 
-							LocalDateTime.of(LocalDate.parse(single.getDate()), LocalTime.parse(single.getTime())).plusMinutes(single.getLength()), single.getId() + "out");
+					NotificationService.getInstance().schedule(new CheckinReminderTask(single), LocalDateTime
+							.of(LocalDate.parse(single.getDate()), LocalTime.parse(single.getTime())).minusMinutes(5),
+							single.getId() + "in");
+					NotificationService.getInstance().schedule(new CheckoutReminderTask(single),
+							LocalDateTime.of(LocalDate.parse(single.getDate()), LocalTime.parse(single.getTime()))
+									.plusMinutes(single.getLength()),
+							single.getId() + "out");
 				}
 			} else if (type.equals("weekly")) {
 				WeeklyLesson weekly = mapper.readValue(jsonString, WeeklyLesson.class);
-				if (!edit) 
-					weekly.setId(id);
-				
+				weekly.setId(id);
 				weekly.setManager(user);
+				
 				if (!weekly.checkValid())
 					return null;
 
-				String conflictActivity = null; 
-				if(!ignoreConflict)
+				String conflictActivity = null;
+				if (!ignoreConflict)
 					conflictActivity = checkProfessorActivityConflict(weekly, user);
 
 				if (conflictActivity != null) {
 					postResults.put("activity_conflict", new JSONObject(conflictActivity));
 				} else {
-					if(edit) {
-						DatabaseManager.getInstance().getSingleLessonDao().delete(weekly.getId());
-						DatabaseManager.getInstance().getWeeklyLessonDao().delete(weekly.getId());
-					}
 					DatabaseManager.getInstance().getWeeklyLessonDao().saveOrUpdate(weekly);
 				}
 			} else if (type.equals("seminar")) {
 				Seminar seminar = mapper.readValue(jsonString, Seminar.class);
-				
-				if (!edit)
-					seminar.setId(id);
-				else
-					seminar.setBookers(DatabaseManager.getInstance()
-							.getActivityDao().findByPrimaryKey(seminar.getId(), false).getBookers());
-				
+				seminar.setId(id);
 				seminar.setManager(user);
+				
 				if (!seminar.checkValid()) {
 					return null;
 				}
-				
-				String conflictActivity = null; 
-				if(!ignoreConflict)
-					conflictActivity = checkProfessorActivityConflict(seminar, 
-							LocalDate.parse(seminar.getDate()),	user);
+
+				String conflictActivity = null;
+				if (!ignoreConflict)
+					conflictActivity = checkProfessorActivityConflict(seminar, LocalDate.parse(seminar.getDate()),
+							user);
 
 				if (conflictActivity != null) {
 					postResults.put("activity_conflict", conflictActivity);
 				} else {
-					if(edit) {
-						DatabaseManager.getInstance().getSingleLessonDao().delete(seminar.getId());
-						DatabaseManager.getInstance().getWeeklyLessonDao().delete(seminar.getId());
-						NotificationService.getInstance().cancelSchedule(seminar.getId() + "in");
-						NotificationService.getInstance().cancelSchedule(seminar.getId() + "out");
-					}
 					DatabaseManager.getInstance().getSeminarDao().saveOrUpdate(seminar);
-					NotificationService.getInstance().schedule(new CheckinReminderTask(seminar), 
-							LocalDateTime.of(LocalDate.parse(seminar.getDate()), LocalTime.parse(seminar.getTime())).minusMinutes(5), seminar.getId() + "in");
-					NotificationService.getInstance().schedule(new CheckoutReminderTask(seminar), 
-							LocalDateTime.of(LocalDate.parse(seminar.getDate()), LocalTime.parse(seminar.getTime())).plusMinutes(seminar.getLength()), seminar.getId() + "out");
+					NotificationService.getInstance().schedule(new CheckinReminderTask(seminar), LocalDateTime
+							.of(LocalDate.parse(seminar.getDate()), LocalTime.parse(seminar.getTime())).minusMinutes(5),
+							seminar.getId() + "in");
+					NotificationService.getInstance().schedule(new CheckoutReminderTask(seminar),
+							LocalDateTime.of(LocalDate.parse(seminar.getDate()), LocalTime.parse(seminar.getTime()))
+									.plusMinutes(seminar.getLength()),
+							seminar.getId() + "out");
 				}
 			}
-			if(postResults.has("activity_conflict")) {
+			if (postResults.has("activity_conflict")) {
 				return postResults.toString();
 			}
-			
+
+			DatabaseManager.getInstance().commit();
+			return null;
+		} catch (SQLException | JsonProcessingException | JSONException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@PostMapping("/do-edit-activity")
+	public String editActivity(HttpServletRequest request, String jsonString, Long editId, Boolean ignoreConflict) {
+		if (jsonString == null || editId == null || ignoreConflict == null) {
+			return null;
+		}
+		HttpSession session = request.getSession();
+		if (session.getAttribute("user_type") == null || session.getAttribute("user") == null) {
+			return null;
+		}
+
+		String user_type = (String) session.getAttribute("user_type");
+
+		if (!user_type.equals("professor"))
+			return null;
+
+		JSONObject postResults = new JSONObject();
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			User user = (User) session.getAttribute("user");
+
+			SingleLesson singleToEdit = DatabaseManager.getInstance().getSingleLessonDao().findByPrimaryKey(editId,
+					true);
+			WeeklyLesson weeklyToEdit = DatabaseManager.getInstance().getWeeklyLessonDao().findByPrimaryKey(editId);
+			Seminar seminarToEdit = DatabaseManager.getInstance().getSeminarDao().findByPrimaryKey(editId, true);
+
+			if (singleToEdit != null) {
+				SingleLesson single = mapper.readValue(jsonString, SingleLesson.class);
+				single.setId(editId);
+				single.setBookers(singleToEdit.getBookers());
+				single.setManager(user);
+
+				if (!single.checkValid()) {
+					return null;
+				}
+
+				String conflictActivity = null;
+				if (!ignoreConflict)
+					conflictActivity = checkProfessorActivityConflict(single, LocalDate.parse(single.getDate()), user);
+
+				if (conflictActivity != null) {
+					postResults.put("activity_conflict", new JSONObject(conflictActivity));
+				} else {
+					NotificationService.getInstance().cancelSchedule(editId + "in");
+					NotificationService.getInstance().cancelSchedule(editId + "out");
+					DatabaseManager.getInstance().getSingleLessonDao().saveOrUpdate(single);
+					NotificationService.getInstance().schedule(new CheckinReminderTask(single), LocalDateTime
+							.of(LocalDate.parse(single.getDate()), LocalTime.parse(single.getTime())).minusMinutes(5),
+							single.getId() + "in");
+					NotificationService.getInstance().schedule(new CheckoutReminderTask(single),
+							LocalDateTime.of(LocalDate.parse(single.getDate()), LocalTime.parse(single.getTime()))
+									.plusMinutes(single.getLength()),
+							single.getId() + "out");
+				}
+			} else if (weeklyToEdit != null) {
+				WeeklyLesson weekly = mapper.readValue(jsonString, WeeklyLesson.class);
+				weekly.setId(editId);
+				weekly.setManager(user);
+				if (!weekly.checkValid())
+					return null;
+
+				String conflictActivity = null;
+				if (!ignoreConflict)
+					conflictActivity = checkProfessorActivityConflict(weekly, user);
+
+				if (conflictActivity != null) {
+					postResults.put("activity_conflict", new JSONObject(conflictActivity));
+				} else {
+					DatabaseManager.getInstance().getWeeklyLessonDao().saveOrUpdate(weekly);
+				}
+			} else if (seminarToEdit != null) {
+				Seminar seminar = mapper.readValue(jsonString, Seminar.class);
+				seminar.setId(editId);
+				seminar.setBookers(seminarToEdit.getBookers());
+				seminar.setManager(user);
+
+				if (!seminar.checkValid()) {
+					return null;
+				}
+
+				String conflictActivity = null;
+				if (!ignoreConflict)
+					conflictActivity = checkProfessorActivityConflict(seminar, LocalDate.parse(seminar.getDate()),
+							user);
+
+				if (conflictActivity != null) {
+					postResults.put("activity_conflict", conflictActivity);
+				} else {
+					NotificationService.getInstance().cancelSchedule(seminar.getId() + "in");
+					NotificationService.getInstance().cancelSchedule(seminar.getId() + "out");
+
+					DatabaseManager.getInstance().getSeminarDao().saveOrUpdate(seminar);
+					NotificationService.getInstance().schedule(new CheckinReminderTask(seminar), LocalDateTime
+							.of(LocalDate.parse(seminar.getDate()), LocalTime.parse(seminar.getTime())).minusMinutes(5),
+							seminar.getId() + "in");
+					NotificationService.getInstance().schedule(new CheckoutReminderTask(seminar),
+							LocalDateTime.of(LocalDate.parse(seminar.getDate()), LocalTime.parse(seminar.getTime()))
+									.plusMinutes(seminar.getLength()),
+							seminar.getId() + "out");
+				}
+			}
+			if (postResults.has("activity_conflict")) {
+				return postResults.toString();
+			}
+
 			DatabaseManager.getInstance().commit();
 			return null;
 		} catch (SQLException | JsonProcessingException | JSONException e) {
@@ -270,7 +358,7 @@ public class HandleActivitiesController {
 	}
 
 	private String checkProfessorActivityConflict(WeeklyLesson weekly, User user) throws SQLException {
-		
+
 		Integer weekday1 = weekly.getWeekDay();
 
 		LocalTime start1 = LocalTime.parse(weekly.getTime());
@@ -283,7 +371,7 @@ public class HandleActivitiesController {
 		List<Seminar> seminars = DatabaseManager.getInstance().getSeminarDao().findByProfessor(user.getCf(), true);
 
 		Gson gson = new Gson();
-		
+
 		for (SingleLesson activity2 : singles) {
 			LocalDate date2 = LocalDate.parse(activity2.getDate());
 			int weekday2 = date2.getDayOfWeek().getValue() - 1;
@@ -377,10 +465,10 @@ public class HandleActivitiesController {
 	@PostMapping("/deleteActivity")
 	public void deleteActivity(HttpServletRequest request, Long id) {
 		HttpSession session = request.getSession();
-		
-		if(id == null)
+
+		if (id == null)
 			return;
-		
+
 		String userType = (String) session.getAttribute("user_type");
 		if (userType == null || session.getAttribute("user") == null || !userType.equals("professor")) {
 			return;

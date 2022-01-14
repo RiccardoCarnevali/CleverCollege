@@ -53,19 +53,19 @@
 		<div id="pickActivityType">
 			<div class="radio-item">
 				<input type="radio" id="weeklyLessonBttn" name="activity-type"
-					value="weekly"
+					value="weekly" <c:if test="${activity != null}">disabled</c:if>
 					<c:if test = "${activity_type == 'weekly'}"> checked="checked"</c:if>>
 				<label for="weeklyLessonBttn">Lezione Settimanale</label>
 			</div>
 			<div class="radio-item">
 				<input type="radio" id="singleLessonBttn" name="activity-type"
-					value="single"
+					value="single" <c:if test="${activity != null}">disabled</c:if>
 					<c:if test = "${activity_type == 'single' || activity_type == null}"> checked="checked"</c:if>>
 				<label for="singleLessonBttn">Lezione Singola</label>
 			</div>
 			<div class="radio-item">
 				<input type="radio" id="seminarBttn" name="activity-type"
-					value="seminar"
+					value="seminar" <c:if test="${activity != null}">disabled</c:if>
 					<c:if test = "${activity_type == 'seminar'}"> checked="checked"</c:if>>
 				<label for="seminarBttn">Seminario</label>
 			</div>
