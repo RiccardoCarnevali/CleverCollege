@@ -1,0 +1,45 @@
+.container {
+    margin: 30px auto;
+    padding: 20px;
+    background-color: rgba(255,255,255,0.6);
+    border-radius: 1em;
+    box-shadow: 0 10px 25px rgb(0 0 0 / 5%), 0 20px 48px rgb(0 0 0 / 5%), 0 1px 4px rgb(0 0 0 / 10%);
+}
+
+#message-input {
+    padding: 10px;
+    height: 75px;
+    width: 100%;
+    border-radius: 1em;
+    border: 1px solid rgb(133, 133, 133);
+}
+
+#message-input:hover, #message-input:active, #message-input:focus, #message-input:focus-visible {
+    outline: #7e57c2;
+    border-color: #7e57c2;
+}
+
+.all-messages {
+    padding: 0;
+    height: 250px;
+    overflow-y: scroll;
+}
+
+.single-messages {
+    border-radius: 1em;
+    padding: 15px;
+    min-height: 50px;
+    list-style-type: none;
+    background: #c6b6e3;
+    width: fit-content;
+    min-width: 100px;
+}
+
+#sendMessage {
+    background: url("../assets/images/sendMessage.png");
+    height: 27px;
+    width: 25px;
+    cursor: pointer;
+    margin: auto 0px auto 6px;
+    border: none;
+}

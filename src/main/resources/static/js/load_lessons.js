@@ -140,6 +140,7 @@ function displayCourses() {
 											"<span class='professor-name'>" + courses[index].lecturer.firstName + " " + courses[index].lecturer.lastName + "</span>" +
 										"</span>" +	
 										"<span class='icons'>" +
+											"<form id='buttonSendMessContainer' action='/chat' method='get'>" + "<button id='sendMessageToProf' name='cfLecturer' value=" + courses[index].lecturer.cf + "></button></form>" +
 											"<span class='clickable add-favorite-button' id='add-favorite-" + courses[index].id + "'><i class='" + iconClass + "'></i></span>" +
 											"<span class='accicon collapsed clickable expand-button' data-toggle='collapse' data-target='#lessons-for-" + courses[index].id + "'><i class='fas fa-angle-down rotate-icon'></i></a>" +
 										"</span>" +

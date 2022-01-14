@@ -72,3 +72,19 @@
 		margin-bottom: 0px;
 	}
 }
+
+#sendMessageToProf {
+	background: url("../assets/images/messageIcon.png");
+	height: 22px;
+	width: 23px;
+	border: none;
+}
+
+#sendMessageToProf:focus-visible, #sendMessageToProf:focus {
+	outline: none;
+}
+
+#buttonSendMessContainer {
+	display: inline-block;
+	margin-right: 20px;
+}

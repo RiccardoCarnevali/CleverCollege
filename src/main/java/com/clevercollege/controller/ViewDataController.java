@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -16,6 +17,7 @@ import com.clevercollege.model.Location;
 import com.clevercollege.model.Student;
 import com.clevercollege.model.User;
 import com.clevercollege.persistence.DatabaseManager;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ViewDataController {
@@ -402,6 +404,40 @@ public class ViewDataController {
 				return "not_authorized";
 		}
 		return "students_in_class";
+	}
+
+	@GetMapping("/allMyChat/singleChat")
+	public String chatPage(Model model, HttpServletRequest request, @RequestParam(value = "cfLecturer") String cfUserReceiver) {
+		HttpSession session = request.getSession();
+		User u = (User) session.getAttribute("user");
+		model.addAttribute("cfUserRec", cfUserReceiver);
+		model.addAttribute("cfUserSend", u.getCf());
+		if(u == null) {
+			session.setAttribute("after-login", "/allMyChat/singleChat");
+			return "redirect:/login";
+		}
+		else {
+			String user_type = (String) session.getAttribute("user_type");
+			if(user_type == null)
+				return "not_authorized";
+		}
+		return "chat";
+	}
+
+	@GetMapping("/allMyChat")
+	public String allChatPage(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		User u = (User) session.getAttribute("user");
+		if(u == null) {
+			session.setAttribute("after-login", "/allMyChat");
+			return "redirect:/login";
+		}
+		else {
+			String user_type = (String) session.getAttribute("user_type");
+			if(user_type == null)
+				return "not_authorized";
+		}
+		return "allMyChat";
 	}
 
 }
