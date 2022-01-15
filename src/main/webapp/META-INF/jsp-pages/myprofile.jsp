@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
@@ -31,27 +31,29 @@
 	<div class="header"></div>
 	<div class="content container-fluid">
 		<div id="mainTable" class="row">
-			<div class="col-xl-9 col-lg-8 col-md-12 col-sm-12 col-12" id="tableCol" style="margin-top: 10px">
-				<div id="booked-tab">
-					<h1>Attività prenotate</h1>
-					<div class="table-responsive">
-						<table class="table table-fixed table-bordered" id="week-calendar">
-							<thead>
-								<tr>
-									<th></th>
-									<th>Lunedì</th>
-									<th>Martedì</th>
-									<th>Mercoledì</th>
-									<th>Giovedì</th>
-									<th>Venerdì</th>
-									<th>Sabato</th>							
-								</tr>
-							</thead>
-						</table>
+			<c:if test="${user_type != null && (user_type == 'professor' || user_type == 'student') }">
+				<div class="col-xl-9 col-lg-8 col-md-12 col-sm-12 col-12" id="tableCol" style="margin-top: 10px">
+					<div id="booked-tab">
+						<h1>Calendario di questa settimana</h1>
+						<div class="table-responsive">
+							<table class="table table-fixed table-bordered" id="week-calendar">
+								<thead>
+									<tr>
+										<th></th>
+										<th>Lunedì</th>
+										<th>Martedì</th>
+										<th>Mercoledì</th>
+										<th>Giovedì</th>
+										<th>Venerdì</th>
+										<th>Sabato</th>							
+									</tr>
+								</thead>
+							</table>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12" style="margin-top: 10px; float:right">
+			</c:if>
+			<div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12" style="margin-top: 10px;">
 				<div class="card">
 					<div style="text-align: center">
 						<img id="profile-picture" class="card-img-top rounded-circle" <c:if test="${empty user.profilePicture}">src="/assets/images/pp-placeholder.png"</c:if>

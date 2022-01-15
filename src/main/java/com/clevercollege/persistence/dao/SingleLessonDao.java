@@ -33,4 +33,6 @@ public interface SingleLessonDao {
 	public Activity findByDateTimeClassroomProfessor(String cfProfessor, Long idClassroom) throws SQLException;
 
 	public List<SingleLesson> findActiveByProfessor(String cf, boolean lazy) throws SQLException;
+	
+	public List<SingleLesson> findByProfessorThisWeek(String professorCf, boolean lazy) throws SQLException;
 }

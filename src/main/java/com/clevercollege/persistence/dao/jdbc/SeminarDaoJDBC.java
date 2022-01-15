@@ -502,4 +502,53 @@ public class SeminarDaoJDBC implements SeminarDao {
 		}
 		return activity;
 	}
+	
+	@Override
+	public List<Seminar> findByProfessorThisWeek(String professorCf, boolean lazy) throws SQLException {
+		
+		List<Seminar> seminars = new ArrayList<>();
+		LocalDate today = LocalDate.now();
+		
+		String query = null;
+		
+		if (today.getDayOfWeek() == DayOfWeek.SUNDAY) {
+			query = "select * from activities A, seminars S where S.id = A.id and A.professor = ? and date_part('week', current_date) + 1 = date_part('week', S.seminar_date) order by seminar_date, activity_time";
+		}
+		else {
+			query = "select * from activities A, seminars S where S.id = A.id and A.professor = ? and date_part('week', current_date) = date_part('week', S.seminar_date) order by seminar_date, activity_time";
+		}
+		
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, professorCf);
+		
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			Activity activity = DatabaseManager.getInstance().getActivityDao().findByPrimaryKey(rs.getLong("id"), lazy);
+			
+			Seminar seminar;
+			
+			if(lazy) {
+				seminar = new SeminarProxy();
+			}
+			else {
+				seminar = new Seminar();
+				seminar.setBookers(activity.getBookers());
+			}
+			
+			seminar.setId(activity.getId());
+			seminar.setTime(activity.getTime());
+			seminar.setLength(activity.getLength());
+			seminar.setDescription(activity.getDescription());
+			seminar.setManager(activity.getManager());
+			seminar.setClassroom(activity.getClassroom());
+			seminar.setDate(rs.getDate("seminar_date").toString());
+
+			seminars.add(seminar);
+		}
+		
+		return seminars;
+	}
 }

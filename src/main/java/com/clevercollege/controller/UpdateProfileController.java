@@ -38,23 +38,44 @@ public class UpdateProfileController {
 	public List<Activity> loadBookedWeekActivities(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		User currentUser = (User) session.getAttribute("user");
-		if (currentUser != null) {
+		
+		if (currentUser == null) return null;
+		
+		String uType = (String) session.getAttribute("user_type");
+		if (uType == null) return null;				
+
+		List<Activity> activities = new ArrayList<Activity>();
+		List<SingleLesson> sl = null;
+		List<Seminar> s = null;
+		
+		if (uType.equals("student")) {
 			try {
-				List<Activity> activities = new ArrayList<Activity>();
-				List<SingleLesson> ls = DatabaseManager.getInstance().getSingleLessonDao().findBookedByStudentThisWeek(currentUser.getCf(), true);
-				List<Seminar> s = DatabaseManager.getInstance().getSeminarDao().findBookedByStudentThisWeek(currentUser.getCf(), true);
+				sl = DatabaseManager.getInstance().getSingleLessonDao().findBookedByStudentThisWeek(currentUser.getCf(), true);
+				s = DatabaseManager.getInstance().getSeminarDao().findBookedByStudentThisWeek(currentUser.getCf(), true);
 				
-				if (!ls.isEmpty()) {
-					activities.addAll(ls);					
-				}
-				if (!s.isEmpty()) {
-					activities.addAll(s);					
-				}
+				if (!sl.isEmpty()) activities.addAll(sl);					
+				if (!s.isEmpty()) activities.addAll(s);
 				
 				return activities;
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
+				return null;
+			}			
+		}
+		else if (uType.equals("professor")) {
+			try {
+				sl = DatabaseManager.getInstance().getSingleLessonDao().findByProfessorThisWeek(currentUser.getCf(), true);
+				s = DatabaseManager.getInstance().getSeminarDao().findByProfessorThisWeek(currentUser.getCf(), true);
+				
+				activities.addAll(sl);					
+				activities.addAll(s);
+				
+				return activities;
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
 			}
 		}
 		return null;
