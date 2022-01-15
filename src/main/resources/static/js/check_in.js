@@ -83,6 +83,7 @@ function loadUserMedia(show) {
 	if (show) {
 		navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
 			.then(function(stream) {
+				$('.video-capture-container').css('display','block');
 				video.srcObject = stream;
 				video.onloadedmetadata = function(e) {
 					video.play();
@@ -97,6 +98,7 @@ function loadUserMedia(show) {
 
 			});
 	} else {
+		$('.video-capture-container').css('display','none');
 		if (video != null) {
 			video.srcObject.getTracks()[0].stop();
 			clearInterval(processFrameTask);

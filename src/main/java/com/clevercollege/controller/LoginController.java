@@ -44,15 +44,15 @@ public class LoginController {
                 request.getSession().setAttribute("user", u);
                 request.getSession().setAttribute("user_cf", u.getCf());
                 String type = null;
-                Student student = DatabaseManager.getInstance().getStudentDao().findByPrimaryKey(cf, true);
+                Student student = DatabaseManager.getInstance().getStudentDao().findByPrimaryKey(cf.toLowerCase(), true);
                 
                 if(student != null) {
                 	type = "student";
                 	request.getSession().setAttribute("user", student);
                 }
-                else if(DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(cf) != null)
+                else if(DatabaseManager.getInstance().getProfessorDao().findByPrimaryKey(cf.toLowerCase()) != null)
                 	type = "professor";
-                else if(DatabaseManager.getInstance().getAdministratorDao().findByPrimaryKey(cf) != null)
+                else if(DatabaseManager.getInstance().getAdministratorDao().findByPrimaryKey(cf.toLowerCase()) != null)
                 	type = "admin";
                 request.getSession().setAttribute("user_type", type);
                 

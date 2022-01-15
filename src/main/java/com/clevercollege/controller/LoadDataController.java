@@ -91,7 +91,7 @@ public class LoadDataController {
 				for (int i = 0; i < followedCourses.size(); ++i) {
 					String professorName = followedCourses.get(i).getLecturer().getFirstName() + " "
 							+ followedCourses.get(i).getLecturer().getLastName();
-					if (followedCourses.get(i).getName().contains(like) || professorName.contains(like))
+					if (followedCourses.get(i).getName().toUpperCase().contains(like.toUpperCase()) || professorName.toUpperCase().contains(like.toUpperCase()))
 						courses.add(followedCourses.get(i));
 				}
 				

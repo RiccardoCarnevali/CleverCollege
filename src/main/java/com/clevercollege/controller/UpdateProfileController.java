@@ -1,12 +1,20 @@
 package com.clevercollege.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -18,23 +26,56 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.clevercollege.model.Activity;
+import com.clevercollege.model.Seminar;
+import com.clevercollege.model.SingleLesson;
 import com.clevercollege.model.User;
 import com.clevercollege.persistence.DatabaseManager;
 
 @RestController
 public class UpdateProfileController {
 
-	@PostMapping("/loadBookedCourses")
-	public List<Activity> loadBookedCourses(HttpServletRequest request) {
+	@PostMapping("/loadBookedWeekActivities")
+	public List<Activity> loadBookedWeekActivities(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		User currentUser = (User) session.getAttribute("user");
-		if (currentUser != null) {
+		
+		if (currentUser == null) return null;
+		
+		String uType = (String) session.getAttribute("user_type");
+		if (uType == null) return null;				
+
+		List<Activity> activities = new ArrayList<Activity>();
+		List<SingleLesson> sl = null;
+		List<Seminar> s = null;
+		
+		if (uType.equals("student")) {
 			try {
-				List<Activity> activities = DatabaseManager.getInstance().getActivityDao()
-						.findByStudentBooked(currentUser.getCf());
+				sl = DatabaseManager.getInstance().getSingleLessonDao().findBookedByStudentThisWeek(currentUser.getCf(), true);
+				s = DatabaseManager.getInstance().getSeminarDao().findBookedByStudentThisWeek(currentUser.getCf(), true);
+				
+				if (!sl.isEmpty()) activities.addAll(sl);					
+				if (!s.isEmpty()) activities.addAll(s);
+				
 				return activities;
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
+				return null;
+			}			
+		}
+		else if (uType.equals("professor")) {
+			try {
+				sl = DatabaseManager.getInstance().getSingleLessonDao().findByProfessorThisWeek(currentUser.getCf(), true);
+				s = DatabaseManager.getInstance().getSeminarDao().findByProfessorThisWeek(currentUser.getCf(), true);
+				
+				activities.addAll(sl);					
+				activities.addAll(s);
+				
+				return activities;
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
 			}
 		}
 		return null;
@@ -60,26 +101,41 @@ public class UpdateProfileController {
 	@PostMapping("/updateProfilePicture")
 	public String updateImage(@RequestParam("image") MultipartFile img, HttpServletRequest request) {
 		User u = (User) request.getSession().getAttribute("user");
-		if (!img.isEmpty()) {
-			String imgName = img.getOriginalFilename();
-			try {
-				if (Files.probeContentType(Paths.get(imgName)) == "image" || img.getSize() < 1000000) {
-					File f = new File("src/main/resources/static/assets/images/pp/" + u.getCf() + ".png");
-					f.createNewFile();
-					img.transferTo(f.getAbsoluteFile());
-					u.setProfilePicture(u.getCf() + ".png");
-					DatabaseManager.getInstance().getUserDao().saveOrUpdate(u);
-					DatabaseManager.getInstance().commit();
-					return "ok";
-				} else {
-					return "error";
-				}
-
-			} catch (IllegalStateException | IOException | SQLException e) {
-				return "error";
+		
+		if (img.isEmpty())
+			return "error";
+		
+		String imgName = img.getOriginalFilename();
+		try {
+			if (img.getSize() > 1000000)
+				return "img too big";
+			
+			if(!Files.probeContentType(Paths.get(imgName)).split("/")[0].equals("image"))
+				return "not an img";
+	
+			File f = new File("src/main/resources/static/assets/images/pp/" + u.getCf() + ".png");
+			f.createNewFile();
+			img.transferTo(f.getAbsoluteFile());
+			
+			BufferedImage bImg = ImageIO.read(f);
+			
+			if(bImg.getWidth() < 180 || bImg.getHeight() < 180) {
+				f.delete();
+				return "img too small";
 			}
+			
+			File fBin = new File("target/classes/static/assets/images/pp/" + u.getCf() + ".png");
+			Files.copy(f.toPath(), fBin.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			
+			u.setProfilePicture(u.getCf() + ".png");
+			DatabaseManager.getInstance().getUserDao().saveOrUpdate(u);
+			DatabaseManager.getInstance().commit();
+			return "ok";
+
+		} catch (IllegalStateException | IOException | SQLException e) {
+			e.printStackTrace();
+			return "error";
 		}
-		return "error";
 	}
 
 	@PostMapping(path = "/putProfilePicture", produces = org.springframework.http.MediaType.IMAGE_PNG_VALUE)
@@ -87,13 +143,13 @@ public class UpdateProfileController {
 		HttpSession session = request.getSession();
 		User u = (User) session.getAttribute("user");
 		ByteArrayResource inputStream = null;
-		try {
-			if (u.getProfilePicture() != null) {
-				inputStream = new ByteArrayResource(Files.readAllBytes(
-						Paths.get("src/main/resources/static/assets/images/pp/" + u.getProfilePicture())));
+		if (u.getProfilePicture() != null) {
+			try {
+					inputStream = new ByteArrayResource(Files.readAllBytes(
+							Paths.get("src/main/resources/static/assets/images/pp/" + u.getProfilePicture())));
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		return inputStream;
 	}

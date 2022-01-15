@@ -1,3 +1,18 @@
+@media screen and (max-width: 991px) {	
+	.content {
+	padding-right: 12px !important;
+	padding-left: 12px !important; 
+	}
+	
+	.table {
+		max-height: 600px !important;
+	}
+	
+	#mainTable {
+		flex-direction:column-reverse;
+	}
+}
+
 h1 {
 	font-size:1.6em;
 }
@@ -15,6 +30,20 @@ h2 {
 	line-height:0.5;	
 }
 
+
+#tableCol {
+	overflow: auto;
+}
+
+.v-header {
+	width: 100px !important;
+}
+
+#week-calendar {
+	table-layout:fixed;
+	min-width: 1000px;
+}
+
 #modPP-icon {
 	cursor:pointer;
 	vertical-align: top;
@@ -27,8 +56,7 @@ h2 {
 	object-fit: cover;
 	margin: 15px auto 0px auto;
 	border: 2px outset #7e57c2;
-	box-shadow: 0 10px 25px rgb(126 87 194 / 5%), 0 20px 48px rgb(126 87 194 / 5%), 0 1px 4px rgb(126 87 194 / 10%);
-	
+	box-shadow: 0 10px 25px rgb(126 87 194 / 5%), 0 20px 48px rgb(126 87 194 / 5%), 0 1px 4px rgb(126 87 194 / 10%);	
 }
 
 .card {
@@ -56,6 +84,7 @@ h2 {
 	box-shadow: 0 10px 25px rgb(0 0 0 / 5%), 0 20px 48px rgb(0 0 0 / 5%), 0 1px 4px rgb(0 0 0 / 10%);
 	background-color: #fff;
 	background-clip: border-box;
+	
 }
 
 #check-in-out {
@@ -91,4 +120,11 @@ span {
 .form-control:hover, .form-control:focus {
 	box-shadow: none;
 	border-color: #7e57c2;
+}
+
+#see-current-password, #see-new-password, #see-new-password-confirm {
+	color: #7e57c2;
+	position: absolute;
+	right: 10px;
+	top:12px
 }

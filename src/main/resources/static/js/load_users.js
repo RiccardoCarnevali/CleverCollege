@@ -54,6 +54,20 @@ function loadMore(showMore) {
 				showMoreButton.remove();
 			}
 
+			if(data.length === 0 && offset === 0) {
+				var usersList = $("#rows");
+				usersList.empty();
+				users = [];
+				var message = "";
+				if(like !== "") {
+					message = "Nessun risultato soddisfa la ricerca.";
+				}
+				else
+					message = "Nessun utente è stato ancora registrato.";
+				usersList.append("<li class='list-group-item' style='text-align: center; margin: 10px 0px'>" + message + "</li>");
+				return;
+			}
+
 			if (users.length != 0 && data.length != 0) {
 				if (areEquals(data.slice(0,6), users)){
 					if (data.length == 7) {
@@ -82,10 +96,10 @@ function loadMore(showMore) {
 				
 				var imgPath = users[index].profilePicture == null ? "assets/images/pp-placeholder.png" : "assets/images/pp/" + users[index].cf + ".png";
 				
-				userRow.append("<div class=\"col-lg-2 col-md-4 col-sm-12 d-flex align-items-stretch\">" +
+				userRow.append("<div class=\"col-lg-2 col-md-4 col-sm-12 d-flex flex-column align-items-stretch\">" +
 									"<div class=\"card\">" +
-										"<img class=\"card-img-top\" src='" + imgPath + "' alt=\"Card image\">" +
-										"<div class=\"card-body d-flex flex-column\">" +
+										"<img class=\"card-img-top rounded-circle\" src='" + imgPath + "' alt=\"Card image\">" +
+										"<div class=\"card-body\">" +
 											"<h4 class=\"card-title\">" + users[index].firstName + " " + users[index].lastName + "</h4>" +
 											"<p class=\"card-text\">" + users[index].cf + "</p>" +
 											"<div class=\"icons\">" +

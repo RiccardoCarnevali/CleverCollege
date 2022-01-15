@@ -88,18 +88,6 @@ function displayBookedActivities(data, remType, showMore) {
 		showMoreButton.remove();
 	}
 	
-	/*if(bookedActivities.length != 0 && data.length != 0){
-		if(areEquals(data.slice(0,15), bookedActivities)) {
-			if(data.length == 16) {
-				$("#bookingsContainer").append("<button class=\"btn btn-outline-primary\" id=\"showMoreButton\">Mostra altri</button>");
-				$("#showMoreButton").off().on("click", function() {
-					loadMore(true);
-				});
-			}
-			return;
-		}
-	}*/
-	
 	if(!showMore) {
 		bookedActivities = new Array();
 		$("#bookings").empty();
@@ -107,7 +95,16 @@ function displayBookedActivities(data, remType, showMore) {
 	
 	bookedActivities = bookedActivities.concat(data.slice(0,15));
 	if(bookedActivities.length <= 15)
-	index = 0;
+		index = 0;
+		
+	if(bookedActivities.length == 0) {
+		if(remType == "lessons") {
+			$("#bookings").append("<li class='list-group-item' style='text-align: center; margin: 10px 0px'>Nessuna lezione è stata ancora prenotata</li>")		
+		}
+		else if(remType == "seminars") {
+			$("#bookings").append("<li class='list-group-item' style='text-align: center; margin: 10px 0px'>Nessun seminario è stato ancora prenotato</li>")	
+		}
+	}
 	
 	var bookingsList = $("#bookings");
 			

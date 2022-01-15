@@ -141,7 +141,7 @@ public class InsertDataController {
         if(u.getCf() == null || u.getFirstName() == null || u.getLastName() == null || u.getEmail() == null)
         	return "server error";
 
-        String token = UUID.randomUUID().toString().subSequence(0, 20).toString();
+        String token = UUID.randomUUID().toString().substring(0, 10);
         String tmpPassword = BCrypt.hashpw(token, BCrypt.gensalt(12));
 
         if(!checkValidCf(u.getFirstName(), u.getLastName(), u.getCf()))

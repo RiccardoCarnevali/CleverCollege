@@ -38,9 +38,10 @@
 		<div class="container">
 
 			<h3 class="title">Check-In</h3>
+			<h5>Scannerizza un codice qr</h5>
 			<div class="video-capture-container">
 				<video width="320" height="320" class="video-capture"></video>
-				<canvas style="display: none;"></canvas>
+				<canvas style="display:none;" class="video-canvas"></canvas>
 			</div>
 			<button class="btn btn-outline-primary" id="showStreamBttn">Apri
 				Fotocamera</button>
@@ -48,7 +49,7 @@
 				<h5>In alternativa, seleziona manualmente il luogo in cui
 					desideri fare il check-in</h5>
 				<div id="locationsContainer">
-					<input type="search" id="locationSearchBar" class="form-control" />
+					<input type="search" id="locationSearchBar" class="form-control" placeholder="Cerca"/>
 					<div id="locationList">
 						<ul id="locations"></ul>
 					</div>

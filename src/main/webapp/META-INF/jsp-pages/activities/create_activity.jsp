@@ -28,10 +28,14 @@
 <script
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-messaging.js"></script>
+<script src="/js/notification.js" charset="UTF-8"></script>
 <script src="/js/common.js"></script>
+<script src="/js/generic_error.js" charset="UTF-8"></script>
 <script src="/js/data-model.js"></script>
 <script src="/js/create_activity.js"></script>
-<script src="/js/generic_error.js" charset="UTF-8"></script>
 
 </head>
 <body>
@@ -49,19 +53,19 @@
 		<div id="pickActivityType">
 			<div class="radio-item">
 				<input type="radio" id="weeklyLessonBttn" name="activity-type"
-					value="weekly"
+					value="weekly" <c:if test="${activity != null}">disabled</c:if>
 					<c:if test = "${activity_type == 'weekly'}"> checked="checked"</c:if>>
 				<label for="weeklyLessonBttn">Lezione Settimanale</label>
 			</div>
 			<div class="radio-item">
 				<input type="radio" id="singleLessonBttn" name="activity-type"
-					value="single"
+					value="single" <c:if test="${activity != null}">disabled</c:if>
 					<c:if test = "${activity_type == 'single' || activity_type == null}"> checked="checked"</c:if>>
 				<label for="singleLessonBttn">Lezione Singola</label>
 			</div>
 			<div class="radio-item">
 				<input type="radio" id="seminarBttn" name="activity-type"
-					value="seminar"
+					value="seminar" <c:if test="${activity != null}">disabled</c:if>
 					<c:if test = "${activity_type == 'seminar'}"> checked="checked"</c:if>>
 				<label for="seminarBttn">Seminario</label>
 			</div>
@@ -73,13 +77,13 @@
 						type="date" id="activityDatePicker" name="activity-date"
 						<c:if test="${activity_type != 'weekly' && activity != null}">value="${activity.date}"</c:if>>
 				</div>
-				<div class="form-group">
+				<div class="form-group" id="startTimeInput">
 					<label for="activityStartPicker"><strong>Orario</strong></label> <input
 						type="time" id="activityStartPicker" step="600"
 						name="activity-start"
 						<c:if test="${activity != null}">value="${activity.time.substring(0,5)}"</c:if>>
 				</div>
-				<div class="form-group">
+				<div class="form-group" id="lengthInput">
 					<label for="activityLengthPicker"><strong>Durata</strong></label> <input
 						type="time" id="activityLengthPicker" name="activity-length"
 						min="00:00" max="10:00" step="600"
@@ -88,7 +92,8 @@
 				<div class="form-group" id="courseInput">
 					<strong>Corso</strong><select class="form-control"
 						id="courseSelect"
-						<c:if test="${activity != null}">value="activity.course.name"</c:if>></select>
+						<c:if test="${activity != null && activity_type != 'seminar'}">value="${activity.course.name}"</c:if>>
+						</select>
 				</div>
 				<div class="form-group hide" id="weekdayInput">
 					<strong>Giorno Settimanale</strong> <select class="form-control"
@@ -125,7 +130,7 @@
 
 			</div>
 			<div class="form-row" id="descriptionInput">
-				<label for="descriptionTextarea"><strong>Descrizione</strong></label>
+				<label for="descriptionTextArea"><strong>Descrizione</strong></label>
 				<textarea class="form-control" id="descriptionTextArea" rows="3"
 					cols="50" maxlength="400" name="activity-description"><c:if
 						test="${activity != null}">${activity.description}</c:if></textarea>

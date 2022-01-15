@@ -14,23 +14,7 @@ $(function() {
 	dLayoutShow = dLayout.contents();
 
 	$("#changePassword").on("click", changePasswordEdit);
-	
-	$.ajax({
-		type: 'POST',
-		url: 'putProfilePicture',
-		xhr:function(){// Seems like the only way to get access to the xhr object
-            var xhr = new XMLHttpRequest();
-            xhr.responseType= 'blob'
-            return xhr;
-        },
-        success: function(data){
-			if (data.size != 0) {				
-	            var url = window.URL || window.webkitURL;
-	            $("#profile-picture").attr("src", url.createObjectURL(data));
-			}
-        },
-		error: errorMessage
-	});
+
 })
 
 var updateDescription = function() {	
@@ -68,72 +52,54 @@ var showMode = function() {
 var updateImage = function() {
 	var file = $("#modPP").get(0).files[0];
 	
-	if (file.size > 1000000) Swal.fire({
-		icon: 'error',
-		title: 'Immagine non valida',
-		text: "Impossibile aggiornare il profilo. L'immagine selezionata è più grande di 1MB."
-	})
-	else {
-		formData = new FormData();
-		formData.append("image", file);
-		$.ajax({
-				type:'POST',
-				url: 'updateProfilePicture',
-				data: formData,
-				contentType: false,
-				processData: false,
-				success: function(data) {
-					if (data == 'ok') 
-					if (data == 'error') {
-						Swal.fire({
-							icon: 'error',
-							title: 'Qualcosa è andato storto',
-							text: "Non è stato possibile aggiornare l'immagine del profilo. Riprova più tardi"
-						})
-					}
-				},
-				error: errorMessage
-			})
-		var img = new Image();
-		var url = window.URL || window.webkitURL;
-		img.onload = function() {
-			if (img.naturalWidth < 180 || img.naturalHeight < 180) {
+	formData = new FormData();
+	formData.append("image", file);
+	$.ajax({
+		type:'POST',
+		url: 'updateProfilePicture',
+		data: formData,
+		contentType: false,
+		processData: false,
+		success: function(data) {
+			if (data == 'error') {
 				Swal.fire({
-				icon: 'error',
-				title: 'Immagine non valida',
-				text: "Impossibile aggiornare il profilo. L'immagine selezionata è troppo piccola."
-				})
-				return;
+					icon: 'error',
+					title: 'Qualcosa è andato storto',
+					text: "Non è stato possibile aggiornare l'immagine del profilo. Riprova più tardi"
+				});
 			}
-			formData = new FormData();
-			formData.append("image", file);
-			$.ajax({
-				type:'POST',
-				url: 'updateProfilePicture',
-				data: formData,
-				contentType: false,
-				processData: false,
-				error: errorMessage
-			})
-			
-			reader = new FileReader()
-			reader.onload = function() {
-				$("#profile-picture").attr("src", reader.result);
-			}	
-			reader.readAsDataURL(file);	
-		}
-		img.onerror = function() {
-			Swal.fire({
-				icon: 'error',
-				title: 'File non valido',
-				text: "Impossibile aggiornare il profilo. Il file selezionato non è un'immagine."
-			})
-		}
-		img.src = url.createObjectURL(file);
-		
-		
-	}
-}	
+			else if(data == "img too big") {
+				 Swal.fire({
+					icon: 'error',
+					title: 'Immagine non valida',
+					text: "Impossibile aggiornare il profilo. L'immagine selezionata è più grande di 1MB."
+				});
+			}
+			else if(data == "not an img") {
+				Swal.fire({
+					icon: 'error',
+					title: 'File non valido',
+					text: "Impossibile aggiornare il profilo. Il file selezionato non è un'immagine."
+				});
+			}
+			else if(data == "img too small") {
+				Swal.fire({
+					icon: 'error',
+					title: 'Immagine non valida',
+					text: "Impossibile aggiornare il profilo. L'immagine selezionata è troppo piccola."
+				});
+			}
+			else if(data == "ok") {
+				reader = new FileReader()
+				reader.onload = function() {
+					$("#profile-picture").attr("src", reader.result);
+				}	
+				reader.readAsDataURL(file);
+			}
+		},
+		error: errorMessage
+	});
+}
 
 var changePassword = function() {
 	if($("#current-password").val()) {
@@ -181,15 +147,63 @@ var changePassword = function() {
 var changePasswordEdit = function() {
 	$("#passwordChangeLayout").empty();
 	$("#passwordChangeLayout").append("<label for='current-password' style='display: block'>Inserisci la tua password corrente:</label>" +
-									 "<input type='password' id='current-password' maxlength='50' class='form-control' style='display: block' placeholder='Password corrente'></input>" +
+									 "<div style='position:relative'>" +
+										 "<input type='password' id='current-password' maxlength='30' class='form-control' style='display: block' placeholder='Password corrente'></input>" +
+										 "<i class='fas fa-eye-slash clickable' id='see-current-password'></i>" +
+									 "</div>" +
 									 "<label for='new-password' style='display: block'>Inserisci la nuova password:</label>" +
-									 "<input type='password' id='new-password' maxlength='30' class='form-control' style='display: block' placeholder='Nuova password'></input>" +
+									 "<div style='position:relative'>" +
+										 "<input type='password' id='new-password' maxlength='30' class='form-control' style='display: block' placeholder='Nuova password'></input>" +
+										 "<i class='fas fa-eye-slash clickable' id='see-new-password'></i>" +
+									 "</div>" +
 									 "<label for='new-password' style='display: block'>Conferma la nuova password:</label>" +
-									 "<input type='password' id='new-password-confirm' maxlength='30' class='form-control' style='display: block' placeholder='Conferma password'></input>" +
+									 "<div style='position:relative'>" +
+										 "<input type='password' id='new-password-confirm' maxlength='30' class='form-control' style='display: block' placeholder='Conferma password'></input>" +
+										 "<i class='fas fa-eye-slash clickable' id='see-new-password-confirm'></i>" +
+									 "</div>" +
 									 "<button type='button' id='password-confirmMod' class='btn btn-outline-primary btn-sm'>Conferma Modifica</button>" +
 									 "<button type='button' id='password-abortMod' class='btn btn-outline-danger btn-sm'>Annulla Modifica</button>");
 	$("#password-confirmMod").on("click", changePassword);
 	$("#password-abortMod").on("click", changePasswordRestore);
+	
+	$("#see-current-password").on("click", function() {
+		if($(this).hasClass("fa-eye-slash")) {
+			$(this).removeClass("fa-eye-slash");
+			$(this).addClass("fa-eye");
+			$("#current-password").attr("type", "text");
+		}
+		else {
+			$(this).removeClass("fa-eye");
+			$(this).addClass("fa-eye-slash");
+			$("#current-password").attr("type", "password");
+		}
+	})
+	
+	$("#see-new-password").on("click", function() {
+		if($(this).hasClass("fa-eye-slash")) {
+			$(this).removeClass("fa-eye-slash");
+			$(this).addClass("fa-eye");
+			$("#new-password").attr("type", "text");
+		}
+		else {
+			$(this).removeClass("fa-eye");
+			$(this).addClass("fa-eye-slash");
+			$("#new-password").attr("type", "password");
+		}
+	})
+	
+	$("#see-new-password-confirm").on("click", function() {
+		if($(this).hasClass("fa-eye-slash")) {
+			$(this).removeClass("fa-eye-slash");
+			$(this).addClass("fa-eye");
+			$("#new-password-confirm").attr("type", "text");
+		}
+		else {
+			$(this).removeClass("fa-eye");
+			$(this).addClass("fa-eye-slash");
+			$("#new-password-confirm").attr("type", "password");
+		}
+	})
 }
 
 var changePasswordRestore = function() {
