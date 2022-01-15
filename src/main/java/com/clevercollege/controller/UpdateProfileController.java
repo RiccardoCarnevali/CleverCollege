@@ -7,7 +7,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -21,21 +26,33 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.clevercollege.model.Activity;
+import com.clevercollege.model.Seminar;
+import com.clevercollege.model.SingleLesson;
 import com.clevercollege.model.User;
 import com.clevercollege.persistence.DatabaseManager;
 
 @RestController
 public class UpdateProfileController {
 
-	@PostMapping("/loadBookedCourses")
-	public List<Activity> loadBookedCourses(HttpServletRequest request) {
+	@PostMapping("/loadBookedWeekActivities")
+	public List<Activity> loadBookedWeekActivities(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		User currentUser = (User) session.getAttribute("user");
 		if (currentUser != null) {
 			try {
-				List<Activity> activities = DatabaseManager.getInstance().getActivityDao()
-						.findByStudentBooked(currentUser.getCf());
+				List<Activity> activities = new ArrayList<Activity>();
+				List<SingleLesson> ls = DatabaseManager.getInstance().getSingleLessonDao().findBookedByStudentThisWeek(currentUser.getCf(), true);
+				List<Seminar> s = DatabaseManager.getInstance().getSeminarDao().findBookedByStudentThisWeek(currentUser.getCf(), true);
+				
+				if (!ls.isEmpty()) {
+					activities.addAll(ls);					
+				}
+				if (!s.isEmpty()) {
+					activities.addAll(s);					
+				}
+				
 				return activities;
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -105,13 +122,13 @@ public class UpdateProfileController {
 		HttpSession session = request.getSession();
 		User u = (User) session.getAttribute("user");
 		ByteArrayResource inputStream = null;
-		try {
-			if (u.getProfilePicture() != null) {
-				inputStream = new ByteArrayResource(Files.readAllBytes(
-						Paths.get("src/main/resources/static/assets/images/pp/" + u.getProfilePicture())));
+		if (u.getProfilePicture() != null) {
+			try {
+					inputStream = new ByteArrayResource(Files.readAllBytes(
+							Paths.get("src/main/resources/static/assets/images/pp/" + u.getProfilePicture())));
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		return inputStream;
 	}

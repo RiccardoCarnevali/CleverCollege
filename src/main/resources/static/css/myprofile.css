@@ -1,3 +1,18 @@
+@media screen and (max-width: 991px) {	
+	.content {
+	padding-right: 12px !important;
+	padding-left: 12px !important; 
+	}
+	
+	.table {
+		max-height: 600px !important;
+	}
+	
+	#mainTable {
+		flex-direction:column-reverse;
+	}
+}
+
 h1 {
 	font-size:1.6em;
 }
@@ -13,6 +28,20 @@ h2 {
 
 #profile-data-group {
 	line-height:0.5;	
+}
+
+
+#tableCol {
+	overflow: auto;
+}
+
+.v-header {
+	width: 100px !important;
+}
+
+#week-calendar {
+	table-layout:fixed;
+	min-width: 1000px;
 }
 
 #modPP-icon {
@@ -55,6 +84,7 @@ h2 {
 	box-shadow: 0 10px 25px rgb(0 0 0 / 5%), 0 20px 48px rgb(0 0 0 / 5%), 0 1px 4px rgb(0 0 0 / 10%);
 	background-color: #fff;
 	background-clip: border-box;
+	
 }
 
 #check-in-out {

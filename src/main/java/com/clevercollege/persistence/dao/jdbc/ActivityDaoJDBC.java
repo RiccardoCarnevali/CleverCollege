@@ -224,36 +224,5 @@ public class ActivityDaoJDBC implements ActivityDao {
 
 		st.executeUpdate();
 	}
-
-	@Override
-	public List<Activity> findByStudentBooked(String studentCf) throws SQLException {
-		List<Activity> activities = new ArrayList<>();
-		String query = "select A.id" +
-					  " from books, activities A" +
-					  " where books.student = ? and books.activity = A.id";
-		
-		PreparedStatement st = conn.prepareStatement(query);
-		st.setString(1, studentCf);
-		
-		ResultSet rs = st.executeQuery();
-		
-		while (rs.next()) {
-			Seminar s = DatabaseManager.getInstance().getSeminarDao().findByPrimaryKey(rs.getLong("id"), true);
-			SingleLesson sl = DatabaseManager.getInstance().getSingleLessonDao().findByPrimaryKey(rs.getLong("id"), true);
-			WeeklyLesson wl = DatabaseManager.getInstance().getWeeklyLessonDao().findByPrimaryKey(rs.getLong("id"));
-					
-			if (wl != null) {
-				activities.add(wl);				
-			}
-			else if (sl != null) {
-				activities.add(sl);
-			}
-			else if (s != null) {
-				activities.add(s);
-			}
-		}
-		
-		return activities;
-	}
-
+	
 }
