@@ -18,6 +18,7 @@
 	<script src="/js/common.js"></script>
 	<script src="/js/myprofile.js" charset="UTF-8"></script>
 	<script src="/js/loadbookedcourses.js"></script>
+	<script src="/js/load_calendar.js"></script>
 	<script src="/js/generic_error.js" charset="UTF-8"></script>
 	
 </head>
@@ -26,13 +27,24 @@
 	<div class="header"></div>
 	<div class="content container-fluid">
 		<div id="mainTable" class="row">
-			<div class="col-xl-9 col-lg-8 col-md-12 col-sm-12 col-12" style="margin-top: 10px">
+			<div class="col-xl-9 col-lg-8 col-md-12 col-sm-12 col-12" id="tableCol" style="margin-top: 10px">
 				<div id="booked-tab">
 					<h1>Attività prenotate</h1>
-					<ul class="list-group">
-						<li class="list-group-item"><label id="empty-ul">Non hai attività prenotate. Riposati o studia autonomamente!</label></li>
-					</ul>
-						<a href="check-in" type="button" class="btn btn-outline-primary" id="check-in-out">Esegui check-in/out</a>
+					  <div class="table-responsive">
+						<table class="table table-fixed table-bordered" id="week-calendar">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Lunedì</th>
+									<th>Martedì</th>
+									<th>Mercoledì</th>
+									<th>Giovedì</th>
+									<th>Venerdì</th>
+									<th>Sabato</th>							
+								</tr>
+							</thead>
+						</table>
+					</div>
 				</div>
 			</div>	
 			<div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12" style="margin-top: 10px">

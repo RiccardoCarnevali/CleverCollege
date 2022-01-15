@@ -7,12 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.clevercollege.model.Activity;
 import com.clevercollege.model.Seminar;
 import com.clevercollege.model.SeminarProxy;
+import com.clevercollege.model.SingleLesson;
 import com.clevercollege.persistence.DatabaseManager;
 import com.clevercollege.persistence.dao.SeminarDao;
 
@@ -314,6 +317,55 @@ public class SeminarDaoJDBC implements SeminarDao {
 
 			seminars.add(seminar);
 		}
+		return seminars;
+	}
+	
+	@Override
+	public List<Seminar> findBookedByStudentThisWeek(String studentCf, boolean lazy) throws SQLException {
+		
+		List<Seminar> seminars = new ArrayList<>();
+		LocalDate today = LocalDate.now();
+		
+		String query = null;
+		
+		if (today.getDayOfWeek() == DayOfWeek.SUNDAY) {
+			query = "select * from activities A, seminars S, books B where S.id = A.id and A.id = B.activity and B.student = ? and date_part('week', current_date) + 1 = date_part('week', S.seminar_date) order by seminar_date";
+		}
+		else {
+			query = "select * from activities A, seminars S, books B where S.id = A.id and A.id = B.activity and B.student = ? and date_part('week', current_date) = date_part('week', S.seminar_date) order by seminar_date";
+		}
+		
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, studentCf);
+		
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			Activity activity = DatabaseManager.getInstance().getActivityDao().findByPrimaryKey(rs.getLong("id"), lazy);
+			
+			Seminar seminar;
+			
+			if(lazy) {
+				seminar = new SeminarProxy();
+			}
+			else {
+				seminar = new Seminar();
+				seminar.setBookers(activity.getBookers());
+			}
+			
+			seminar.setId(activity.getId());
+			seminar.setTime(activity.getTime());
+			seminar.setLength(activity.getLength());
+			seminar.setDescription(activity.getDescription());
+			seminar.setManager(activity.getManager());
+			seminar.setClassroom(activity.getClassroom());
+			seminar.setDate(rs.getDate("seminar_date").toString());
+
+			seminars.add(seminar);
+		}
+		
 		return seminars;
 	}
 	

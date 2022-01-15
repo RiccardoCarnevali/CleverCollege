@@ -7,10 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.clevercollege.model.Activity;
 import com.clevercollege.model.Lesson;
+import com.clevercollege.model.Seminar;
+import com.clevercollege.model.SeminarProxy;
 import com.clevercollege.model.SingleLesson;
 import com.clevercollege.model.SingleLessonProxy;
 import com.clevercollege.persistence.DatabaseManager;
@@ -313,6 +318,55 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 		return singleLessons;
 	}
 
+	@Override
+	public List<SingleLesson> findBookedByStudentThisWeek(String studentCf, boolean lazy) throws SQLException {
+		
+		List<SingleLesson> singleLessons = new ArrayList<>();
+		LocalDate today = LocalDate.now();
+		
+		String query = null;
+		
+		if (today.getDayOfWeek() == DayOfWeek.SUNDAY) {
+			query = "select * from activities A, single_lessons SL, books B where SL.id = A.id and A.id = B.activity and B.student = ? and date_part('week', current_date) + 1 = date_part('week', SL.lesson_date) order by lesson_date";
+		}
+		else {
+			query = "select * from activities A, single_lessons SL, books B where SL.id = A.id and A.id = B.activity and B.student = ? and date_part('week', current_date) = date_part('week', SL.lesson_date) order by lesson_date";
+		}
+		
+		PreparedStatement st = conn.prepareStatement(query);
+
+		st.setString(1, studentCf);
+		
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+
+			Lesson lesson = DatabaseManager.getInstance().getLessonDao().findByPrimaryKey(rs.getLong("id"), lazy);
+			
+			SingleLesson singleLesson;
+
+			if (lazy) {
+				singleLesson = new SingleLessonProxy();
+			} else {
+				singleLesson = new SingleLesson();
+				singleLesson.setBookers(lesson.getBookers());
+			}
+
+			singleLesson.setId(lesson.getId());
+			singleLesson.setTime(lesson.getTime());
+			singleLesson.setLength(lesson.getLength());
+			singleLesson.setDescription(lesson.getDescription());
+			singleLesson.setManager(lesson.getManager());
+			singleLesson.setClassroom(lesson.getClassroom());
+			singleLesson.setCourse(lesson.getCourse());
+			singleLesson.setDate(rs.getDate("lesson_date").toString());
+
+			singleLessons.add(singleLesson);
+		}
+		
+		return singleLessons;
+	}
+	
 	@Override
 	public List<SingleLesson> findByCollidingTimeForStudent(String date, String time, int length, String studentCf,
 			boolean lazy) throws SQLException {
