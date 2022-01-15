@@ -60,6 +60,7 @@ public class CheckinReminderTask implements Runnable {
 		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 		}
+		NotificationService.getInstance().getSchedule().remove(activityId + "in");
 	}
 
 }

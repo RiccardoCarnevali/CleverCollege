@@ -61,6 +61,7 @@ public class CheckoutReminderTask implements Runnable {
 		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 		}
+		NotificationService.getInstance().getSchedule().remove(activityId + "out");
 	}
 
 }
