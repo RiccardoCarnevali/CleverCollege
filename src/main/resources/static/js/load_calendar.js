@@ -23,12 +23,9 @@ $(function() {
 		type: 'POST',
 		url: "loadBookedWeekActivities",
 		success: function(data) {
-			if (data.size != 0) {
+			if (data != null && data.length != 0) {
 				data.forEach(addActivity);			
 				importCalendar(matrix);		
-			}
-			else {
-				$("#week-calendar").append("<tr> Non hai attività prenotate per questa settimana. Riposati o studia autonomamente </tr>");
 			}
 		},
 		error: errorMessage

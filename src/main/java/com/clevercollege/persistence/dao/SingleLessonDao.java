@@ -3,6 +3,7 @@ package com.clevercollege.persistence.dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.clevercollege.model.Seminar;
 import com.clevercollege.model.SingleLesson;
 
 public interface SingleLessonDao {
@@ -26,4 +27,6 @@ public interface SingleLessonDao {
 	public List<SingleLesson> findBookedByStudentThisWeek(String studentCf, boolean lazy) throws SQLException;
 	
 	public List<SingleLesson> findByCollidingTimeForStudent(String date, String time, int length, String studentCf, boolean lazy) throws SQLException;
+	
+	public List<SingleLesson> findByProfessorThisWeek(String professorCf, boolean lazy) throws SQLException;
 }
