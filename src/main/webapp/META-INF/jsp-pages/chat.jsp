@@ -27,11 +27,10 @@
 </head>
 <body>
     <div class="header"></div>
-    <div class="container">Nome del receiver e ruolo</div>
+    <div class="container" id="information-about-receiver"></div>
     <div class="container">
         <div class="chat-frame">
             <ul class="all-messages" id="messages-${cfUserSend}-${cfUserRec}">
-                <li class="single-messages">Prova</li>
             </ul>
             <div style="display: flex">
                 <textarea id="message-input" placeholder="Inserisci qui il tuo messaggio"></textarea>

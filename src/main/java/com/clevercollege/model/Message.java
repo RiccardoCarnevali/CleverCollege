@@ -1,17 +1,23 @@
-package com.clevercollege.services;
+package com.clevercollege.model;
 
 public class Message {
+    Long id;
     String senderCf;
     String receiverCf;
     String textMessage;
 
     public Message() {}
 
-    public Message(String senderCf, String receiverCf, String textMessage) {
+    public Message(Long id, String senderCf, String receiverCf, String textMessage) {
+        this.id = id;
         this.senderCf = senderCf;
         this.receiverCf = receiverCf;
         this.textMessage = textMessage;
     }
+
+    public Long getId() { return id; }
+
+    public void setId(Long id) { this.id = id; }
 
     public String getSenderCf() {
         return senderCf;

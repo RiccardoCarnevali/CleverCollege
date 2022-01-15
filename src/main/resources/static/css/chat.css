@@ -35,6 +35,10 @@
     min-width: 100px;
 }
 
+.icons {
+    margin: auto;
+}
+
 #sendMessage {
     background: url("../assets/images/sendMessage.png");
     height: 27px;
@@ -43,3 +47,40 @@
     margin: auto 0px auto 6px;
     border: none;
 }
+
+#sendMessage:focus, #sendMessage:focus-visible {
+    outline: none;
+}
+
+.user {
+    display: flex;
+    border-radius: 1em!important;
+}
+
+#profile-picture {
+    height: 50px;
+    width: 50px;
+}
+
+#center {
+    margin:10px;
+    width: 80%;
+}
+
+#profile-picture-container {
+    margin-right: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.send-message {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#information-about-receiver {
+    text-align: center;
+    font-weight: bold;
+}
+

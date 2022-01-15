@@ -1,4 +1,4 @@
-.course, .location, .student {
+.course, .location, .student, .user {
 	margin-top: 10px;
 }
 
@@ -15,7 +15,7 @@
 	color: grey;
 }
 
-.course-name, .location-name, .student-name {
+.course-name, .location-name, .student-name, .user-name {
 	font-weight: bold;
 }
 

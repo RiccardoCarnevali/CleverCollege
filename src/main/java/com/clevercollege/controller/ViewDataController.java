@@ -407,20 +407,20 @@ public class ViewDataController {
 	}
 
 	@GetMapping("/allMyChat/singleChat")
-	public String chatPage(Model model, HttpServletRequest request, @RequestParam(value = "cfLecturer") String cfUserReceiver) {
+	public String chatPage(Model model, HttpServletRequest request, @RequestParam(value = "cfUser") String cfUserReceiver) {
 		HttpSession session = request.getSession();
 		User u = (User) session.getAttribute("user");
-		model.addAttribute("cfUserRec", cfUserReceiver);
-		model.addAttribute("cfUserSend", u.getCf());
 		if(u == null) {
 			session.setAttribute("after-login", "/allMyChat/singleChat");
 			return "redirect:/login";
 		}
 		else {
 			String user_type = (String) session.getAttribute("user_type");
-			if(user_type == null)
+			if(user_type == null || user_type.equals("admin"))
 				return "not_authorized";
 		}
+		model.addAttribute("cfUserRec", cfUserReceiver);
+		model.addAttribute("cfUserSend", u.getCf());
 		return "chat";
 	}
 
@@ -434,7 +434,7 @@ public class ViewDataController {
 		}
 		else {
 			String user_type = (String) session.getAttribute("user_type");
-			if(user_type == null)
+			if(user_type == null || user_type.equals("admin"))
 				return "not_authorized";
 		}
 		return "allMyChat";
