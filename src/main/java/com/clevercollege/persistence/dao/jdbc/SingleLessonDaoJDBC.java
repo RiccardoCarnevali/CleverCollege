@@ -327,10 +327,10 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 		String query = null;
 		
 		if (today.getDayOfWeek() == DayOfWeek.SUNDAY) {
-			query = "select * from activities A, single_lessons SL, books B where SL.id = A.id and A.id = B.activity and B.student = ? and date_part('week', current_date) + 1 = date_part('week', SL.lesson_date) order by lesson_date";
+			query = "select * from activities A, single_lessons SL, books B where SL.id = A.id and A.id = B.activity and B.student = ? and date_part('week', current_date) + 1 = date_part('week', SL.lesson_date) order by lesson_date, activity_time";
 		}
 		else {
-			query = "select * from activities A, single_lessons SL, books B where SL.id = A.id and A.id = B.activity and B.student = ? and date_part('week', current_date) = date_part('week', SL.lesson_date) order by lesson_date";
+			query = "select * from activities A, single_lessons SL, books B where SL.id = A.id and A.id = B.activity and B.student = ? and date_part('week', current_date) = date_part('week', SL.lesson_date) order by lesson_date, activity_time";
 		}
 		
 		PreparedStatement st = conn.prepareStatement(query);

@@ -31,15 +31,15 @@ import com.clevercollege.persistence.DatabaseManager;
 @RestController
 public class UpdateProfileController {
 
-	@PostMapping("/loadBookedCourses")
-	public List<Activity> loadBookedCourses(HttpServletRequest request) {
+	@PostMapping("/loadBookedWeekActivities")
+	public List<Activity> loadBookedWeekActivities(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		User currentUser = (User) session.getAttribute("user");
 		if (currentUser != null) {
 			try {
 				List<Activity> activities = new ArrayList<Activity>();
-				List<SingleLesson> ls = DatabaseManager.getInstance().getSingleLessonDao().findBookedByStudentThisWeek(currentUser.getCf(), false);
-				List<Seminar> s = DatabaseManager.getInstance().getSeminarDao().findBookedByStudentThisWeek(currentUser.getCf(), false);
+				List<SingleLesson> ls = DatabaseManager.getInstance().getSingleLessonDao().findBookedByStudentThisWeek(currentUser.getCf(), true);
+				List<Seminar> s = DatabaseManager.getInstance().getSeminarDao().findBookedByStudentThisWeek(currentUser.getCf(), true);
 				
 				if (!ls.isEmpty()) {
 					activities.addAll(ls);					

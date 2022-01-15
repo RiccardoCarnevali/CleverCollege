@@ -329,10 +329,10 @@ public class SeminarDaoJDBC implements SeminarDao {
 		String query = null;
 		
 		if (today.getDayOfWeek() == DayOfWeek.SUNDAY) {
-			query = "select * from activities A, seminars S, books B where S.id = A.id and A.id = B.activity and B.student = ? and date_part('week', current_date) + 1 = date_part('week', S.seminar_date) order by seminar_date";
+			query = "select * from activities A, seminars S, books B where S.id = A.id and A.id = B.activity and B.student = ? and date_part('week', current_date) + 1 = date_part('week', S.seminar_date) order by seminar_date, activity_time";
 		}
 		else {
-			query = "select * from activities A, seminars S, books B where S.id = A.id and A.id = B.activity and B.student = ? and date_part('week', current_date) = date_part('week', S.seminar_date) order by seminar_date";
+			query = "select * from activities A, seminars S, books B where S.id = A.id and A.id = B.activity and B.student = ? and date_part('week', current_date) = date_part('week', S.seminar_date) order by seminar_date, activity_time";
 		}
 		
 		PreparedStatement st = conn.prepareStatement(query);

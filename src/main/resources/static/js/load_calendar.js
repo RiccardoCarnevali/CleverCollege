@@ -5,7 +5,7 @@ $(function() {
 	for (let i = 0; i < 13 * 4; i++) {
 		if (i % 4 == 0) {
 			var time = start + i / 4;
-			$("#week-calendar").append("<tr id='time-" + time + "'><th rowspan='4'>" + time + ":00</th>");
+			$("#week-calendar").append("<tr id='time-" + time + "'><th class='v-header' rowspan='4'>" + time + ":00</th>");
 		}
 		else {
 			$("#week-calendar").append("<tr></tr>");
@@ -21,7 +21,7 @@ $(function() {
 	
 	$.ajax({
 		type: 'POST',
-		url: "loadBookedCourses",
+		url: "loadBookedWeekActivities",
 		success: function(data) {
 			if (data.size != 0) {
 				data.forEach(addActivity);			
@@ -94,7 +94,7 @@ var importCalendar = function(matrix) {
 						colorIndex.push(id.course.name);
 						id.color = actColors[colorIndex.indexOf(id.course.name) % 5];
 					} 
-					addTd(id, i, n, table);
+					addTd(id, i, n, table, );
 					id = null;
 					n = 0;
 					table.children().eq(i + 1).append("<td></td>");
@@ -136,18 +136,20 @@ var addTd = function(id, i, n, table) {
 	
 	
 	var rowspan = n;
-	table.children().eq(i+1 - n).append("<td class='act clickable' rowspan='" + rowspan +"'>  <p>" + timeFormat.format(actDate) + " - "  + timeFormat.format(endTime) + "</p>");
 	if (id.course != undefined) 
-		table.children().eq(i+1 - n).children().last().append("<p>" + id.course.name + "</p>");
-	else table.children().eq(i+1 - n).children().last().append("<p>Seminario</p>");
+		table.children().eq(i+1 - n).append("<td class='act clickable' rowspan='" + rowspan +"'> <p style='font-weight:bold'>" + id.course.name + "</p>");
+	else table.children().eq(i+1 - n).append("<td class='act clickable' rowspan='" + rowspan +"'> <p style='font-weight:bold'>Seminario</p>");
+
+	table.children().eq(i+1 - n).children().last().append("<p>" + timeFormat.format(actDate) + " - "  + timeFormat.format(endTime) + "</p>");
 	
-	table.children().eq(i+1 - n).children().last().append("<i class='fas fa-info-circle' style='float: right; position: absolute; bottom:12px; right:12px;'></i>")
+	table.children().eq(i+1 - n).children().last().append("<i class='fas fa-info-circle' style='float: right; position: absolute; bottom:12px; right:12px; color:#404040'></i>")
 		
 	table.children().eq(i+1 - n).append("</td>");
 	table.children().eq(i+1 - n).children().last().css("text-align", "center");
 	table.children().eq(i+1 - n).children().last().css("border", "2px outset " + id.color + ")");
 	table.children().eq(i+1 - n).children().last().css("background-color", id.color + ", 30%)");
 	table.children().eq(i+1 - n).children().last().css("position", "relative");
+	table.children().eq(i+1 - n).children().last().css("vertical-align", "middle");
 	table.children().eq(i+1 - n).children().last().on("click", function() { actSwal(id, actDate, endTime, timeFormat) });
 }		
 

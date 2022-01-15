@@ -1,4 +1,4 @@
-@media screen and (max-width: 800px) {	
+@media screen and (max-width: 991px) {	
 	.content {
 	padding-right: 12px !important;
 	padding-left: 12px !important; 
@@ -6,6 +6,10 @@
 	
 	.table {
 		max-height: 600px !important;
+	}
+	
+	#mainTable {
+		flex-direction:column-reverse;
 	}
 }
 
@@ -26,11 +30,17 @@ h2 {
 	line-height:0.5;	
 }
 
+
 #tableCol {
 	overflow: auto;
 }
 
+.v-header {
+	width: 100px !important;
+}
+
 #week-calendar {
+	table-layout:fixed;
 	min-width: 1000px;
 }
 

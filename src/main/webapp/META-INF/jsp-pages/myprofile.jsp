@@ -46,8 +46,8 @@
 						</table>
 					</div>
 				</div>
-			</div>	
-			<div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12" style="margin-top: 10px">
+			</div>
+			<div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12" style="margin-top: 10px; float:right">
 				<div class="card">
 					<div style="text-align: center">
 						<img id="profile-picture" class="card-img-top rounded-circle" alt="ma guarda quanto sei bello/a" src="/assets/images/pp-placeholder.png">
@@ -79,7 +79,7 @@
 						</form>
 					</div>
 				</div>
-			</div>
+			</div>	
 		</div>
 	</div>	
 	<div class="footer"></div>
