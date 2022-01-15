@@ -23,7 +23,7 @@ $(function() {
 		type: 'POST',
 		url: "loadBookedWeekActivities",
 		success: function(data) {
-			if (data != null && data.length != 0) {
+			if (data != null) {
 				data.forEach(addActivity);			
 				importCalendar(matrix);		
 			}
