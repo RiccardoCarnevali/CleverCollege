@@ -1,9 +1,11 @@
 var editActivityCourse = null;
 
 $(function() {
-	$('#createActivityBttn').on('click', function(){createActivity(false)});
-	$('#editActivityBttn').on('click', function(){editActivity(false)});
+	$('#createActivityBttn').on('click', function() { createActivity(false) });
+	$('#editActivityBttn').on('click', function() { editActivity(false) });
 	$('input[name="activity-type"]').change(function() {
+		$('input[name="activity-type"]').removeAttr('checked');
+		$(this).attr('checked','checked');
 		hideUnusedInputs(this.value);
 	})
 	hideUnusedInputs($('input[name="activity-type"]:checked').val());
@@ -17,7 +19,7 @@ $(function() {
 		like = $('.classroom-name').html();
 		$("#classroomSearchBar").val(like);
 	}
-	
+
 	if (like == null)
 		like = '';
 	loadClassrooms(false);
@@ -28,9 +30,9 @@ $(function() {
 	});
 
 	var courseSelect = $('#courseSelect');
-	if(courseSelect)
+	if (courseSelect)
 		editActivityCourse = courseSelect.attr('value');
-	
+
 	loadCourses();
 })
 
@@ -115,14 +117,14 @@ function loadCourses() {
 		url: '/getProfessorCourses',
 		success: function(courses) {
 			loadedCourses = courses;
-			
+
 			for (let i = 0; i < courses.length; ++i) {
-				if(courses[i].name != editActivityCourse)
+				if (courses[i].name != editActivityCourse)
 					$('#courseSelect').append('<option value="' + i + '">' + courses[i].name + '</option>');
 				else
 					$('#courseSelect').append('<option value="' + i + '" selected="selected">' + courses[i].name + '</option>');
 			}
-		
+
 		},
 		error: errorMessage
 	});
@@ -159,7 +161,7 @@ function createActivity(ignoreConflict) {
 						confirmButtonText: 'Inserisci',
 						cancelButtonText: 'Annulla'
 					}).then((choice) => {
-						if(choice.isConfirmed)
+						if (choice.isConfirmed)
 							createActivity(true);
 					});
 				}
@@ -167,16 +169,7 @@ function createActivity(ignoreConflict) {
 			error: errorMessage
 		});
 	} else {
-		let inputs = $('.activityInfoInput input:not(.hide)');
-		for (let i = 0; i < inputs.length; ++i) {
-			if (!inputs[i].val())
-				inputs[i].after('<div class="empty-form-error">Questo campo deve essere compilato</div>');
-		}
-
-		if (!$('input[name="classroom-select"]:checked').length)
-			$('#classroomsContainer').after('<div class="empty-form-error">Seleziona un\'aula</div>');
-
-		$('textarea:empty').after('<div class="empty-form-error">Questo campo deve essere compilato</div>');
+		generateEmptyFieldsError();
 	}
 }
 
@@ -211,7 +204,7 @@ function editActivity(ignoreConflict) {
 						confirmButtonText: 'Inserisci',
 						cancelButtonText: 'Annulla'
 					}).then((choice) => {
-						if(choice.isConfirmed)
+						if (choice.isConfirmed)
 							editActivity(true);
 					});
 				}
@@ -219,14 +212,7 @@ function editActivity(ignoreConflict) {
 			error: errorMessage
 		});
 	} else {
-		let inputs = $('.activityInfoInput input:not(.hide)');
-		for (let i = 0; i < inputs.length; ++i) {
-			if (!inputs[i].val())
-				inputs[i].after('<div class="empty-form-error">Questo campo deve essere compilato</div>');
-		}
-		if (!$('input[name="classroom-select"]:checked').length)
-			$('#classroomsContainer').after('<div class="empty-form-error">Seleziona un\'aula</div>');
-		$('textarea:empty').after('<div class="empty-form-error">Questo campo deve essere compilato</div>');
+		generateEmptyFieldsError();
 	}
 }
 
@@ -252,14 +238,36 @@ function conflictAlertText(result) {
 }
 
 function checkFieldsValidity() {
-	let inputs = $('.activityInfoInput input:not(.hide)');
-	for (let i = 0; i < inputs.length; ++i) {
-		if (!inputs[i].val())
-			return false;
-	}
-	if (!$('#descriptionTextArea').val() || !$('input[name="classroom-select"]:checked').val())
+	let date = $('#activityDatePicker');
+	let start = $('#activityStartPicker');
+	let length = $('#activityLengthPicker');
+
+	if ((!$('#dateInput').hasClass('hide') && !date.val()) || (!$('#startTimeInput').hasClass('hide') && !start.val())
+		|| (!$('#lengthInput').hasClass('hide') && !length.val()))
+		return false;
+
+	if (!$.trim($('#descriptionTextArea').val()) || !$('input[name="classroom-select"]:checked').length > 0)
 		return false;
 	return true;
+}
+
+function generateEmptyFieldsError() {
+	let date = $('#activityDatePicker');
+	let start = $('#activityStartPicker');
+	let length = $('#activityLengthPicker');
+
+	if (!$('#dateInput').hasClass('hide') && !date.val())
+		date.after('<div class="empty-form-error">Seleziona una data.</div>')
+	if (!$('#startTimeInput').hasClass('hide') && !start.val())
+		start.after('<div class="empty-form-error">Seleziona un\'orario d\'inizio.</div>')
+	if (!$('#lengthInput').hasClass('hide') && !length.val())
+		length.after('<div class="empty-form-error">Seleziona una durata.')
+
+	if (!$('input[name="classroom-select"]:checked').length)
+		$('#classroomsContainer').after('<div class="empty-form-error">Seleziona un\'aula.</div>');
+	if (!$.trim($('#descriptionTextArea').val()))
+		$('#descriptionTextArea').after('<div class="empty-form-error">Questo campo deve essere compilato.</div>');
+
 }
 
 function createJSONActivity() {
