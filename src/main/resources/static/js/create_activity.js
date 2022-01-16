@@ -3,6 +3,7 @@ var editActivityCourse = null;
 $(function() {
 	$('#createActivityBttn').on('click', function() {createActivity(false) });
 	$('#editActivityBttn').on('click', function() { editActivity(false) });
+	$('#cancelActivityBttn').on('click', function() {location.href = 'handle_activities'})
 	$('input[name="activity-type"]').change(function() {
 		$('input[name="activity-type"]').removeAttr('checked');
 		$(this).attr('checked','checked');

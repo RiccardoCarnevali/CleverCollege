@@ -4,6 +4,16 @@
 	.activity-body-description {
 		margin-top: 100px;
 	}
+	
+	#bttnContainer {
+		height: 100px !important;
+	}
+	
+	#cancelActivityBttn, #createActivityBttn, #editActivityBttn {
+		display: block !important;
+		float: none !important;
+		margin: 20px auto !important;
+	}
 }
 
 @media screen and (max-width: 750px) {
@@ -174,9 +184,23 @@ form {
 	margin-right: auto;
 }
 
-#createActivityBttn, #editActivityBttn, #showMoreButton {
+#showMoreButton {
 	display: flex;
 	margin: 15px auto 0 auto;
+}
+
+#bttnContainer {
+	height: 60px;
+}
+
+#cancelActivityBttn {
+	float: left;
+	margin: 20px 0;
+}
+
+#createActivityBttn, #editActivityBttn {
+	float: right;
+	margin: 20px 0;
 }
 
 #classrooms {
