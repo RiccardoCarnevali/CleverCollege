@@ -1,7 +1,7 @@
 var editActivityCourse = null;
 
 $(function() {
-	$('#createActivityBttn').on('click', function() { createActivity(false) });
+	$('#createActivityBttn').on('click', function() {createActivity(false) });
 	$('#editActivityBttn').on('click', function() { editActivity(false) });
 	$('input[name="activity-type"]').change(function() {
 		$('input[name="activity-type"]').removeAttr('checked');
@@ -96,7 +96,7 @@ function loadClassrooms(showMore) {
 						'<div class="radio-item">' +
 						'<input type="radio" name="classroom-select" value="' + index +
 						'" id="classroom' + index + '">' +
-						'<label for="classroom' + index + '"></div>');
+						'<label for="classroom' + index + '"></div></li>');
 			}
 			if (data.length == 16) {
 				$("#classroomList").append('<button class="btn btn-outline-primary" id="showMoreButton">Mostra altri</button>');
@@ -150,7 +150,9 @@ function createActivity(ignoreConflict) {
 						"L'attività è stata inserita correttamente.'",
 						'success'
 					);
-					$('#activityInfoInput input').val('');
+					$('#activityDatePicker').val('');
+					$('#activityStartPicker').val('');
+					$('#activityLengthPicker').val('');
 					$('textarea').val('');
 				} else {
 					Swal.fire({

@@ -169,9 +169,7 @@ public class HandleActivitiesController {
 				single.setId(id);
 				single.setManager(user);
 				
-				if (!single.checkValid()) {
-					return null;
-				}
+				assert(single.checkValid());
 
 				String conflictActivity = null;
 				if (!ignoreConflict)
@@ -194,8 +192,7 @@ public class HandleActivitiesController {
 				weekly.setId(id);
 				weekly.setManager(user);
 				
-				if (!weekly.checkValid())
-					return null;
+				assert(weekly.checkValid());
 
 				String conflictActivity = null;
 				if (!ignoreConflict)
@@ -211,9 +208,7 @@ public class HandleActivitiesController {
 				seminar.setId(id);
 				seminar.setManager(user);
 				
-				if (!seminar.checkValid()) {
-					return null;
-				}
+				assert(seminar.checkValid());
 
 				String conflictActivity = null;
 				if (!ignoreConflict)

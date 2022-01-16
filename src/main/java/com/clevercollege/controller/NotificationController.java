@@ -18,6 +18,9 @@ public class NotificationController {
 	@PostMapping("/set-client")
 	public String setNewClient(HttpServletRequest req, String token) {
 		
+		if(token == null)
+			return "error";
+		
 		HttpSession session = req.getSession();
 		
 		User u = (User) session.getAttribute("user");
@@ -44,6 +47,9 @@ public class NotificationController {
 	@PostMapping("/unset-client")
 	public String unsetClient(HttpServletRequest req, String token) {
 		
+		if(token == null)
+			return "error";
+		
 		HttpSession session = req.getSession();
 		
 		User u = (User) session.getAttribute("user");
@@ -67,6 +73,8 @@ public class NotificationController {
 	
 	@PostMapping("/check-client")
 	public String checkClient(HttpServletRequest req, String token) {
+		if(token == null)
+			return "error";
 		
 		HttpSession session = req.getSession();
 		
