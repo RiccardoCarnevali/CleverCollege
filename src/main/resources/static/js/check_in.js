@@ -94,8 +94,9 @@ function loadUserMedia(show) {
 					loadUserMedia(false);
 				});
 			})
-			.catch({
-
+			.catch(function(){
+				$('#showStreamBttn').prop('disabled',true);
+				$('#showStreamBttn').html('Nessuna Fotocamera Trovata');
 			});
 	} else {
 		$('.video-capture-container').css('display','none');
