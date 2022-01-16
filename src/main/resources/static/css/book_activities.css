@@ -99,7 +99,7 @@
 	display:flex;
 }
 
-@media only screen and (max-width: 536px) {
+@media only screen and (max-width: 698px) {
 	.book-button-text, .unbook-button-text, .expired-text {
 		display: none;
 	}
