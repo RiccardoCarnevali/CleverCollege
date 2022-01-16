@@ -7,16 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.clevercollege.model.Activity;
 import com.clevercollege.model.Seminar;
 import com.clevercollege.model.SeminarProxy;
-import com.clevercollege.model.SingleLesson;
 import com.clevercollege.persistence.DatabaseManager;
 import com.clevercollege.persistence.dao.SeminarDao;
 

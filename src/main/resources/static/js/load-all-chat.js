@@ -39,17 +39,17 @@ var loadChattingUser = function (cfUser, textMessage) {
                errorMessage();
            else {
                tmpChattingUser = response;
+			   image = tmpChattingUser.profilePicture == null ? "/assets/images/pp-placeholder.png" : "/assets/images/pp/"+ tmpChattingUser.profilePicture;
                $(".list-group").append("<li class='list-group-item user'>" +
-                   "<div id='profile-picture-container'>" +
-                   "<img id='profile-picture' class='rounded-circle' src='../assets/images/pp/"+ tmpChattingUser.profilePicture +"'>" +
+                   "<div class='profile-picture-container'>" +
+                   "<img class='profile-picture rounded-circle' src='" + image + "'>" +
                    "</div>" +
                    "<div id='center'>" +
                    "<span class='user-name'>" + tmpChattingUser.firstName + " " + tmpChattingUser.lastName + "</span>" +
                    "<span class='professor-name' style='display:block'>" + textMessage + "</span>" +
                    "</div>" +
                    "<div class='icons'>" +
-                   "<form id='buttonSendMessContainer' action='/allMyChat/singleChat' method='get'>" +
-                   "<button id='sendMessageToProf' name='cfUser' value="+ tmpChattingUser.cf +"> </button>" +
+                   "<a href='/allMyChat/singleChat?cfUser=" + tmpChattingUser.cf + "' class='far fa-comment chat-button'></a>" +
                    "</form>" +
                    "</div>" +
                    "</li>");

@@ -137,8 +137,7 @@ public class MessageDaoJDBC implements MessageDao {
 
     @Override
     public List<Message> findBySenderAndReceiver(String senderCf, String receiverCf) throws SQLException {
-        System.out.println(senderCf);
-        System.out.println(receiverCf);
+
         List<Message> messages = new ArrayList<>();
 
         String query = "select * from messages where (cf_receiver = ? and cf_sender = ?) or (cf_sender = ? and cf_receiver = ?)";

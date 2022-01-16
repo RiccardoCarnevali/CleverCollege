@@ -9,6 +9,8 @@ public interface NotificationTokenDao {
 	
 	public List<NotificationToken> findAll() throws SQLException;
 	
+	public List<NotificationToken> findByUser(String user) throws SQLException;
+	
 	public boolean findToken(NotificationToken notificationToken) throws SQLException;
 	
 	public List<NotificationToken> findTokensForActivity(long activityId) throws SQLException;

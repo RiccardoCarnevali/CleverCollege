@@ -53,7 +53,9 @@
 					</div>
 				</div>
 			</c:if>
-			<div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12" style="margin-top: 10px;">
+			<div class="col-lg-4 col-md-12 col-sm-12 col-12 
+															<c:if test="${user_type != null && user_type == 'admin'}">col-xl-4 center</c:if>
+															<c:if test="${user_type != null && (user_type == 'professor' || user_type == 'student') }">col-xl-3</c:if>" id="card-container">
 				<div class="card">
 					<div style="text-align: center">
 						<img id="profile-picture" class="card-img-top rounded-circle" <c:if test="${empty user.profilePicture}">src="/assets/images/pp-placeholder.png"</c:if>

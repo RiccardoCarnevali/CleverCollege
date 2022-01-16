@@ -15,8 +15,6 @@ import java.util.List;
 
 import com.clevercollege.model.Activity;
 import com.clevercollege.model.Lesson;
-import com.clevercollege.model.Seminar;
-import com.clevercollege.model.SeminarProxy;
 import com.clevercollege.model.SingleLesson;
 import com.clevercollege.model.SingleLessonProxy;
 import com.clevercollege.persistence.DatabaseManager;

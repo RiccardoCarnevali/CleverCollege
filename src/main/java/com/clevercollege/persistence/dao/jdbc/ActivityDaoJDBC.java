@@ -11,9 +11,6 @@ import java.util.List;
 
 import com.clevercollege.model.Activity;
 import com.clevercollege.model.ActivityProxy;
-import com.clevercollege.model.Seminar;
-import com.clevercollege.model.SingleLesson;
-import com.clevercollege.model.WeeklyLesson;
 import com.clevercollege.persistence.DatabaseManager;
 import com.clevercollege.persistence.dao.ActivityDao;
 

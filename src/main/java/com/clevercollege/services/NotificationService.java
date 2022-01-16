@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 
 import com.clevercollege.model.NotificationToken;
 import com.clevercollege.persistence.DatabaseManager;
-import com.clevercollege.persistence.dao.NotificationTokenDao;
 
 @Service
 public class NotificationService {
@@ -63,21 +62,29 @@ public class NotificationService {
 	}
 
 	public void sendNotificationToAll() {
-		NotificationTokenDao notificationTokenDao = DatabaseManager.getInstance().getNotificationTokenDao();
 		try {
-			List<NotificationToken> notificationTokens = notificationTokenDao.findAll();
+			List<NotificationToken> notificationTokens = DatabaseManager.getInstance().getNotificationTokenDao().findAll();
+			sendNotificationTo("Notifica per tutti", "Questa e' una notifica per tutti gli utenti", notificationTokens);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendNotificationTo(String title, String body, List<NotificationToken> notificationTokens) {
+		try {
+			
 			CloseableHttpClient client = HttpClients.createDefault();
-			HttpPost httpPost = new HttpPost("https://fcm.googleapis.com/fcm/send"); 
+			HttpPost httpPost = new HttpPost("https://fcm.googleapis.com/fcm/send");
 			httpPost.addHeader("Content-Type", "application/json;charset=UTF-8");
 			httpPost.addHeader("Authorization", "key=AAAA_K0h54U:APA91bH5aq1AvSHnxraq2TRTsDTbNDpq2eXr2gQ7HA-Val-iuNwUbWGHMi7Ykq33blIOu_72zN4HsB1CeLNF0F2ysVfjxvmIA7pgsNjNlID6HaK6jB-MsJAkJ4XeLsxxYUQe-juIPrfC");
 			
 			for(NotificationToken notToken : notificationTokens) {
-				String json = "{\"notification\": {\"title\": \"Notification to all!\",\"body\": \"This is a notification sent to everyone\",\"icon\": \"/assets/images/cc-logo.png\"},\"to\": \"" + notToken.getToken() + "\",\"time_to_live\": 0}";
+				String json = "{\"notification\": {\"title\": \"" + title + "\",\"body\": \"" + body + "\",\"icon\": \"/assets/images/cc-logo.png\"},\"to\": \"" + notToken.getToken() + "\",\"time_to_live\": 0}";
 				httpPost.setEntity(new StringEntity(json));
 				CloseableHttpResponse response = client.execute(httpPost);
 				String responseObjectJson = EntityUtils.toString(response.getEntity());
 				if(responseObjectJson.contains("InvalidRegistration") || responseObjectJson.contains("NotRegistered"))
-					notificationTokenDao.delete(notToken);
+					DatabaseManager.getInstance().getNotificationTokenDao().delete(notToken);
 			}
 			
 			DatabaseManager.getInstance().commit();

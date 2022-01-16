@@ -43,6 +43,31 @@ public class NotificationTokenDaoJDBC implements NotificationTokenDao {
 	}
 	
 	@Override
+	public List<NotificationToken> findByUser(String user) throws SQLException {
+		
+		List<NotificationToken> notificationTokens = new ArrayList<>();
+
+		String query = "select * from notification_tokens where notification_user = ? and enabled = true";
+		
+		PreparedStatement st = conn.prepareStatement(query);
+		
+		st.setString(1, user);
+		
+		ResultSet rs = st.executeQuery();
+		
+		while(rs.next()) {
+			NotificationToken notificationToken = new NotificationToken();
+			
+			notificationToken.setToken(rs.getString("notification_token"));
+			notificationToken.setUser(rs.getString("notification_user"));
+			
+			notificationTokens.add(notificationToken);
+		}
+		
+		return notificationTokens;
+	}
+	
+	@Override
 	public boolean findToken(NotificationToken notificationToken) throws SQLException {
 		String query = "select * from notification_tokens where notification_token = ? and notification_user = ? and enabled = true";
 		
