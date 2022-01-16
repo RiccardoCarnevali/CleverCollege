@@ -96,8 +96,8 @@ function loadMore(showMore) {
 				
 				var imgPath = users[index].profilePicture == null ? "assets/images/pp-placeholder.png" : "assets/images/pp/" + users[index].cf + ".png";
 				
-				userRow.append("<div class=\"col-lg-2 col-md-4 col-sm-12 d-flex flex-column align-items-stretch\">" +
-									"<div class=\"card\">" +
+				userRow.append("<div class=\"col-xl-2 col-lg-4 col-md-4 col-sm-12\" style='padding:10px 10px;'>" +
+									"<div class=\"card h-100\">" +
 										"<img class=\"card-img-top rounded-circle\" src='" + imgPath + "' alt=\"Card image\">" +
 										"<div class=\"card-body\">" +
 											"<h4 class=\"card-title\">" + users[index].firstName + " " + users[index].lastName + "</h4>" +

@@ -1,6 +1,7 @@
 package com.clevercollege.services;
 
 import com.clevercollege.model.Message;
+import com.clevercollege.model.NotificationToken;
 import com.clevercollege.model.User;
 import com.clevercollege.persistence.DatabaseManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,6 +39,10 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
                 webSocketSession.get(i).sendMessage(message);
             }
         }
+        User sender = (User) session.getAttributes().get("user");
+        List<NotificationToken> receiverTokens = DatabaseManager.getInstance().getNotificationTokenDao().findByUser(m.getReceiverCf());
+        String body = m.getTextMessage().length() <= 100 ? m.getTextMessage() : m.getTextMessage().substring(0, 100) + "...";
+        NotificationService.getInstance().sendNotificationTo(sender.getFirstName() + " " + sender.getLastName() + " ti ha scritto", body, receiverTokens);
     }
 
     @Override

@@ -35,7 +35,7 @@ body {
 }
 
 .navbar {
-	margin-left: 30vw;
+	margin-left: 20vw;
 	text-transform: uppercase;
 	padding: 20px 10px;
 	transition: padding .2s linear;
@@ -188,4 +188,14 @@ a, h2, h3 {
 	margin-right: 30px;
 	font-size: 25px;
 	color: #5698fc;
+}
+
+.chat-button {
+	font-size: 25px;
+	margin-right: 20px;
+	color: rgba(0,0,0,.7);
+}
+
+.chat-button:hover {
+	color: rgba(0,0,0,.7);
 }

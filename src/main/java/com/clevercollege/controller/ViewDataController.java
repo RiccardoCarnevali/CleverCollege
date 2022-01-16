@@ -330,6 +330,9 @@ public class ViewDataController {
 			if (checkIn != null) {
 				if (checkIn.getOutTime() == null) {
 					request.setAttribute("checkIn", checkIn);
+					Location classroom = DatabaseManager.getInstance().getClassroomDao().findByPrimaryKey(checkIn.getLocation().getId());
+					if(classroom != null) 
+						request.setAttribute("classroom", true);
 				}
 			}
 			

@@ -54,14 +54,14 @@
 				</li>
 			</c:if>
 
-			<c:if test="${user != null && user_type != 'admin'}">
-				<li class="nav-item">
-					<a href="/allMyChat" class="nav-link">Chat</a>
-				</li>
-			</c:if>
 			<c:if test="${user != null}">
 				<li class="nav-item ml-auto">
-					<span class="clickable nav-link" id="notification-bell"></span>
+					<div>
+						<c:if test="${user_type != null && user_type != 'admin'}">
+							<a href="/allMyChat" class="nav-link far fa-comment" style="font-size:25px"></a>
+						</c:if>
+						<span class="clickable nav-link" id="notification-bell"></span>
+					</div>
 				</li>
 			</c:if>
 			

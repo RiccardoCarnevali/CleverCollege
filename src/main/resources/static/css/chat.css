@@ -21,7 +21,7 @@
 
 .all-messages {
     padding: 0;
-    height: 250px;
+    height: 400px;
     overflow-y: scroll;
 }
 
@@ -57,7 +57,7 @@
     border-radius: 1em!important;
 }
 
-#profile-picture {
+.profile-picture {
     height: 50px;
     width: 50px;
 }
@@ -67,7 +67,7 @@
     width: 80%;
 }
 
-#profile-picture-container {
+.profile-picture-container {
     margin-right: 10px;
     margin-top: auto;
     margin-bottom: auto;
@@ -80,7 +80,7 @@
 }
 
 #information-about-receiver {
+	text-transform: none !important;
     text-align: center;
     font-weight: bold;
 }
-
