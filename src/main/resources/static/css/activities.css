@@ -88,6 +88,10 @@
 	float: right;
 }
 
+.activity-info i {
+	margin-right: 5px;
+}
+
 .enabled-activity-info, .disabled-activity-info {
 	font-size: 0.8em;
 	font-style: italic;
