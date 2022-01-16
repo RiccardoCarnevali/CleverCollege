@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.clevercollege.model.Activity;
 import com.clevercollege.model.Seminar;
-import com.clevercollege.model.SingleLesson;
 
 public interface SeminarDao {
 

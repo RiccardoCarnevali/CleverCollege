@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clevercollege.model.User;
 import com.clevercollege.persistence.DatabaseManager;
 
 @RestController
@@ -23,6 +24,13 @@ public class RemoveDataController {
 		
 		if(user_type == null || !user_type.equals("admin") || cf == null)
 			return "error";
+		
+		User user = (User) session.getAttribute("user");
+		if(user == null)
+			return "error";
+		
+		if(user.getCf().equals(cf))
+			return "remove self";
 		
 		try {
 			DatabaseManager.getInstance().getUserDao().delete(cf);

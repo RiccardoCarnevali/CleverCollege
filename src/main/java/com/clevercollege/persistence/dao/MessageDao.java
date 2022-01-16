@@ -1,10 +1,9 @@
 package com.clevercollege.persistence.dao;
 
-import com.clevercollege.model.Message;
-import com.clevercollege.model.User;
-
 import java.sql.SQLException;
 import java.util.List;
+
+import com.clevercollege.model.Message;
 
 public interface MessageDao {
 

@@ -186,13 +186,20 @@ function removeUser(cf) {
 					title: "Successo!",
 					text: "L'utente è stato eliminato con successo",
 					icon: "success"
-				})
+				});
 				users = new Array();
 				$("#userRow").empty();
 				loadMore();
 			}
-			else {
+			else if (data == "error") {
 				errorMessage();
+			}
+			else if (data == "remove self") {
+				Swal.fire({
+					title: "Errore!",
+					text: "Non puoi rimuovere te stesso dal sistema!",
+					icon: "error"
+				});
 			}
 		},
 		error: errorMessage
