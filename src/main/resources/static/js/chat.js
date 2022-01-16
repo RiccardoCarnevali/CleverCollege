@@ -77,7 +77,6 @@ var loadMessages = function (cfSender, cfReceiver) {
         url:"/loadMessages",
         method: "POST",
         data: {
-            cfSender : cfSender,
             cfReceiver : cfReceiver
         },
         success: function (response) {
@@ -101,9 +100,11 @@ var loadMessages = function (cfSender, cfReceiver) {
     });
 }
 
-function Message(id, senderCf, receiverCf, textMessage) {
-    this.id = id;
-    this.senderCf = senderCf;
-    this.receiverCf = receiverCf;
-    this.textMessage = textMessage;
+class Message {
+    constructor(id, senderCf, receiverCf, textMessage) {
+        this.id = id;
+        this.senderCf = senderCf;
+        this.receiverCf = receiverCf;
+        this.textMessage = textMessage;
+    }
 }

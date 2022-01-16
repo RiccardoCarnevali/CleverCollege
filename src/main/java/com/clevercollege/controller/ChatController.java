@@ -54,23 +54,22 @@ public class ChatController {
     }
 
     @PostMapping("loadMessages")
-    public List<Message> loadMessages(HttpServletRequest request,  String cfSender, String cfReceiver) {
+    public List<Message> loadMessages(HttpServletRequest request, String cfReceiver) {
         HttpSession session = request.getSession();
         User u = (User) session.getAttribute("user");
         if(u == null) {
             return null;
         }
         String user_type = (String) session.getAttribute("user_type");
-        if(user_type == null || cfSender == null || cfReceiver == null) {
+        if(user_type == null || cfReceiver == null) {
             return null;
         }
 
         try {
-            List<Message> messageList = DatabaseManager.getInstance().getMessageDao().findBySenderAndReceiver(cfSender, cfReceiver);
+            List<Message> messageList = DatabaseManager.getInstance().getMessageDao().findBySenderAndReceiver(u.getCf(), cfReceiver);
             return messageList;
         } catch (SQLException e) {
             return null;
         }
-    }
-
+    }	
 }

@@ -13,7 +13,9 @@ var loadAllExistingChat = function () {
       method: "POST",
       success: function (response) {
           if(response === null)
-              errorMessage();
+              errorMessage();	
+		  if(response.length == 0)
+		  	  $(".list-group").append("<li class='list-group-item' style='text-align: center; margin: 10px 0px'>Nessuna chat trovata</li>")
           for(let i = 0; i < response.length; i++) {
               if (response[i].senderCf !== myUser) {
                   loadChattingUser(response[i].senderCf, response[i].textMessage);
