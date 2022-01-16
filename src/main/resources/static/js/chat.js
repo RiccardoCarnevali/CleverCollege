@@ -25,6 +25,29 @@ $(document).ready(function () {
         $("#message-input").val("");
     });
 
+	var shiftDown = false;
+
+	$(document).keypress(function(e) {
+		if(e.keyCode == 13) {
+			if($("#message-input").is(":focus") && !shiftDown) {
+				e.preventDefault();
+				$(".all-messages").append("<div class='send-message'>" +
+		            "<li class='single-messages' style='margin: 10px 10px 0px 100px; background-color: #e2dded'>"+ $('#message-input').val() +
+		            "</div></li>");
+		        websocket.send(JSON.stringify(new Message(null, cfSender, cfReceiver, $('#message-input').val())));
+		        $("#message-input").val("");
+			}
+		}
+	});
+	
+	$(document).keydown(function(e) {
+		if(e.keyCode == 16) shiftDown = true;
+	});
+	
+	$(document).keyup(function(e) {
+		if(e.keyCode == 16) shiftDown = false;
+	})
+
     loadMessages(cfSender, cfReceiver);
 });
 
