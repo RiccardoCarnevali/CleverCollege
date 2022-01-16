@@ -86,7 +86,7 @@ var updateImage = function() {
 				Swal.fire({
 					icon: 'error',
 					title: 'Immagine non valida',
-					text: "Impossibile aggiornare il profilo. L'immagine selezionata è troppo piccola."
+					text: "Impossibile aggiornare il profilo. L'immagine selezionata è troppo piccola. Le dimensioni devono essere superiori a 180x180 px"
 				});
 			}
 			else if(data == "ok") {
