@@ -13,6 +13,7 @@
 @media screen and (max-width: 991.3px) {
 	.navbar {
 		margin-left: 20px !important;
+		width: 20%;
 	}
 	
 	#logo{

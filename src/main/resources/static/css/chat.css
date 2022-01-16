@@ -58,6 +58,7 @@
 }
 
 .profile-picture {
+	border: 2px outset #7e57c2;
     height: 50px;
     width: 50px;
 }

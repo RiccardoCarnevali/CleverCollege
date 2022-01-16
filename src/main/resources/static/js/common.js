@@ -23,7 +23,15 @@ $(function() {
 				suppressFireBaseMessaging();
 			}
 			else {
-				initializeFireBaseMessaging();
+				if(Notification.permission == "denied") {
+					Swal.fire({
+						icon: "error",
+						title: "Impossibile attivare le notifiche",
+						text: "Il permesso di inviare notifiche è stato negato"
+					});
+				}
+				else
+					initializeFireBaseMessaging();
 			}
 		})
 	});

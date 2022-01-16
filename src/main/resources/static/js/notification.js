@@ -46,7 +46,7 @@ function initializeFireBaseMessaging() {
 		$("#notification-bell").removeClass("far");
 		$("#notification-bell").addClass("fas");
 	}).catch(function(reason) {
-		
+		errorMessage();
 	});
 }
 
@@ -72,7 +72,7 @@ function suppressFireBaseMessaging() {
 			error: errorMessage
 		});
 	}).catch(function(reason) {
-		
+		errorMessage();
 	});
 }
 
