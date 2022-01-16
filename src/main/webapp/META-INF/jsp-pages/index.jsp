@@ -47,9 +47,8 @@
 						del quale si svolgono le attività o si può usufruire del servizio mensa.</p>
 				</div>
 				<div class="col-lg-8 col-md-8 col-sm-6 youtube-container center-object-text">
-					<iframe src="https://www.youtube.com/embed/-ZDFdXpGd0A"
-							 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
-							  clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+					<iframe src="https://www.youtube.com/embed/LC3Q8wFuM7g" title="YouTube video player" 
+							frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 					</iframe>
 				</div>
 			</div>

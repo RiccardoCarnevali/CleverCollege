@@ -7,22 +7,20 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.clevercollege.model.Activity;
@@ -32,6 +30,7 @@ import com.clevercollege.model.User;
 import com.clevercollege.persistence.DatabaseManager;
 
 @RestController
+@ControllerAdvice
 public class UpdateProfileController {
 
 	@PostMapping("/loadBookedWeekActivities")
@@ -107,8 +106,6 @@ public class UpdateProfileController {
 		
 		String imgName = img.getOriginalFilename();
 		try {
-			if (img.getSize() > 1000000)
-				return "img too big";
 			
 			if(!Files.probeContentType(Paths.get(imgName)).split("/")[0].equals("image"))
 				return "not an img";
@@ -137,21 +134,10 @@ public class UpdateProfileController {
 			return "error";
 		}
 	}
-
-	@PostMapping(path = "/putProfilePicture", produces = org.springframework.http.MediaType.IMAGE_PNG_VALUE)
-	public ByteArrayResource putImage(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		User u = (User) session.getAttribute("user");
-		ByteArrayResource inputStream = null;
-		if (u.getProfilePicture() != null) {
-			try {
-					inputStream = new ByteArrayResource(Files.readAllBytes(
-							Paths.get("src/main/resources/static/assets/images/pp/" + u.getProfilePicture())));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return inputStream;
+	
+	@ExceptionHandler(MaxUploadSizeExceededException.class)
+	public String handleFileSizeLimitExceeded(MaxUploadSizeExceededException exc) {
+	    return "img too big";
 	}
 
 	@PostMapping("/updatePassword")
