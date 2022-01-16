@@ -4,10 +4,10 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 
-<%@ page import="com.clevercollege.model.SingleLesson" %>
-<%@ page import="com.clevercollege.model.WeeklyLesson" %>
-<%@ page import="com.clevercollege.model.Seminar" %>
-<%@ page import="com.clevercollege.model.Course" %>
+<%@ page import="com.clevercollege.model.SingleLesson"%>
+<%@ page import="com.clevercollege.model.WeeklyLesson"%>
+<%@ page import="com.clevercollege.model.Seminar"%>
+<%@ page import="com.clevercollege.model.Course"%>
 
 <!DOCTYPE html>
 <html>
@@ -22,7 +22,8 @@
 <link rel="stylesheet" href="/css/insert.css">
 <link rel="stylesheet" href="/css/activities.css">
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
@@ -30,7 +31,8 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-messaging.js"></script>
+<script
+	src="https://www.gstatic.com/firebasejs/8.2.4/firebase-messaging.js"></script>
 <script src="/js/notification.js" charset="UTF-8"></script>
 <script src="/js/common.js"></script>
 <script src="/js/generic_error.js" charset="UTF-8"></script>
@@ -47,7 +49,7 @@
 		value="${activity.length % 60}" var="lengthMinute" />
 
 	<div class="header"></div>
-	
+
 	<div class="container" id="createActivityContainer">
 		<h3>Inserisci un'attività</h3>
 		<div id="pickActivityType">
@@ -93,7 +95,7 @@
 					<strong>Corso</strong><select class="form-control"
 						id="courseSelect"
 						<c:if test="${activity != null && activity_type != 'seminar'}">value="${activity.course.name}"</c:if>>
-						</select>
+					</select>
 				</div>
 				<div class="form-group hide" id="weekdayInput">
 					<strong>Giorno Settimanale</strong> <select class="form-control"
@@ -136,15 +138,21 @@
 						test="${activity != null}">${activity.description}</c:if></textarea>
 			</div>
 		</div>
-		<c:if test="${activity != null}">
-			<input type="hidden" name="activity-id" value="${activity.id}">
-			<button class="btn btn-outline-primary" id="editActivityBttn">Modifica
-				Attività</button>
-		</c:if>
-		<c:if test="${activity == null}">
-			<button class="btn btn-outline-primary" id="createActivityBttn">Crea
-				Attività</button>
-		</c:if>
+		<div id="bttnContainer">
+			<c:if test="${activity != null}">
+				<input type="hidden" name="activity-id" value="${activity.id}">
+				<button class="btn btn-outline-danger danger-button"
+					id="cancelActivityBttn">Annulla Modifica</button>
+				<button class="btn btn-outline-primary" id="editActivityBttn">Modifica
+					Attività</button>
+			</c:if>
+			<c:if test="${activity == null}">
+				<button class="btn btn-outline-danger danger-button"
+					id="cancelActivityBttn">Annulla Inserimento</button>
+				<button class="btn btn-outline-primary" id="createActivityBttn">Crea
+					Attività</button>
+			</c:if>
+		</div>
 	</div>
 	<div class="footer"></div>
 </body>
