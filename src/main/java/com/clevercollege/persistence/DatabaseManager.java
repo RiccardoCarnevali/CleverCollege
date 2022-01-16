@@ -4,36 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import com.clevercollege.persistence.dao.ActivityDao;
-import com.clevercollege.persistence.dao.AdministratorDao;
-import com.clevercollege.persistence.dao.CheckInCheckOutDao;
-import com.clevercollege.persistence.dao.ClassroomDao;
-import com.clevercollege.persistence.dao.CourseDao;
-import com.clevercollege.persistence.dao.LessonDao;
-import com.clevercollege.persistence.dao.LocationDao;
-import com.clevercollege.persistence.dao.NotificationTokenDao;
-import com.clevercollege.persistence.dao.ProfessorDao;
-import com.clevercollege.persistence.dao.RecoveryTokenDao;
-import com.clevercollege.persistence.dao.SeminarDao;
-import com.clevercollege.persistence.dao.SingleLessonDao;
-import com.clevercollege.persistence.dao.StudentDao;
-import com.clevercollege.persistence.dao.UserDao;
-import com.clevercollege.persistence.dao.WeeklyLessonDao;
-import com.clevercollege.persistence.dao.jdbc.ActivityDaoJDBC;
-import com.clevercollege.persistence.dao.jdbc.AdministratorDaoJDBC;
-import com.clevercollege.persistence.dao.jdbc.CheckInCheckOutDaoJDBC;
-import com.clevercollege.persistence.dao.jdbc.ClassroomDaoJDBC;
-import com.clevercollege.persistence.dao.jdbc.CourseDaoJDBC;
-import com.clevercollege.persistence.dao.jdbc.LessonDaoJDBC;
-import com.clevercollege.persistence.dao.jdbc.LocationDaoJDBC;
-import com.clevercollege.persistence.dao.jdbc.NotificationTokenDaoJDBC;
-import com.clevercollege.persistence.dao.jdbc.ProfessorDaoJDBC;
-import com.clevercollege.persistence.dao.jdbc.RecoveryTokenDaoJDBC;
-import com.clevercollege.persistence.dao.jdbc.SeminarDaoJDBC;
-import com.clevercollege.persistence.dao.jdbc.SingleLessonDaoJDBC;
-import com.clevercollege.persistence.dao.jdbc.StudentDaoJDBC;
-import com.clevercollege.persistence.dao.jdbc.UserDaoJDBC;
-import com.clevercollege.persistence.dao.jdbc.WeeklyLessonDaoJDBC;
+import com.clevercollege.persistence.dao.*;
+import com.clevercollege.persistence.dao.jdbc.*;
 
 public class DatabaseManager {
 
@@ -56,6 +28,7 @@ public class DatabaseManager {
 	private StudentDao studentDao = null;
 	private UserDao userDao = null;
 	private WeeklyLessonDao weeklyLessonDao = null;
+	private MessageDao messageDao = null;
 	
 	private IdBroker idBroker = null;
 	
@@ -162,6 +135,12 @@ public class DatabaseManager {
 		if(weeklyLessonDao == null)
 			weeklyLessonDao = new WeeklyLessonDaoJDBC(conn);
 		return weeklyLessonDao;
+	}
+
+	public MessageDao getMessageDao() {
+		if(messageDao == null)
+			messageDao = new MessageDaoJDBC(conn);
+		return messageDao;
 	}
 	
 	public IdBroker getIdBroker() {

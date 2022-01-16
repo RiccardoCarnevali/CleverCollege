@@ -53,7 +53,12 @@
 					<a href="/myprofile" class="nav-link">Area personale</a>
 				</li>
 			</c:if>
-			
+
+			<c:if test="${user != null && user_type != 'admin'}">
+				<li class="nav-item">
+					<a href="/allMyChat" class="nav-link">Chat</a>
+				</li>
+			</c:if>
 			<c:if test="${user != null}">
 				<li class="nav-item ml-auto">
 					<span class="clickable nav-link" id="notification-bell"></span>

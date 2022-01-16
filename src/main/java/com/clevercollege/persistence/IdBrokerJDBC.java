@@ -81,4 +81,17 @@ public class IdBrokerJDBC implements IdBroker {
 		
 		return rs.getLong("id");
 	}
+
+	@Override
+	public long getNextMessageId() throws SQLException {
+		String query = "select nextval('messages_ids_sequence') as id";
+
+		Statement st = conn.createStatement();
+
+		ResultSet rs = st.executeQuery(query);
+
+		rs.next();
+
+		return rs.getLong("id");
+	}
 }
