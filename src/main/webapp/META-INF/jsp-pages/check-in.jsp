@@ -66,7 +66,7 @@
 				<a id="checkOutBttn" href="do-check-out"
 					class="btn btn-outline-primary">Check-Out</a>
 			</div>
-			<c:if test="${user_type == 'professor'}">
+			<c:if test="${user_type == 'professor' && classroom != null && classroom == true}">
 				<div class="check-in-out-button-container">
 					<a href="/check-in/studentsCheckedIn" class="btn btn-outline-primary">Elenco presenti in aula</a>
 				</div>
