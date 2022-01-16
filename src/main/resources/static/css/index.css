@@ -1,5 +1,5 @@
 .youtube-container {
-    height: 250px;
+    height: 380px;
     display: flex;
 }
 
@@ -9,7 +9,7 @@ iframe {
 }
 
 #second-container {
-    min-height: 300px;
+    min-height: 400px;
 }
 
 p {
