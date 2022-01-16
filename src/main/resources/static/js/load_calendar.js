@@ -24,7 +24,8 @@ $(function() {
 		url: "loadBookedWeekActivities",
 		success: function(data) {
 			if (data != null) {
-				data.forEach(addActivity);			
+				for(let i = 0; i < data.length; i++)
+					addActivity(data[i]);	
 				importCalendar(matrix);		
 			}
 		},
