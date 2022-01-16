@@ -33,8 +33,8 @@
 	                    <h3>Chi siamo?</h3>
 	                </div>
 	                <div>
-	                    <p>Siamo quattro studenti del terzo anno della facolt� di informatica dell'Universit� della Calabria
-	                        (UNICAL). Il nostro gruppo � formato da tre ragazzi, Riccardo, Matteo e Giacomo, e una ragazza,
+	                    <p>Siamo quattro studenti del terzo anno della facoltà di informatica dell'Università della Calabria
+	                        (UNICAL). Il nostro gruppo è formato da tre ragazzi, Riccardo, Matteo e Giacomo, e una ragazza,
 	                        Alessia Donata, tutti e quattro impegnati equamente nella realizzazione di questo progetto,
 	                        creato e implementato come requisito per gli esami di Web Computing e Ingegneria del Software.
 	                    </p>
@@ -51,12 +51,12 @@
 	                    <h3>Da dove nasce l'idea?</h3>
 	                </div>
 	                <div>
-	                    <p>Per monitorare i contagi e i possibili focolai all'interno del Campus, la nostra Universit� ha messo
+	                    <p>Per monitorare i contagi e i possibili focolai all'interno del Campus, la nostra Università ha messo
 	                        a nostra disposizione un'applicazione di nome Smart Campus, utile per tracciare gli spostamenti
-	                        degli studenti all'interno dei luoghi universitari. Tale applicazione, per�, non � gradita da tutti
-	                        gli studenti della nostra universit�, cos� abbiamo deciso di provare a realizzare un sito web simile
-	                        a tale progetto ma che si differenziasse in ci� che gli studenti credono una "lacuna". Quel che �
-	                        venuto fuori � Clever College.
+	                        degli studenti all'interno dei luoghi universitari. Tale applicazione, però, non è gradita da tutti
+	                        gli studenti della nostra università, così abbiamo deciso di provare a realizzare un sito web simile
+	                        a tale progetto ma che si differenziasse in ciò che gli studenti credono una "lacuna". Quel che è
+	                        venuto fuori è Clever College.
 	                    </p>
 	                </div>
 	            </div>
