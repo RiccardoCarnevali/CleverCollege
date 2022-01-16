@@ -198,13 +198,12 @@ form {
 }
 
 #cancelActivityBttn {
-	float: left;
-	margin: 20px 0;
+	margin: 20px;
 }
 
 #createActivityBttn, #editActivityBttn {
-	float: right;
-	margin: 20px 0;
+	float: left;
+	margin: 20px;
 }
 
 #classrooms {
