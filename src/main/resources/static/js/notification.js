@@ -124,7 +124,7 @@ messaging.onTokenRefresh(function() {
 		
 		$.ajax({
 			type: "POST",
-			url: "/set-new-client",
+			url: "/set-client",
 			data: {
 				token: newToken,
 			}
