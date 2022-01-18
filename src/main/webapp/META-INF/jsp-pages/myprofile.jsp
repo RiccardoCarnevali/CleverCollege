@@ -32,7 +32,7 @@
 	<div class="content container-fluid">
 		<div id="mainTable" class="row">
 			<c:if test="${user_type != null && (user_type == 'professor' || user_type == 'student') }">
-				<div class="col-xl-9 col-lg-8 col-md-12 col-sm-12 col-12" id="tableCol" style="margin-top: 10px">
+				<div class="col-xl-9 col-lg-8 col-md-12 col-sm-12 col-12" id="tableCol">
 					<div id="booked-tab">
 						<h1>Calendario di questa settimana</h1>
 						<div class="table-responsive">
