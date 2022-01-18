@@ -248,9 +248,10 @@ public class StudentDaoJDBC implements StudentDao {
 	}
 	
 	@Override
-	public Student findByIdStudent(String idStudent) throws SQLException {
+	public Student findByIdStudent(String idStudent, boolean lazy) throws SQLException {
+		
 		Student student = null;
-
+		
 		String query = "select * from students where student_number = ?";
 
 		PreparedStatement st = conn.prepareStatement(query);
@@ -260,9 +261,16 @@ public class StudentDaoJDBC implements StudentDao {
 		ResultSet rs = st.executeQuery();
 
 		if(rs.next()) {
-			student = new Student();
 
 			User user = DatabaseManager.getInstance().getUserDao().findByPrimaryKey(rs.getString("cf"));
+			
+			if(lazy) {
+				student = new StudentProxy();
+			}
+			else {
+				student = new Student();
+				student.setFollowedCourses(DatabaseManager.getInstance().getCourseDao().findCoursesFollowedBy(user.getCf()));
+			}
 
 			student.setCf(rs.getString("cf"));
 			student.setFirstName(user.getFirstName());

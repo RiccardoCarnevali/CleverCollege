@@ -164,7 +164,7 @@ public class InsertDataController {
                     if(s.getStudentNumber() == null)
                     	return "server error";
                     
-                    if(!update && DatabaseManager.getInstance().getStudentDao().findByIdStudent(s.getStudentNumber()) != null)
+                    if(!update && DatabaseManager.getInstance().getStudentDao().findByIdStudent(s.getStudentNumber(), true) != null)
                         return "idStudent already exists";
                     else {
                     	if(!update) {

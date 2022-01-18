@@ -24,7 +24,7 @@ public interface StudentDao {
 	
 	public void unbookActivityForStudent(long activityId, String studentCf) throws SQLException;
 
-	public Student findByIdStudent(String idStudent) throws SQLException;
+	public Student findByIdStudent(String idStudent, boolean lazy) throws SQLException;
 
 	public void followCourseForStudent(long courseId, String studentCf) throws SQLException;
 	
