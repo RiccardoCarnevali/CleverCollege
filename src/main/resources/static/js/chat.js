@@ -62,7 +62,7 @@ var loadInformationAboutReceiver = function (cfReceiver) {
             if(response === null)
                 errorMessage();
             else {
-				image = response.profilePicture == null ? "/assets/images/pp-placeholder.png" : "/assets/images/pp/"+ response.profilePicture;
+				image = response.profilePicture == null ? "/assets/images/pp/pp-placeholder.png" : "/assets/images/pp/"+ response.profilePicture;
                 document.getElementById('information-about-receiver').innerHTML = "<img class='profile-picture rounded-circle' src='" + image + "' style='margin-right: 10px'>" + response.firstName.toUpperCase() + " " + response.lastName.toUpperCase()
 			}
         },

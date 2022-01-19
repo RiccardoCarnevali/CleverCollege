@@ -94,7 +94,7 @@ function loadMore(showMore) {
 			var userRow = $(".user-row").last();
 			for (; index < users.length; index++) {
 				
-				var imgPath = users[index].profilePicture == null ? "assets/images/pp-placeholder.png" : "assets/images/pp/" + users[index].cf + ".png";
+				var imgPath = users[index].profilePicture == null ? "assets/images/pp/pp-placeholder.png" : "assets/images/pp/" + users[index].cf + ".png";
 				
 				userRow.append("<div class=\"col-xl-2 col-lg-4 col-md-4 col-sm-12\" style='padding:10px 10px;'>" +
 									"<div class=\"card h-100\">" +

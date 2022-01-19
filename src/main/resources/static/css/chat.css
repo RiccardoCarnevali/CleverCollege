@@ -58,9 +58,11 @@
 }
 
 .profile-picture {
+	object-fit: cover;
 	border: 2px outset #7e57c2;
     height: 50px;
     width: 50px;
+    box-shadow: 0 10px 25px rgb(126 87 194 / 5%), 0 20px 48px rgb(126 87 194 / 5%), 0 1px 4px rgb(126 87 194 / 10%);	
 }
 
 #center {

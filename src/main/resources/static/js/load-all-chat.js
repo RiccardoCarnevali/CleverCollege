@@ -41,7 +41,7 @@ var loadChattingUser = function (cfUser, textMessage) {
                errorMessage();
            else {
                tmpChattingUser = response;
-			   image = tmpChattingUser.profilePicture == null ? "/assets/images/pp-placeholder.png" : "/assets/images/pp/"+ tmpChattingUser.profilePicture;
+			   image = tmpChattingUser.profilePicture == null ? "/assets/images/pp/pp-placeholder.png" : "/assets/images/pp/"+ tmpChattingUser.profilePicture;
                $(".list-group").append("<li class='list-group-item user'>" +
                    "<div class='profile-picture-container'>" +
                    "<img class='profile-picture rounded-circle' src='" + image + "'>" +

@@ -58,7 +58,7 @@
 															<c:if test="${user_type != null && (user_type == 'professor' || user_type == 'student') }">col-xl-3</c:if>" id="card-container">
 				<div class="card">
 					<div style="text-align: center">
-						<img id="profile-picture" class="card-img-top rounded-circle" <c:if test="${empty user.profilePicture}">src="/assets/images/pp-placeholder.png"</c:if>
+						<img id="profile-picture" class="card-img-top rounded-circle" <c:if test="${empty user.profilePicture}">src="/assets/images/pp/pp-placeholder.png"</c:if>
 																					  <c:if test="${not empty user.profilePicture}">src="/assets/images/pp/${user.cf}.png"</c:if>>
 						<span id="modPP-icon" class="card-text clickable fas fa-pen"></span>
 						<input type="file" id="modPP" accept=".png,.jpg,.jpeg" style="display: none">
