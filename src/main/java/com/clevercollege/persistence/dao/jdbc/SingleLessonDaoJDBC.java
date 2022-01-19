@@ -459,12 +459,14 @@ public class SingleLessonDaoJDBC implements SingleLessonDao {
 		List<SingleLesson> singleLessons = new ArrayList<>();
 
 		String query = "select * from single_lessons as x, activities as y, lessons as z "
-				+ "where x.id = y.id and y.id = z.id and y.professor = ? and x.lesson_date >= ?";
+				+ "where x.id = y.id and y.id = z.id and y.professor = ? and (x.lesson_date > ? or (x.lesson_date = ? and y.activity_time > ?))";
 
 		PreparedStatement st = conn.prepareStatement(query);
 
 		st.setString(1, cf);
-		st.setDate(2, Date.valueOf(LocalDate.now().minusDays(1)));
+		st.setDate(2, Date.valueOf(LocalDate.now()));
+		st.setDate(3, Date.valueOf(LocalDate.now()));
+		st.setTime(4, Time.valueOf(LocalTime.now()));
 
 		ResultSet rs = st.executeQuery();
 

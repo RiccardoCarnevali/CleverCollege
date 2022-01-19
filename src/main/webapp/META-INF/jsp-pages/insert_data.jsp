@@ -64,7 +64,7 @@
 						    		<c:otherwise>disabled</c:otherwise>
 					    		</c:choose>
 					    	</c:if>>
-		                    <label for="course">Corso di laurea</label><br>
+		                    <label for="course">Corso</label><br>
 		                </div>
 		                <div id="kindOfPlace" style="display: none">
 		                	<c:if test="${location_to_edit == null}">

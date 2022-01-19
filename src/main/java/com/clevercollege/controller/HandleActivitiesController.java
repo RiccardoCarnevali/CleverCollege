@@ -66,7 +66,7 @@ public class HandleActivitiesController {
 			return null;
 
 		try {
-			singleLessons.addAll(DatabaseManager.getInstance().getSingleLessonDao().findByProfessor(cf, true));
+			singleLessons.addAll(DatabaseManager.getInstance().getSingleLessonDao().findActiveByProfessor(cf, true));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

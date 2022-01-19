@@ -414,12 +414,14 @@ public class SeminarDaoJDBC implements SeminarDao {
 		List<Seminar> seminars = new ArrayList<>();
 
 		String query = "select * from seminars as x, activities as y "
-				+ "where x.id = y.id and y.professor = ? and x.seminar_date >= ?";
+				+ "where x.id = y.id and y.professor = ? and (x.seminar_date > ? or (x.seminar_date = ? and y.activity_time > ?))";
 
 		PreparedStatement st = conn.prepareStatement(query);
 
 		st.setString(1, cf);
-		st.setDate(2, Date.valueOf(LocalDate.now().minusDays(1)));
+		st.setDate(2, Date.valueOf(LocalDate.now()));
+		st.setDate(3, Date.valueOf(LocalDate.now()));
+		st.setTime(4, Time.valueOf(LocalTime.now()));
 
 		ResultSet rs = st.executeQuery();
 
